@@ -1,0 +1,148 @@
+{% extends "base/section.twig" %}
+
+
+{% block sectionBody %}
+
+{# {auctionRefId: auctionRefId} #}
+<form action="{{url('create-auction')}}" method="POST">
+
+    <div class="row">
+        <div class="medium-centered medium-8 large-6 columns">
+
+            <fieldset>
+
+                {# errors #}
+                {% if error|length %}
+                <div data-alert class="alert-box alert">{{ error|raw }}</div>
+                {% endif %}
+
+
+                <legend>Create a New Auction</legend>
+                
+
+                <h5>Description</h5>
+
+                <label for="name">Auction Title</label>
+                <input type="text" name="name" id="name" placeholder="My Great Auction" value="{{submittedData.name}}">
+
+                <label for="description">Auction Description <small class="right">Supports <a href="https://help.github.com/articles/markdown-basics" target="_blank">Markdown</a></small>
+                <textarea name="description" id="description" style="height: 120px;" placeholder="This auction..." >{{submittedData.description}}</textarea>
+
+                <label for="username">Your LTB Username</label>
+                <input type="text" name="username" id="username" placeholder="bert" value="{{submittedData.username}}">
+
+                <div class="spacer1"></div>
+
+                <h5>Dates</h5>
+
+                <label for="startDate">Start Date</label>
+
+                <div class="row collapse">
+                    <div class="small-9 columns">
+                        <input type="text" name="startDate" id="startDate" value="{{submittedData.startDate}}">
+                    </div>
+                    <div class="small-3 columns">
+                        <span class="postfix radius" data-timezone-label>GMT</span>
+                    </div>
+                </div>
+
+                <label for="endDate">End Date</label>
+
+                <div class="row collapse">
+                    <div class="small-9 columns">
+                        <input type="text" name="endDate" id="endDate"  value="{{submittedData.endDate}}">
+                    </div>
+                    <div class="small-3 columns">
+                        <span class="postfix radius" data-timezone-label>GMT</span>
+                    </div>
+                </div>
+
+                <div class="spacer1"></div>
+
+                <h5>Starting Bid</h5>
+
+                <div class="row">
+                    <div class="medium-4 columns">
+                        <label for="minStartingBid">Starting Bid</label>
+                        <input type="number" name="minStartingBid" id="minStartingBid"  value="{{submittedData.minStartingBid}}" placeholder="1000">
+                    </div>
+                    <div class="medium-8 columns">
+                        <label for="bidTokenType">Bid Token Type</label>
+                        <input type="text" name="bidTokenType" id="bidTokenType" value="{{submittedData.bidTokenType}}" placeholder="LTBCOIN">
+                    </div>
+                </div>
+
+
+
+
+                <div class="spacer1"></div>
+
+                <h5>Winnings</h5>
+
+                <div class="row" data-offset="0" data-winning-token-section>
+                    <div class="medium-4 columns">
+                        <label for="winningTokenQuantity_0">Quantity</label>
+                        <input type="text" name="winningTokenQuantity_0" id="winningTokenQuantity_0" value="{{submittedData.winningTokenQuantity_0}}" placeholder="1000">
+                    </div>
+                    <div class="medium-8 columns">
+                        <label for="winningTokenType_0">Winning Token Type</label>
+                        <input type="text" name="winningTokenType_0" id="winningTokenType_0" value="{{submittedData.winningTokenType_0}}" placeholder="MYCOIN">
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="columns">
+                        <div class="add-another">
+                            <a href="#add-token" data-add-token><i class="fa fa-plus-square"></i> Add another winning token</a>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="spacer1"></div>
+
+                <h5>Payout</h5>
+
+                <label for="sellerAddress">Seller Address to Receive Funds</label>
+                <input type="text" name="sellerAddress" id="sellerAddress" value="{{submittedData.sellerAddress}}">
+
+                <div class="spacer1"></div>
+
+                <input type="hidden" name="timezone" id="TimezoneInput" value="{{submittedData.timezone}}">
+                <button type="submit">Create Auction</button>
+
+                <div class="spacer1"></div>
+
+
+
+            </fieldset>
+            
+        </div>
+    </div>
+
+
+
+
+</form>
+
+{% endblock %}
+
+
+{% block app_css %}
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/public/vendor/datetimepicker/jquery.datetimepicker.css"/ >
+{% endblock %}
+
+
+{% block app_js %}
+{{ parent() }}
+
+<script src="/public/vendor/datetimepicker/jquery.datetimepicker.js"></script>
+<script src="/public/vendor/momentjs/moment.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jstimezonedetect/1.0.4/jstz.min.js"></script>
+<script src="/public/js/new-auction.js"></script>
+{% endblock %}
+
+

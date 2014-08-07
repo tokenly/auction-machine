@@ -1,0 +1,39 @@
+{% extends "base/section.twig" %}
+
+{% block app_css %}
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block sectionBody %}
+
+<div class="row">
+    <div class="medium-centered medium-12 large-10 columns">
+
+        {# errors #}
+        {% if error|length %}
+        <div data-alert class="alert-box alert">{{ error|raw }}</div>
+        {% endif %}
+
+        <div class="spacer2"></div>
+
+        <h3>Auction Not Ready</h3>
+
+
+        <p>
+            This auction is not available at this time.  Please try again later.
+        </p>
+
+
+    </div>
+</div>
+
+
+
+
+{% endblock %}
+
+
+{% block app_js %}
+{{ parent() }}
+
+{% endblock %}

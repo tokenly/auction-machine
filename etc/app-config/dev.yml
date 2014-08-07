@@ -1,0 +1,12 @@
+__extends: shared.yml
+
+env                 : dev
+app.debug           : true
+log.debug           : true
+payouts.debug       : false
+
+# insecure - just for testing
+bitcoin.masterKey   : "xprv9s21ZrQH143K3QEka9WE2X9bRhtpWfCGbfD8LLw3PBjoN5bCFNz8bBnGhfaAZqgcoADdr4Jmc2fFxwstmZYV6d8Jeg9GQMgBR6nDY34yfWW"
+
+# just for testing
+xcp.platformAddress : "1H42mKvwutzE4DAip57tkAc9KEKMGBD2bB"

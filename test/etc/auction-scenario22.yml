@@ -1,0 +1,89 @@
+#receive SPONSOR in chunks
+
+auction:
+  id                    : 101
+  name                  : "Auction One"
+  slug                  : "auction-one"
+  description           : "Best auction ever"
+  confirmationsRequired : 3
+  create                : 2014-07-31
+  startDate             : 2014-08-01 00:00:00
+  endDate               : 2014-08-05 00:00:00
+  minStartingBid        : 1000
+  bidTokenType          : "LTBCOIN"
+  minBidIncrement       : 1000
+  bountyPercent         : 0.001
+
+  bidTokenFeeRequired   : 1000
+  btcFeeRequired        : 0.05
+
+  auctionAddress        : "1AUCTION01"
+  sellerAddress         : "1SELLER"
+  platformAddress       : "1PLATFORM"
+
+  prizeTokensRequired:
+    - token: SPONSOR
+      amount: 1
+
+
+transactions:
+  -
+    auctionId      : 101
+    transactionId  : 5001
+    blockId        : 6001
+
+    classification : incoming
+
+    source         : 1OWNER01
+    destination    : 1AUCTION01
+    asset          : SPONSOR
+    quantity       : 0.5
+    status         : valid
+    tx_hash        : HASH01________________________________
+    timestamp      : 2014-08-04 00:00:00
+  -
+    auctionId      : 101
+    transactionId  : 5001
+    blockId        : 6001
+
+    classification : incoming
+
+    source         : 1OWNER01
+    destination    : 1AUCTION01
+    asset          : SPONSOR
+    quantity       : 0.5
+    status         : valid
+    tx_hash        : HASH01________________________________
+    timestamp      : 2014-08-04 00:00:00
+
+  ########################################################################
+  # source         : 1BUYER01
+
+
+
+meta:
+  now: 2014-08-06 00:00:00
+  blockHeight: 6020
+
+expectedState:
+    btcFeeSatisfied      : false
+    btcFeeApplied        : 0
+    bidTokenFeeSatisfied : false
+    bidTokenFeeApplied   : 0
+    prizeTokensSatisfied : true
+    prizeTokensApplied   :
+      SPONSOR: 1
+    active               : false
+    timePhase            : ended
+    bounty               : 0
+    accounts             : []
+    bids                 : []
+    logs:
+      - "Received 0.5 SPONSOR prize token"
+      - "Applied 0.5 SPONSOR to requirement of 1"
+      - "Still need to receive 0.5 SPONSOR"
+      - "Received 0.5 SPONSOR prize token"
+      - "Applied 0.5 SPONSOR to requirement of 1"
+      - "Sufficient amount of SPONSOR was received"
+      - "All prize tokens received"
+    payouts: []

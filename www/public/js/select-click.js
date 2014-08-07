@@ -1,0 +1,1 @@
+(function(){!function($){var e;return e=function(e,t){var n,c,a;n=t.document,t.getSelection&&n.createRange?(a=t.getSelection(),c=n.createRange(),c.selectNodeContents(e),a.removeAllRanges(),a.addRange(c)):n.body.createTextRange&&(c=n.body.createTextRange(),c.moveToElementText(e),c.select())},$("*[data-select-click]").on("click",function(t){e(this,window)})}(jQuery)}).call(this);

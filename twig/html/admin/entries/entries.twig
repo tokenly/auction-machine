@@ -1,0 +1,81 @@
+{% extends "admin/base/admin.twig" %}
+
+{% block sectionBody %}
+
+<div class="row">
+    <div class="medium-centered columns">
+        <h3 class="text-center">{{ title }}</h3>
+
+        <div class="filterForm">
+            <div class="row">
+                <div class="small-centered small-12 columns columns">
+                    <form>
+                        <div class="row">
+                            {% for field in form.fields %}
+                            <div class="medium-{{field.size}} columns">
+                                {% if field.type == 'text' %}
+                                <label for="{{field.name}}">{{field.label}}</label>
+                                <input id="{{field.name}}" type="text" name="{{field.name}}"{% if field.placeholder is defined %} placeholder="{{field.placeholder}}"{% endif %} value="{{form_data[field.name]}}" />
+                                {% endif %}
+                                {% if field.type == 'select' %}
+                                {# SELECT #}
+                                {% endif %}
+                                {% if field.type == 'spacer' %}
+                                &nbsp;
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                            <div class="medium-1 columns">
+                                <label for="">&nbsp;</label>
+                                <button type="submit" class="tiny">Go</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="small-centered  columns">
+                <div class="entries">
+                    {% for entry in entries %}
+                    <div class="row entry">
+                        <div data-role="entry-container" class="small-centered small-12 columns">
+                            <div data-role="title">
+                                <span style="font-weight: bold;"><a href="#toggle" data-role="toggle-link">{{entry.title}}</a></span>
+                                <span style="font-weight: bold;" class="right">{{entry.subtitle}}</span>
+                                {% if entry.link is defined %}
+                                <span style="padding-right: 12px;" class="right">{{entry.link|raw}}</span>
+                                {% endif %}
+                            </div>
+                            <div data-role="details" data-show-state="hidden" style="display:none;">
+                                <pre style="word-wrap: break-word;">{% spaceless %}
+                                    {{entry.data|json_encode(192)}}
+                                    {% endspaceless %}
+                                </pre>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+
+
+
+
+
+{% endblock %}
+
+
+{% block app_js %}
+{{ parent() }}
+<script src="/public/js/admin-json-entries.js"></script>
+{% endblock %}

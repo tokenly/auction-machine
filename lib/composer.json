@@ -1,0 +1,57 @@
+{
+    "require": {
+        "silex/silex": "~1",
+        "monolog/monolog": "~1",
+        "symfony/yaml": "~2",
+        "symfony/twig-bridge": "~2",
+        "utipd/xcpd-client": "dev-master",
+        "utipd/config": "dev-master",
+        "utipd/mysqlmodel": "dev-master",
+        "utipd/form": "dev-master",
+        "utipd/counterparty-follower": "dev-master",
+        "utipd/native-follower": "dev-master",
+        "utipd/simple-daemon": "dev-master",
+        "respect/validation": "~0",
+        "deweller/cliopts": "~1",
+        "linusu/bitcoin-address-validator": "~0",
+        "nbobtc/bitcoind-php": "dev-master",
+        "predis/predis": "~1",
+        "bitwasp/bitcoin-lib": "dev-master",
+        "erusev/parsedown": "~1"
+    },
+
+    "autoload": {
+        "psr-0": {
+            "": "local"
+        }
+    },
+
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/LinusU/php-bitcoin-address-validator"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/deweller/bitcoind-php"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/UTipdMe/Config"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/UTipdMe/HmacAuth"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/UTipdMe/simple-daemon"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/UTipdMe/form"
+        }
+    ]
+
+
+}

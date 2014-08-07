@@ -1,0 +1,7 @@
+.templater
+.mute_trace_default
+config.codekit
+www/public/vendor
+lib/vendor/*
+var/cache/app-config/*.php
+var/log/*

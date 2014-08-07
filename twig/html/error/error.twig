@@ -1,0 +1,24 @@
+{% extends "base/section.twig" %}
+{% block sectionBody %}
+
+
+<div class="row">
+    <div class="medium-centered medium-8 large-6 columns">
+
+        <h2>Oh Noes!</h2>
+
+        {# errors #}
+        {% if error|length %}
+        <div data-alert class="alert-box alert">{{ error|raw }}</div>
+        {% endif %}
+
+        <p>We encountered an error building this page for you.  Please try again.</p>
+
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+

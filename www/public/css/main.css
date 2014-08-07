@@ -1,0 +1,263 @@
+.spacer1 {
+  height: 14px;
+}
+.spacer2 {
+  height: 28px;
+}
+.spacer3 {
+  height: 42px;
+}
+.spacer4 {
+  height: 56px;
+}
+.spacer5 {
+  height: 70px;
+}
+.spacer6 {
+  height: 84px;
+}
+.values {
+  margin-top: 5px;
+}
+.values .note {
+  margin-left: 4px;
+  font-size: 0.7rem;
+  opacity: 0.92;
+}
+div.valueDisplay {
+  padding-top: 4px;
+  padding-left: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
+}
+div.valueDisplay label {
+  font-size: 0.8rem;
+  color: #757575;
+}
+div.valueDisplay .value {
+  margin-top: 1px;
+  margin-bottom: 1px;
+  font-size: 0.9rem;
+}
+div.valueDisplay:first-child {
+  border-top: 1px solid #eee;
+}
+div.valueDisplay:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+.smallLink {
+  font-size: 0.8rem;
+}
+.url-link {
+  word-wrap: break-word;
+}
+.linkDisplay {
+  display: block;
+}
+.add-another {
+  font-size: 0.8rem;
+}
+div.auction-details .title {
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+div.auction-details .section {
+  margin-bottom: 18px;
+  font-weight: 300;
+}
+div.auction-details .prize-section .prize {
+  margin-bottom: 2px;
+}
+div.auction-details .dates-section .date {
+  margin-bottom: 4px;
+}
+div.auction-details .description-section .description {
+  background-color: #f6f6f6;
+  padding: 12px 16px;
+}
+.status-badge.active {
+  color: #175A17;
+}
+.status-badge.prebid {
+  color: #6B612B;
+}
+.status-badge.ended {
+  color: #8B1111;
+}
+.yes {
+  color: #175A17;
+  font-weight: 500;
+}
+.no {
+  color: #8B1111;
+  font-weight: 500;
+}
+.date {
+  font-size: 0.9rem;
+}
+.date .tz {
+  font-size: 0.6rem;
+  opacity: 0.92;
+}
+ul.ordered-bids {
+  margin: 0;
+  position: relative;
+  line-height: 1rem;
+}
+ul.ordered-bids li {
+  list-style: none;
+  display: block;
+}
+.bid {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  border: 1px solid #e9e9e9;
+  border-radius: 3px;
+  background-color: #f1f9fb;
+  color: #404040;
+}
+.bid div {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  margin-left: 43px;
+}
+.bid .address {
+  font-size: 0.8rem;
+}
+.bid i.fa {
+  padding-left: 4px;
+  padding-top: 4px;
+  font-size: 2.2rem;
+}
+.bid .badge {
+  background-color: rgba(92, 92, 92, 0.92);
+  margin-top: 2px;
+  color: #f6f6f6;
+  padding: 4px 8px;
+  font-size: 0.70rem;
+  border-radius: 2px;
+}
+.bid .amount .prebid,
+.bid .amount .late {
+  font-size: 0.7rem;
+  letter-spacing: 0.02rem;
+  margin-left: 12px;
+  font-weight: 300;
+}
+.winning {
+  background-color: #3299bb;
+  color: white;
+}
+.bid-instructions {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  border: 1px solid #e4e4e4;
+  background-color: #e9e9e9;
+  color: #555;
+}
+.bid-instructions i.fa {
+  padding-left: 4px;
+  font-size: 2.6rem;
+  margin-top: 6px;
+}
+.bid-instructions div {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  margin-left: 43px;
+  font-size: 0.9rem;
+}
+.bid-instructions .address {
+  margin-top: 8px;
+  font-size: 1rem;
+}
+.bid-instructions .bounty-explanation {
+  margin-top: 8px;
+  font-size: 0.9rem;
+}
+.bid-instructions .amount-value {
+  font-weight: 500;
+}
+.bid-instructions .token-type {
+  font-weight: 500;
+}
+.btc-address {
+  padding: 2px 4px;
+  border: 1px solid rgba(0, 0, 0, 0.02);
+  background-color: rgba(0, 0, 0, 0.06);
+  font-weight: 300;
+}
+.addressPlain {
+  background-color: inherit;
+  border: none;
+  padding: inherit;
+}
+.payout-transactions-list {
+  font-size: 0.8rem;
+}
+.payout-transactions-list .receipt {
+  padding: 6px 8px;
+  border-bottom: 1px solid #eee;
+}
+.payout-transactions-list .transaction-link {
+  margin-top: 2px;
+  font-size: 0.7rem;
+}
+.payout-transactions-list .receipt:first-child {
+  border-top: 1px solid #eee;
+}
+.payout-transactions-list .receipt:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+.addressSmall {
+  font-weight: 300;
+  font-size: 0.65rem;
+}
+header {
+  background-color: #0A323F;
+  margin-bottom: 24px;
+}
+header h1 {
+  padding: 8px 24px;
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 300;
+  color: white;
+}
+footer {
+  background-color: #51717C;
+  bottom: 0px;
+  position: relative;
+  width: 100%;
+  margin-top: 24px;
+}
+footer div.contents {
+  margin: 0;
+  font-weight: 300;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+footer div.contents a {
+  color: white;
+  text-decoration: underline;
+}
+footer div.contents ul {
+  margin: 0;
+  padding: 12px 24px;
+  font-size: 0.8rem;
+}
+div.mainBody {
+  min-height: 480px;
+}
+.filterForm {
+  padding-bottom: 12px;
+  border-bottom: 1px solid #EAEAEA;
+  margin-bottom: 12px;
+}

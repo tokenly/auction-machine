@@ -1,0 +1,195 @@
+{% extends "base/section.twig" %}
+
+{% block app_css %}
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block sectionBody %}
+
+{# variables #}
+{% set state = auction.state %}
+{% set bids = state.bids %}
+{% set accounts = state.accounts %}
+{% set bounty = state.bounty %}
+{% if bids %}
+{% set nextMinBid = bids[0].amount + auction.minBidIncrement %}
+{% else %}
+{% set nextMinBid = auction.minStartingBid %}
+{% endif %}
+{% set nextPayment = nextMinBid + bounty %}
+
+
+<div class="row">
+    <div class="medium-centered medium-12 large-10 columns">
+
+        {# errors #}
+        {% if error|length %}
+        <div data-alert class="alert-box alert">{{ error|raw }}</div>
+        {% endif %}
+
+        <div class="header">
+            <h1>{{auction.name}}</h1>
+        </div>
+
+        <div class="spacer2"></div>
+
+        <h3>Auction Details</h3>
+
+        <div class="auction-details">
+            <div class="row">
+                <div class="medium-5 columns medium-text-left details">
+                    <div class="address-section section">
+                        <div class="title">Auction Address</div>
+                        <div class="address"><span class="btc-address addressPlain" data-select-click>{{auction.auctionAddress}}</span></div>
+                    </div>
+
+                    <div class="prize-section section">
+                        <div class="title">Winning Bidder Receives</div>
+                        <div class="prize-list">
+                            {% for prize in auction.prizeTokensRequired %}
+                            <div class="prize"><span class="qty">{{prize.amount|to_currency}}</span> <span class="token">{{prize.token}}</span></div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+
+                    <div class="status-section section">
+                        <div class="title">Status</div>
+                        <span data-auction-status="prebid" class="status-badge prebid" style="display: {{ (state.timePhase == 'prebid' or (state.timePhase == 'live' and not state.active)) ? 'inline' : 'none' }};">
+                            <i class="fa fa-exclamation"></i> waiting
+                        </span>
+                        <span data-auction-status="live" class="status-badge active" style="display: {{ (state.timePhase == 'live' and state.active) ? 'inline' : 'none' }};">
+                            <i class="fa fa-bolt"></i> active
+                        </span>                            
+                        <span data-auction-status="ended" class="status-badge ended" style="display: {{ state.timePhase == 'ended' ? 'inline' : 'none' }};">
+                            <i class="fa fa-gavel"></i> ended
+                        </span>
+                    </div>
+
+                    <div class="dates-section section">
+                        <div class="title">Dates</div>
+                        <div class="date">Starts on <span data-with-timezone data-date-timestamp="{{auction.startDate}}">{{auction.startDate|date("m.d.Y g:i a T")}}</span></div>
+                        <div class="date">Ends on <span data-with-timezone data-date-timestamp="{{auction.endDate}}">{{auction.endDate|date("m.d.Y g:i a T")}}</span></div>
+                    </div>
+
+                    <div class="block-section section">
+                        <div class="title">Last Action at Block</div>
+                        <div class="block" data-state-field="blockId">{{state.blockId}}</div>
+                    </div>
+
+                    <div class="block-section section">
+                        <div class="title">Last Block Seen</div>
+                        <div class="block" data-meta-field="lastBlockSeen">{{meta.lastBlockSeen}}</div>
+                    </div>
+
+                </div>
+                <div class="medium-7 columns description">
+                    <div class="description-section section">
+                        <div class="title">About this Auction</div>
+                        <div class="description">
+                            {{auction.descriptionHTML|raw}}
+                        </div>
+                    </div>
+                    <div class="username-section section">
+                        <div class="title">Auction Owner</div>
+                        <div>
+                            {{auction.username ? auction.username : 'no one'}}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="spacer2"></div>
+
+
+        <div class="row">
+            <div class="medium-8 columns">
+
+                <div class="bidList">
+                    <div class="spacer1"></div>
+                    <h3>Current Bids</h3>
+                    <div class="spacer1"></div>
+
+                    {% include 'includes/auction/live-bids.twig' with {bids: state.bidsAndAccounts} only %}
+
+                    <div class="spacer1"></div>
+                </div>
+
+
+
+                <div class="spacer2"></div>
+
+                <h3>How To Bid</h3>
+
+                <div class="bid-instructions">
+                    <i class="fa fa-question fa-2x left"></i>
+
+
+                    {% if state.timePhase == 'ended' %}
+                    <div class="amount">This Auction has ended.  Bids are no longer accepted at this address.</div>
+                    {% else %}
+                    <div class="amount">Send a total of at least <span data-next-payment class="amount-value">{{nextPayment|to_currency}}</span> <span class="token-type">{{auction.bidTokenType}}</span> to
+                    </div>
+                    <div class="address"><span class="btc-address" data-select-click>{{auction.auctionAddress}}</span></div>
+                    <div class="bounty-explanation">
+                        to outbit the leader.
+                    </div>
+                    <div class="bounty-explanation">
+                        This is a bid of <span data-next-min-bid>{{nextMinBid|to_currency}}</span> plus a bounty of <span data-bounty>{{bounty|to_currency}} which will be paid to the current leader.</span>
+                    </div>
+                    <div class="bounty-explanation">
+                        All bids except for the winner will be returned at the end of the auction.
+                    </div>
+                    {% endif %}
+
+                </div>
+
+
+                <div class="spacer2"></div>
+
+                <div id="PayoutTransactions" style="display: {{ auction.payoutReceipts ? 'block' : 'none' }};">
+                    <h3>Sent Transactions</h3>
+
+                    <div class="payout-transactions-list">
+                        {% for receipt in auction.payoutReceipts %}
+                        <div class="receipt" data-receipt>
+                            Sent 
+                            <span data-receipt-field="amountSent" data-currency>{{ receipt.amountSent is defined ? receipt.amountSent|to_currency : receipt.payout.amount|to_currency }}</span>
+                            <span <span data-payout-field="token">{{ receipt.payout.token }}</span>
+                            to 
+                            <span class="address addressSmall" data-payout-field="address">{{ receipt.payout.address }}</span>.  
+                            <span class="transaction-link right"><a href="https://blockchain.info/tx/{{receipt.transactionId}}" target="_blank" data-receipt-field="transactionLink">View Transaction <i class="fa fa-external-link"></i></a></span>
+                        </div>
+
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+
+
+{% endblock %}
+
+
+{% block app_js %}
+{{ parent() }}
+<script src="/public/vendor/momentjs/moment.js"></script>
+<script src="/public/vendor/numeral/min/numeral.min.js"></script>
+<script src="/public/vendor/tinysort/dist/jquery.tinysort.min.js"></script>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script src="/public/js/timezone.js"></script>
+<script src="/public/js/select-click.js"></script>
+<script src="/public/js/auction-updates.js"></script>
+<script>window.AuctionSocket.connect('{{auction.slug}}')</script>
+
+{% endblock %}

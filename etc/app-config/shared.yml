@@ -1,0 +1,74 @@
+
+app.debug               : false
+log.debug               : true
+payouts.debug           : false
+
+mysqldb.prefix          : ltb_auctioneer
+# mysql.connection      : "mysql:host=localhost;port=3306"
+mysql.host              : "localhost"
+mysql.port              : "3306"
+mysql.username          : "root"
+mysql.password          : ""
+
+# xcpd.connectionString : "http://localhost:4000"
+xcpd.scheme             : "http"
+xcpd.host               : "localhost"
+xcpd.port               : "4000"
+xcpd.rpcUser            : "rpcuser"
+xcpd.rpcPassword        : "mypassword"
+
+native.scheme           : "http"
+native.host             : "localhost"
+native.port             : "8332"
+native.rpcUser          : "rpcuser"
+native.rpcPassword      : "mypassword"
+
+redis.host              : "localhost"
+redis.port              : "6379"
+
+bitcoin.masterKey       : ""
+
+xcp.platformAddress       : "1H42mKvwutzE4DAip57tkAc9KEKMGBD2bB"
+
+xcp.payout:
+    fee_per_kb               : 0.00005
+    multisig_dust_size       : 0.00004
+    allow_unconfirmed_inputs : true
+
+auction.defaults:
+    confirmationsRequired : 3
+    minStartingBid        : 1000
+    minBidIncrement       : 1000
+    bountyPercent         : 0.001
+    btcFeeRequired        : 0.005
+    bidTokenFeeRequired   : 1000
+
+
+################################################################# 
+################################################################# 
+
+allowedEnvironmentOverrides:
+    XCPD_RPC_HOST            : xcpd.host
+    XCPD_RPC_PORT            : xcpd.port
+    XCPD_RPC_USER            : xcpd.rpcUser
+    XCPD_RPC_PASSWORD        : xcpd.rpcPassword
+
+    NATIVE_RPC_HOST          : native.host
+    NATIVE_RPC_PORT          : native.port
+    NATIVE_RPC_USER          : native.rpcUser
+    NATIVE_RPC_PASSWORD      : native.rpcPassword
+
+    MYSQL_USERNAME           : mysql.username
+    MYSQL_PASSWORD           : mysql.password
+    MYSQL_PORT_3306_TCP_PORT : mysql.port
+    MYSQL_PORT_3306_TCP_ADDR : mysql.host
+
+    REDIS_PORT_3306_TCP_PORT : redis.port
+    REDIS_PORT_3306_TCP_ADDR : redis.host
+
+    BITCOIN_MASTER_KEY       : bitcoin.masterKey
+
+    XCP_PLATFORM_ADDRESS     : xcp.platformAddress
+
+    APP_DEBUG                : app.debug
+

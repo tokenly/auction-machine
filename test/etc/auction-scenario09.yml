@@ -1,0 +1,202 @@
+  # ########################################################################
+  # setup
+  # ########################################################################
+auction:
+  id                    : 101
+  name                  : "Auction One"
+  slug                  : "auction-one"
+  description           : "Best auction ever"
+  confirmationsRequired : 3
+  create                : 2014-07-31
+  startDate             : 2014-08-01 00:00:00
+  endDate               : 2014-08-05 00:00:00
+  minStartingBid        : 1000
+  bidTokenType          : "LTBCOIN"
+  minBidIncrement       : 1000
+  bountyPercent         : 0.001
+
+  bidTokenFeeRequired   : 1000
+  btcFeeRequired        : 0.05
+
+  auctionAddress        : "1AUCTION01"
+  sellerAddress         : "1SELLER"
+  platformAddress       : "1PLATFORM"
+
+  prizeTokensRequired:
+    - token: SPONSOR
+      amount: 1
+
+
+transactions:
+  -
+    auctionId      : 101
+    transactionId  : 5001
+    blockId        : 6001
+
+    classification : incoming
+
+    source         : 1OWNER01
+    destination    : 1AUCTION01
+    asset          : LTBCOIN
+    quantity       : 1000
+    status         : valid
+    tx_hash        : HASH01________________________________
+    timestamp      : 2014-07-31
+  -
+    auctionId      : 101
+    transactionId  : 1ffd99a9e55a771b8cc077c465fb7311f68346c0981fb20477377401f5e686fd
+    blockId        : 6002
+
+    classification : incoming
+
+    source         : 1OWNER01
+    destination    : 1AUCTION01
+    asset          : BTC
+    quantity       : 0.05
+    status         : valid
+    tx_hash        : HASH02________________________________
+    timestamp      : 2014-07-31
+  -
+    auctionId      : 101
+    transactionId  : TXBLAH
+    blockId        : 6002
+
+    classification : incoming
+
+    source         : 1OWNER01
+    destination    : 1AUCTION01
+    asset          : SPONSOR
+    quantity       : 1
+    status         : valid
+    tx_hash        : HASH02________________________________
+    timestamp      : 2014-07-31
+
+  # ########################################################################
+
+
+  # ########################################################################
+  # Bid One
+  # ########################################################################
+  -
+    auctionId      : 101
+    transactionId  : HASH0003________________________________________________________
+    blockId        : 6004
+
+    classification : incoming
+
+    source         : 1BUYER01
+    destination    : 1AUCTION01
+    asset          : LTBCOIN
+    quantity       : 1000
+    status         : valid
+    tx_hash        : HASH02________________________________
+    timestamp      : 2014-08-04 00:00:00
+
+  # ########################################################################
+
+  # ########################################################################
+  # Bid Two
+  # ########################################################################
+  -
+    auctionId      : 101
+    transactionId  : HASH0004________________________________________________________
+    blockId        : 6005
+
+    classification : incoming
+
+    source         : 1BUYER02
+    destination    : 1AUCTION01
+    asset          : LTBCOIN
+    quantity       : 2100
+    status         : valid
+    tx_hash        : HASH02________________________________
+    timestamp      : 2014-08-04 00:00:00
+
+  # ########################################################################
+
+  # ########################################################################
+  # Bid Three
+  # ########################################################################
+  -
+    auctionId      : 101
+    transactionId  : HASH0004________________________________________________________
+    blockId        : 6005
+
+    classification : incoming
+
+    source         : 1BUYER01
+    destination    : 1AUCTION01
+    asset          : LTBCOIN
+    quantity       : 2100
+    status         : valid
+    tx_hash        : HASH02________________________________
+    timestamp      : 2014-08-04 00:00:00
+
+  # ########################################################################
+
+
+
+meta:
+  now: 2014-08-06 00:00:00
+  blockHeight: 6005
+
+expectedState:
+    btcFeeSatisfied      : true
+    btcFeeApplied        : 0.05
+    bidTokenFeeSatisfied : true
+    bidTokenFeeApplied   : 1000
+    prizeTokensSatisfied       : true
+    prizeTokensApplied:
+      SPONSOR: 1
+    active               : true
+    timePhase            : ended
+    bounty               : 3
+    accounts:
+      1BUYER01:
+        address: 1BUYER01
+        balances:
+          LTBCOIN:
+            live: 3099
+      1BUYER02:
+        address: 1BUYER02
+        balances:
+          LTBCOIN:
+            live: 2101
+    bids:
+      - address: 1BUYER01
+        amount: 3099
+        token: LTBCOIN
+        status: active
+        rank: 0
+      - address: 1BUYER02
+        amount: 2101
+        token: LTBCOIN
+        status: outbid
+        rank: 1
+    payouts:
+      # these were awarded
+      - address: 1BUYER01
+        token: SPONSOR
+        amount: 1
+        authorized: false
+        sweep: false
+      - address: 1BUYER01
+        token: LTBCOIN
+        amount: 1000
+        authorized: false
+        sweep: false
+      - address: 1BUYER02
+        token: LTBCOIN
+        amount: 2101
+        authorized: false
+        sweep: false
+      - address: 1SELLER
+        token: LTBCOIN
+        amount: 3099
+        authorized: false
+        sweep: false
+      - address: 1PLATFORM
+        token: BTC
+        amount: 0.05
+        sweep: true
+        authorized: false

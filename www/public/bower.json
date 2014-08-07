@@ -1,0 +1,27 @@
+{
+  "name": "public",
+  "version": "0.0.0",
+  "authors": [
+    "Devon Weller <dweller@devonweller.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "vendor",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "datetimepicker": "~2.3.2",
+    "foundation": "~5.3.0",
+    "modernizr": "~2.8.3",
+    "momentjs": "~2.7.0",
+    "moment-timezone": "~0.2.0",
+    "moment": "~2.8.1",
+    "socket.io": "~1.0.6",
+    "numeral": "~1.5.3",
+    "tinysort": "*"
+  }
+}

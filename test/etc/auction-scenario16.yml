@@ -1,0 +1,287 @@
+# a complex scenario
+
+  # ########################################################################
+  # setup
+  # ########################################################################
+auction:
+  id                    : 101
+  name                  : "Auction One"
+  slug                  : "auction-one"
+  description           : "Best auction ever"
+  confirmationsRequired : 3
+  create                : 2014-07-31
+  startDate             : 2014-08-01 00:00:00
+  endDate               : 2014-08-05 00:00:00
+  minStartingBid        : 1000
+  bidTokenType          : "LTBCOIN"
+  minBidIncrement       : 1000
+  bountyPercent         : 0.001
+
+  bidTokenFeeRequired   : 1000
+  btcFeeRequired        : 0.05
+
+  auctionAddress        : "1AUCTION01"
+  sellerAddress         : "1SELLER"
+  platformAddress       : "1PLATFORM"
+
+  prizeTokensRequired:
+    - token: SPONSOR
+      amount: 1
+
+
+transactions:
+  -
+    auctionId      : 101
+    transactionId  : 5001
+    blockId        : 6001
+
+    classification : incoming
+
+    source         : 1OWNER01
+    destination    : 1AUCTION01
+    asset          : LTBCOIN
+    quantity       : 1000
+    status         : valid
+    tx_hash        : HASH01
+    timestamp      : 2014-07-31
+  -
+    auctionId      : 101
+    transactionId  : 1ffd99a9e55a771b8cc077c465fb7311f68346c0981fb20477377401f5e686fd
+    blockId        : 6002
+
+    classification : incoming
+
+    source         : 1OWNER01
+    destination    : 1AUCTION01
+    asset          : BTC
+    quantity       : 0.05
+    status         : valid
+    tx_hash        : HASH02
+    timestamp      : 2014-07-31
+  -
+    auctionId      : 101
+    transactionId  : TXBLAH
+    blockId        : 6002
+
+    classification : incoming
+
+    source         : 1OWNER01
+    destination    : 1AUCTION01
+    asset          : SPONSOR
+    quantity       : 1
+    status         : valid
+    tx_hash        : HASH02________________________________
+    timestamp      : 2014-07-31
+
+  # ########################################################################
+
+
+  # ########################################################################
+  -
+    auctionId      : 101
+    transactionId  : HASH0003
+    blockId        : 6004
+
+    classification : incoming
+
+    source         : 1ALICE
+    destination    : 1AUCTION01
+    asset          : LTBCOIN
+    quantity       : 3000
+    status         : valid
+    tx_hash        : HASH02
+    timestamp      : 2014-08-01 01:00:00
+
+  # ########################################################################
+  -
+    auctionId      : 101
+    transactionId  : HASH0004
+    blockId        : 6005
+
+    classification : incoming
+
+    source         : 1BOB
+    destination    : 1AUCTION01
+    asset          : LTBCOIN
+    quantity       : 4500
+    status         : valid
+    tx_hash        : HASH02
+    timestamp      : 2014-08-02 01:00:00
+
+  # ########################################################################
+
+  # ########################################################################
+  -
+    auctionId      : 101
+    transactionId  : HASH0004
+    blockId        : 6005
+
+    classification : incoming
+
+    source         : 1CHARLIE
+    destination    : 1AUCTION01
+    asset          : LTBCOIN
+    quantity       : 5700
+    status         : valid
+    tx_hash        : HASH02
+    timestamp      : 2014-08-02 01:00:00
+
+  # ########################################################################
+
+
+  # ########################################################################
+  -
+    auctionId      : 101
+    transactionId  : HASH0004
+    blockId        : 6006
+
+    classification : incoming
+
+    source         : 1BOB
+    destination    : 1AUCTION01
+    asset          : LTBCOIN
+    quantity       : 4699
+    status         : valid
+    tx_hash        : HASH02
+    timestamp      : 2014-08-02 02:00:00
+
+  # ########################################################################
+
+  # ########################################################################
+  -
+    auctionId      : 101
+    transactionId  : HASH0004
+    blockId        : 6006
+
+    classification : incoming
+
+    source         : 1CHARLIE
+    destination    : 1AUCTION01
+    asset          : LTBCOIN
+    quantity       : 4503
+    status         : valid
+    tx_hash        : HASH02
+    timestamp      : 2014-08-02 02:00:00
+
+  # ########################################################################
+
+  # ########################################################################
+  -
+    auctionId      : 101
+    transactionId  : HASH0004
+    blockId        : 6006
+
+    classification : incoming
+
+    source         : 1DALE
+    destination    : 1AUCTION01
+    asset          : LTBCOIN
+    quantity       : 11209
+    status         : valid
+    tx_hash        : HASH02
+    timestamp      : 2014-08-02 03:00:00
+
+  # ########################################################################
+
+
+
+meta:
+  now: 2014-08-06 00:00:00
+  blockHeight: 314200
+
+expectedState:
+    btcFeeSatisfied      : true
+    btcFeeApplied        : 0.05
+    bidTokenFeeSatisfied : true
+    bidTokenFeeApplied   : 1000
+    prizeTokensSatisfied       : true
+    prizeTokensApplied:
+      SPONSOR: 1
+    active               : true
+    timePhase            : ended
+    bounty               : 11
+    accounts:
+      1ALICE:
+        address: 1ALICE
+        balances:
+          LTBCOIN:
+            live: 3003
+      1BOB:
+        address: 1BOB
+        balances:
+          LTBCOIN:
+            live: 9204
+      1CHARLIE:
+        address: 1CHARLIE
+        balances:
+          LTBCOIN:
+            live: 10205
+      1DALE:
+        address: 1DALE
+        balances:
+          LTBCOIN:
+            live: 11199
+    bids:
+      - address: 1DALE
+        amount: 11199
+        token: LTBCOIN
+        status: active
+        rank: 0
+      - address: 1CHARLIE
+        amount: 10205
+        token: LTBCOIN
+        status: outbid
+        rank: 1
+      - address: 1BOB
+        amount: 9204
+        token: LTBCOIN
+        status: outbid
+        rank: 2
+      - address: 1ALICE
+        amount: 3003
+        token: LTBCOIN
+        status: outbid
+        rank: 3
+    payouts:
+      # these were awarded
+      - address: 1DALE
+        token: SPONSOR
+        amount: 1
+        authorized: true
+        sweep: false
+
+      - address: 1DALE
+        token: LTBCOIN
+        amount: 1000
+        authorized: true
+        sweep: false
+
+      - address: 1CHARLIE
+        token: LTBCOIN
+        amount: 10205
+        authorized: true
+        sweep: false
+
+      - address: 1BOB
+        token: LTBCOIN
+        amount: 9204
+        authorized: true
+        sweep: false
+
+      - address: 1ALICE
+        token: LTBCOIN
+        amount: 3003
+        authorized: true
+        sweep: false
+
+      - address: 1SELLER
+        token: LTBCOIN
+        amount: 11199
+        authorized: true
+        sweep: false
+
+      - address: 1PLATFORM
+        token: BTC
+        amount: 0.05
+        sweep: true
+        authorized: true

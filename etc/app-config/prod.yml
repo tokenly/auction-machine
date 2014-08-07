@@ -1,0 +1,7 @@
+__extends: shared.yml
+
+env: prod
+app.debug: false
+
+xcp.platformAddress : "YOU_WILL_NEED_TO_SET_THIS"
+bitcoin.masterKey   : "YOU_WILL_NEED_TO_SET_THIS"

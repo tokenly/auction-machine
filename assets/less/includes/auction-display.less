@@ -1,0 +1,240 @@
+div.auction-details {
+    .title {
+        // color: black;
+        font-weight: 400;
+        margin-bottom: 8px;
+    }
+
+    .section {
+        margin-bottom: 18px;
+        font-weight: 300;
+    }
+
+    .prize-section {
+        .prize {
+            margin-bottom: 2px;
+        }
+    }
+
+    .dates-section {
+        .date {
+            margin-bottom: 4px;
+        }
+    }
+
+    // .status-badge {
+    //     background-color: #5C5C5C;
+    //     color: #f6f6f6;
+    //     padding: 4px 8px;
+    //     font-size: 0.75rem;
+    //     border-radius: 2px;
+    // }
+
+    .description-section {
+        .description {
+            background-color: #f6f6f6;
+            padding: 12px 16px;
+        }
+    }
+}
+
+.status-badge {
+    &.active {
+        color: #175A17;
+    }
+    &.prebid {
+        color: #6B612B;
+    }
+    &.ended {
+        color: #8B1111;
+    }
+}
+
+.yes {
+    color: #175A17;
+    font-weight: 500;
+}
+.no {
+    color: #8B1111;
+    font-weight: 500;
+}
+
+
+.date {
+    font-size: 0.9rem;
+    .tz {
+        font-size: 0.6rem;
+        opacity: 0.92;
+    }
+}
+
+
+div.bidList {
+}
+
+
+
+ul.ordered-bids {
+    margin: 0;
+    position: relative;
+    line-height: 1rem;
+
+    li {
+        list-style: none;
+        display: block;
+    }
+}
+
+.bid {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 8px;
+    padding-right: 8px;
+
+    margin-top: 3px;
+    margin-bottom: 3px;
+
+    border: 1px solid @lightGray;
+    border-radius: 3px;
+
+    div {
+        margin-top: 4px;
+        margin-bottom: 4px;
+        margin-left: 43px;
+    }
+
+    .address {
+        font-size: 0.8rem;
+    }
+
+    // background-color: @lightGray;
+    background-color: lighten(@blue, 50%);
+    color: #404040;
+
+    i.fa {
+        padding-left: 4px;
+        padding-top: 4px;
+        font-size: 2.2rem;
+    }
+
+    .badge {
+        // background-color: #5C5C5C;
+        background-color: rgba(92,92,92,0.92);
+
+        margin-top: 2px;
+
+        color: #f6f6f6;
+        padding: 4px 8px;
+        font-size: 0.70rem;
+        border-radius: 2px;
+    }
+
+    .amount {
+        .prebid, .late {
+            font-size: 0.7rem;
+            letter-spacing: 0.02rem;
+            margin-left: 12px;
+            font-weight: 300;
+            // opacity: 0.9;
+        }
+    }
+
+}
+
+.winning {
+    background-color: @blue;
+    color: white;
+
+}
+.bid-instructions {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 8px;
+    padding-right: 8px;
+
+    margin-top: 3px;
+    margin-bottom: 3px;
+
+    border: 1px solid darken(@lightGray, 2%);
+
+    background-color: @lightGray;
+    color: #555;
+
+    i.fa {
+        padding-left: 4px;
+        font-size: 2.6rem;
+        margin-top: 6px;
+    }
+
+    div {
+        margin-top: 4px;
+        margin-bottom: 4px;
+        margin-left: 43px;
+        font-size: 0.9rem;
+    }
+
+    .address {
+        margin-top: 8px;
+        font-size: 1rem;
+    }
+
+    .bounty-explanation {
+        margin-top: 8px;
+        font-size: 0.9rem;
+    }
+
+    .amount-value {
+        font-weight: 500;
+    }
+    .token-type {
+        font-weight: 500;
+    }
+
+}
+
+// .amount-value {
+//     font-weight: 500;
+// }
+
+.btc-address {
+    padding: 2px 4px;
+    border: 1px solid rgba(0,0,0,0.02);
+    background-color: rgba(0,0,0,0.06);
+    // display: inline-block;
+    // font-size: 1.95rem;
+    font-weight: 300;
+}
+
+.addressPlain {
+    background-color: inherit;
+    border: none;
+    padding: inherit;
+
+}
+
+.payout-transactions-list {
+    font-size: 0.8rem;
+
+    .receipt {
+        padding: 6px 8px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .transaction-link {
+        margin-top: 2px;
+        font-size: 0.7rem;
+    }
+
+    .receipt:first-child {
+        border-top: 1px solid #eee;
+    }
+
+    .receipt:nth-child(odd) {
+        background-color: #f9f9f9;
+    }
+
+}
+.addressSmall {
+    font-weight: 300;
+    font-size: 0.65rem;
+}

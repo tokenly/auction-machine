@@ -1,0 +1,7 @@
+<phpunit bootstrap="./test/bootstrap.php" colors="true" backupGlobals="true">
+    <testsuites>
+        <testsuite name="uptid">
+            <directory>test/tests</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

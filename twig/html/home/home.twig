@@ -1,0 +1,33 @@
+{% extends "base/section.twig" %}
+
+{% block sectionBody %}
+
+<div class="row">
+    <div class="medium-centered medium-12 large-10 columns">
+
+
+        <div class="spacer2"></div>
+
+        <h3>Welcome</h3>
+
+
+        <p>
+            Welcome to the auctioneer site.
+        </p>
+
+        <div class="spacer2"></div>
+
+        <a href="{{url('create-auction')}}" class="button">Create a New Auction</a>
+
+    </div>
+</div>
+
+
+
+
+{% endblock %}
+
+
+{% block app_js %}
+{{ parent() }}
+{% endblock %}

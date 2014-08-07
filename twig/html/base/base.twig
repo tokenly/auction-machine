@@ -1,0 +1,40 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+        <title>{% block HTMLtitle %}LTB Auctioneer{% endblock %}</title>
+        <link rel="stylesheet" href="/public/vendor/foundation/css/foundation.css" />
+        <link rel="stylesheet" href="/public/css/main.css" />
+
+
+        {% block app_css %}
+        {% endblock %}
+
+
+        <script src="/public/vendor/modernizr/modernizr.js"></script>
+        {# <link rel="icon" type="image/png" sizes="64x64" href="/public/image/LTB Auctioneer-icon-64x64.png" /> #}
+        
+    </head>
+    <body>
+
+{% block body %}
+    {# body here #}
+{% endblock %}
+
+        {# footer scripts (at end of body) #}
+        <script src="/public/vendor/jquery/dist/jquery.min.js"></script>
+        <script src="/public/vendor/foundation/js/foundation.min.js"></script>
+
+
+{% block app_js %}
+{# init any app specific scripts here #}
+{% endblock %}
+
+{% block foundation_init %}
+        {# init foundation scripts here #}
+        <script>$(document).foundation();</script>
+{% endblock %}
+
+    </body>
+</html>

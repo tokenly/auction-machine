@@ -1,0 +1,23 @@
+
+
+
+<ul class="ordered-bids">
+    {% for bid in bids %}
+
+    <li class="bid {{loop.first ? 'winning' : ''}}" data-bid-address="{{bid.address}}" data-rank="{{bid.rank}}">
+        <span class="right badge" data-rank-badge data-leader-text="Leader">{{loop.first ? 'Leader' : '#'~loop.index }}</span>
+        <i data-rank-icon data-rank-icon-first="fa-rocket" data-rank-icon-other="fa-user" class="fa {{loop.first ? 'fa-rocket' : 'fa-user'}} fa-2x left"></i>
+        <div class="amount">
+            <span data-qty>{{bid.amount|to_currency}}</span> {{bid.token}}
+            <span class="prebid" style="display: {{bid.account.prebid > 0 ? 'inline' : 'none'}};">(<span data-amount-prebid>{{bid.account.prebid|to_currency}}</span> pre-bid)</span>
+            <span class="late" style="display: {{bid.account.late > 0 ? 'inline' : 'none'}};">(<span data-amount-late>{{bid.account.late|to_currency}}</span> late)</span>
+        </div>
+        <div class="address">{{bid.address}}</div>
+    </li>
+
+    {% endfor %}
+</ul>
+
+{% if not bids %}
+<div class="no-bids" data-no-bids>No Bids Yet</div>
+{% endif %}
