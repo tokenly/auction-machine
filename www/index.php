@@ -2,7 +2,7 @@
 
 use LTBAuctioneer\Init\Environment;
 
-define(BASE_PATH, realpath(__DIR__.'/..'));
+define('BASE_PATH', realpath(__DIR__.'/..'));
 
 require __DIR__.'/../lib/vendor/autoload.php';
 

@@ -11,7 +11,7 @@ use LTBAuctioneer\Util\DB\TestDBUpdater;
 use LTBAuctioneer\Util\Params\ParamsUtil;
 use LTBAuctioneer\Util\Twig\TwigUtil;
 
-define(BASE_PATH, realpath(__DIR__.'/../..'));
+define('BASE_PATH', realpath(__DIR__.'/../..'));
 require BASE_PATH.'/lib/vendor/autoload.php';
 
 
