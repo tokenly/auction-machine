@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `auction` (
     KEY `timePhase_endDate` (`timePhase`, `endDate`)
 ) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `archivedAuction` (
+CREATE TABLE IF NOT EXISTS `archivedauction` (
     `id`        int(11) unsigned NOT NULL AUTO_INCREMENT,
     `refId`     varbinary(41) NOT NULL DEFAULT '',
     `slug`      varchar(127) NOT NULL DEFAULT '',
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `archivedAuction` (
     KEY `timePhase_endDate` (`timePhase`, `endDate`)
 ) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `blockchainTransaction` (
+CREATE TABLE IF NOT EXISTS `blockchaintransaction` (
     `id`            int(11) unsigned NOT NULL AUTO_INCREMENT,
     `auctionId`     int(20) unsigned NOT NULL DEFAULT 0,
     `blockId`       int(20) unsigned NOT NULL DEFAULT 0,
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `blockchainTransaction` (
     UNIQUE KEY `transactionId` (`transactionId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `eventLog` (
+CREATE TABLE IF NOT EXISTS `eventlog` (
     `id`        int(11) unsigned NOT NULL AUTO_INCREMENT,
     `timestamp` int(11) unsigned NOT NULL DEFAULT 0,
     `document`  LONGTEXT NOT NULL DEFAULT '',
