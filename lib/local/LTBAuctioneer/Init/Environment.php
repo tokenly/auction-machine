@@ -21,7 +21,7 @@ class Environment
 
     public static function getEnvironment() {
         $app_env = getenv('APP_ENV');
-        if ($app_env === null) { $app_env = 'prod'; }
+        if ($app_env === null OR $app_env === false) { $app_env = 'prod'; }
         return $app_env;
     }
 
