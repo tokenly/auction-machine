@@ -52,7 +52,6 @@ class AuctionPayoutTest extends SiteTestCase
 
 
         // check payouts through xcpd and btc clients
-        PHPUnit::assertGreaterThan(0, $importprivkey_called);
         PHPUnit::assertEquals($auction['auctionAddress'], $send_from_data['from']);
         PHPUnit::assertEquals($auction['platformAddress'], $send_from_data['to']);
 

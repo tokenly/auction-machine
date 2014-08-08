@@ -24,7 +24,12 @@ class ManagersInit {
         };
 
         $app['auction.manager'] = function($app) {
-            return new \LTBAuctioneer\Managers\AuctionManager($app['directory']('Auction'), $app['token.generator'], $app['slugger'], $app['bitcoin.addressGenerator'], $app['native.client'], $app['auction.defaults']);
+            if ($app['env'] == 'test') {
+                $native_client = null;
+            } else {
+                $native_client = $app['native.client'];
+            }
+            return new \LTBAuctioneer\Managers\AuctionManager($app['directory']('Auction'), $app['token.generator'], $app['slugger'], $app['bitcoin.addressGenerator'], $native_client, $app['auction.defaults']);
         };
 
     }

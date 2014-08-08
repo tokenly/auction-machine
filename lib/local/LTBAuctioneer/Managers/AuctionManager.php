@@ -74,12 +74,12 @@ class AuctionManager
         $new_auction_vars['descriptionHTML'] = $Parsedown->text($new_auction_vars['description']);
 
         // import the private key and address into the bitcoin wallet
-        $private_key = $this->address_generator->WIFPrivateKey($new_auction_vars['keyToken']);
-        RetryController::retry(function() use ($new_auction_vars, $private_key) {
-#            Debug::trace("\$private_key=$private_key, \$new_auction_vars['auctionAddress']={$new_auction_vars['auctionAddress']}",__FILE__,__LINE__,$this);
-            $result = $this->native_client->importprivkey($private_key, $new_auction_vars['auctionAddress'], false);
-#            Debug::trace("\$result=".Debug::desc($result)."",__FILE__,__LINE__,$this);
-        });
+        if ($this->native_client) {
+            $private_key = $this->address_generator->WIFPrivateKey($new_auction_vars['keyToken']);
+            RetryController::retry(function() use ($new_auction_vars, $private_key) {
+                $result = $this->native_client->importprivkey($private_key, $new_auction_vars['auctionAddress'], false);
+            });
+        }
         
 
         $auction = $this->auction_directory->createAndSave($new_auction_vars);
