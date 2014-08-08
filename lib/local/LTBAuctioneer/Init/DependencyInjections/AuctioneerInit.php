@@ -43,7 +43,7 @@ class AuctioneerInit {
         };
 
         $app['auction.payer'] = function($app) {
-            return new \LTBAuctioneer\Auctioneer\Payer\AuctionPayer($app['auction.manager'], $app['xcpd.client'], $app['native.client'], $app['bitcoin.addressGenerator'], $app['config']['xcp.payout'], $app['config']['payouts.debug']);
+            return new \LTBAuctioneer\Auctioneer\Payer\AuctionPayer($app['auction.manager'], $app['xcpd.client'], $app['native.client'], $app['bitcoin.addressGenerator'], $app['config']['xcp.payout'], $app['config']['bitcoin.passphrase'], $app['config']['payouts.debug']);
         };
 
         $app['auction.publisher'] = function($app) {

@@ -164,7 +164,7 @@ class AuctioneerDaemonHandler
         if (!isset($this->auction_payer)) {
             $builder = $this->test_case->getMockBuilder('\LTBAuctioneer\Auctioneer\Payer\AuctionPayer');
             $builder->setMethods(['doPayout']);
-            $builder->setConstructorArgs([$this->app['auction.manager'], null, null, $this->app['bitcoin.addressGenerator'], $this->app['config']['xcp.payout'], $this->app['config']['payouts.debug']]);
+            $builder->setConstructorArgs([$this->app['auction.manager'], null, null, $this->app['bitcoin.addressGenerator'], $this->app['config']['xcp.payout'], null, $this->app['config']['payouts.debug']]);
             $payer = $builder->getMock();
 
             // doPayout()

@@ -17,12 +17,13 @@ class AuctionManager
 
     ////////////////////////////////////////////////////////////////////////
 
-    public function __construct($auction_directory, $token_generator, $slugger, $address_generator, $native_client, $auction_defaults) {
+    public function __construct($auction_directory, $token_generator, $slugger, $address_generator, $native_client, $wallet_passphrase, $auction_defaults) {
         $this->auction_directory = $auction_directory;
         $this->token_generator = $token_generator;
         $this->slugger = $slugger;
         $this->address_generator = $address_generator;
         $this->native_client = $native_client;
+        $this->wallet_passphrase = $wallet_passphrase;
         $this->auction_defaults = $auction_defaults;
     }
 
@@ -76,6 +77,12 @@ class AuctionManager
         // import the private key and address into the bitcoin wallet
         if ($this->native_client) {
             $private_key = $this->address_generator->WIFPrivateKey($new_auction_vars['keyToken']);
+
+            // unlock the wallet if needed
+            if ($this->wallet_passphrase) {
+                $result = $this->native_client->walletpassphrase($this->wallet_passphrase, 60);
+            }
+
             RetryController::retry(function() use ($new_auction_vars, $private_key) {
                 $result = $this->native_client->importprivkey($private_key, $new_auction_vars['auctionAddress'], false);
             });

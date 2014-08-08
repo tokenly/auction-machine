@@ -29,7 +29,7 @@ class ManagersInit {
             } else {
                 $native_client = $app['native.client'];
             }
-            return new \LTBAuctioneer\Managers\AuctionManager($app['directory']('Auction'), $app['token.generator'], $app['slugger'], $app['bitcoin.addressGenerator'], $native_client, $app['auction.defaults']);
+            return new \LTBAuctioneer\Managers\AuctionManager($app['directory']('Auction'), $app['token.generator'], $app['slugger'], $app['bitcoin.addressGenerator'], $native_client, $app['config']['bitcoin.passphrase'], $app['auction.defaults']);
         };
 
     }

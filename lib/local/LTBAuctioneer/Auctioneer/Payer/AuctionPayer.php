@@ -15,12 +15,13 @@ class AuctionPayer
 
     ////////////////////////////////////////////////////////////////////////
 
-    public function __construct($auction_manager, $xcpd_client, $native_client, $address_generator, $payouts_config, $payout_debug) {
+    public function __construct($auction_manager, $xcpd_client, $native_client, $address_generator, $payouts_config, $wallet_passphrase, $payout_debug) {
         $this->auction_manager = $auction_manager;
         $this->xcpd_client = $xcpd_client;
         $this->native_client = $native_client;
         $this->address_generator = $address_generator;
         $this->payouts_config = $payouts_config;
+        $this->wallet_passphrase = $wallet_passphrase;
         $this->payout_debug = $payout_debug;
     }
 
@@ -149,6 +150,11 @@ class AuctionPayer
         if (!$this->payout_debug) {
             // this is no longer necessary - the private key is imported when the auction is created
             // $result = $this->native_client->importprivkey($private_key, $auction['auctionAddress'], false);
+        }
+
+        // unlock the wallet if needed
+        if ($this->wallet_passphrase) {
+            $result = $this->native_client->walletpassphrase($this->wallet_passphrase, 60);
         }
 
         $float_balance = $this->getTotalOfUnspentOutputs($auction['auctionAddress']);
