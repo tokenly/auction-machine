@@ -133,7 +133,7 @@ class CreateAuctionController extends BaseSiteController
                 'label'     => 'Auction Start',
                 'default'   => date("m.d.Y g:00 a", time()+3600+900),
                 'validation' => v::int()->min(time() - 60,true),
-                'sanitizer' => function($v, $d) { return ($_d = \DateTime::createFromFormat('m.d.Y g:i a', $v, new \DateTimeZone($d['timezone']))) ? $_d->getTimestamp() : 0; },
+                'sanitizer' => function($v, $d) { return ($_d = \DateTime::createFromFormat('m.d.Y g:i a', $v, new \DateTimeZone($this->calulcateTimezone($d['timezone'])))) ? $_d->getTimestamp() : 0; },
                 'error'     => 'Please enter a start date between today and 30 days from now.',
             ],
             'endDate' => [
@@ -141,7 +141,7 @@ class CreateAuctionController extends BaseSiteController
                 'label'     => 'Auction End',
                 'default'   => date("m.d.Y g:00 a", time()+3600+900 + 86400*7),
                 'validation' => v::int()->min(strtotime('+1 day -1 minute'), true)->max(strtotime('+30 days'), true),
-                'sanitizer' => function($v, $d) { return ($_d = \DateTime::createFromFormat('m.d.Y g:i a', $v, new \DateTimeZone($d['timezone']))) ? $_d->getTimestamp() : 0; },
+                'sanitizer' => function($v, $d) { return ($_d = \DateTime::createFromFormat('m.d.Y g:i a', $v, new \DateTimeZone($this->calulcateTimezone($d['timezone'])))) ? $_d->getTimestamp() : 0; },
                 'error'     => 'Please enter an end date between 24 hours and 30 days from now.',
             ],
 
@@ -261,6 +261,12 @@ class CreateAuctionController extends BaseSiteController
 
         $new_auction_vars['prizeTokensRequired'] = $prize_tokens;
         return $new_auction_vars;
+    }
+
+    protected function calulcateTimezone($timezone_in) {
+        $timezone = preg_replace('/[^0-9-]/', '', $timezone_in) * 36;
+        return timezone_name_from_abbr(null, $timezone, date('I', time()));
+
     }
 
 
