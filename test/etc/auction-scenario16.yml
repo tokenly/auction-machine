@@ -70,7 +70,7 @@ transactions:
     asset          : SPONSOR
     quantity       : 1
     status         : valid
-    tx_hash        : HASH02________________________________
+    tx_hash        : HASH03
     timestamp      : 2014-07-31
 
   # ########################################################################
@@ -89,7 +89,7 @@ transactions:
     asset          : LTBCOIN
     quantity       : 3000
     status         : valid
-    tx_hash        : HASH02
+    tx_hash        : HASH04
     timestamp      : 2014-08-01 01:00:00
 
   # ########################################################################
@@ -105,7 +105,7 @@ transactions:
     asset          : LTBCOIN
     quantity       : 4500
     status         : valid
-    tx_hash        : HASH02
+    tx_hash        : HASH05
     timestamp      : 2014-08-02 01:00:00
 
   # ########################################################################
@@ -123,7 +123,7 @@ transactions:
     asset          : LTBCOIN
     quantity       : 5700
     status         : valid
-    tx_hash        : HASH02
+    tx_hash        : HASH06
     timestamp      : 2014-08-02 01:00:00
 
   # ########################################################################
@@ -142,7 +142,7 @@ transactions:
     asset          : LTBCOIN
     quantity       : 4699
     status         : valid
-    tx_hash        : HASH02
+    tx_hash        : HASH07
     timestamp      : 2014-08-02 02:00:00
 
   # ########################################################################
@@ -160,7 +160,7 @@ transactions:
     asset          : LTBCOIN
     quantity       : 4503
     status         : valid
-    tx_hash        : HASH02
+    tx_hash        : HASH08
     timestamp      : 2014-08-02 02:00:00
 
   # ########################################################################
@@ -178,7 +178,7 @@ transactions:
     asset          : LTBCOIN
     quantity       : 11209
     status         : valid
-    tx_hash        : HASH02
+    tx_hash        : HASH09
     timestamp      : 2014-08-02 03:00:00
 
   # ########################################################################

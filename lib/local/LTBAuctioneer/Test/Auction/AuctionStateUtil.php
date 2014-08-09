@@ -36,6 +36,7 @@ class AuctionStateUtil
         $xcp_tx_dir = $app['directory']('BlockchainTransaction');
         $fake_id = 100;
         foreach ($scenario_data['transactions'] as $transaction_entry) {
+            // create a unique tx has to satisfy the MySQL table unique key constraint
             $transaction = $xcp_tx_dir->createAndSave($transaction_entry);
 
             // create a faux id

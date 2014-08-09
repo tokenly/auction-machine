@@ -50,7 +50,6 @@ class AuctioneerDaemonTest extends SiteTestCase
         $sent_data = $mock_auctioneer_handler->sendMockCounterpartyTransaction($auction);
         $sent_data = $mock_auctioneer_handler->sendMockCounterpartyTransaction($auction, ['block_index' => 6001]);
 
-
         // load the tx's
         $txs = iterator_to_array($app['directory']('BlockchainTransaction')->findAll());
         PHPUnit::assertCount(2, $txs);

@@ -11,7 +11,7 @@ use Exception;
 class BlockchainTransactionDirectory extends BaseDocumentMysqlDirectory
 {
 
-    protected $column_names = ['auctionId','blockId','transactionId'];
+    protected $column_names = ['auctionId','blockId','tx_hash','isMempool','isNative',];
 
     public function findByAuctionId($auction_id, $sort=null) {
         if ($sort === null) { $sort = ['blockId' => 1, 'id' => 1]; }

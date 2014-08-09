@@ -40,7 +40,7 @@ transactions:
     asset          : LTBCOIN
     quantity       : 1000
     status         : valid
-    tx_hash        : HASH01________________________________
+    tx_hash        : HASH01
     timestamp      : 2014-07-31
   -
     auctionId      : 101
@@ -54,7 +54,7 @@ transactions:
     asset          : BTC
     quantity       : 0.05
     status         : valid
-    tx_hash        : HASH02________________________________
+    tx_hash        : HASH02
     timestamp      : 2014-07-31
   -
     auctionId      : 101
@@ -68,7 +68,7 @@ transactions:
     asset          : SPONSOR
     quantity       : 1
     status         : valid
-    tx_hash        : HASH02________________________________
+    tx_hash        : HASH03
     timestamp      : 2014-07-31
 
   # ########################################################################
@@ -89,7 +89,7 @@ transactions:
     asset          : LTBCOIN
     quantity       : 1050
     status         : valid
-    tx_hash        : HASH02________________________________
+    tx_hash        : HASH04
     timestamp      : 2014-08-04 00:00:00
 
 

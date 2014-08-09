@@ -76,11 +76,15 @@ class AuctioneerDaemon
     }
 
 
-    public function updateAuctionWithNewTransaction($send_data, $auction, $classification) {
+    public function createNewTransaction($send_data, $auction, $classification, $is_native, $is_mempool) {
+        // delete any existing transaction with this tx_hash
+        $this->blockchain_tx_directory->deleteWhere(['tx_hash' => $send_data['tx_hash']]);
+
+        // create a new transaction
         $new_transaction = $this->blockchain_tx_directory->createAndSave([
             'auctionId'      => $auction['id'],
-            'transactionId'  => $send_data['tx_index'],
-            'blockId'        => $send_data['block_index'],
+            'transactionId'  => $is_mempool ? $send_data['tx_hash'] : $send_data['tx_index'],
+            'blockId'        => $is_mempool ? 0 : $send_data['block_index'],
 
             'classification' => $classification,
 
@@ -88,14 +92,25 @@ class AuctioneerDaemon
             'destination'    => $send_data['destination'],
             'asset'          => $send_data['asset'],
             'quantity'       => $send_data['quantity'],
-            'status'         => $send_data['status'],
+            'status'         => $is_mempool ? 'mempool' : $send_data['status'],
             'tx_hash'        => $send_data['tx_hash'],
+
+            'isNative'       => $is_native,
+            'isMempool'      => $is_mempool,
 
             'timestamp'      => time(),
         ]);
 
-        // update the auction state
-        $this->updateAuction($auction, $new_transaction['blockId']);
+// {
+//     "source": "13UxmTs2Ad2CpMGvLJu3tSV2YVuiNcVkvn",
+//     "destination": "1KbbyhT3dPAMEGfVx9siDtKATLpk9vjQkW",
+//     "asset": "SLVAGOAAAAAAA",
+//     "quantity": 10,
+//     "tx_hash": "c324e62d0ba17f42a774b9b28114217c777914a4b6dd0d41811217cffb8c40a6"
+// }
+
+    
+        
     }
 
     public function updateAuction($auction, $block_height) {
@@ -139,6 +154,9 @@ class AuctioneerDaemon
 #            Debug::trace("\$block_id=".Debug::desc($block_id)."",__FILE__,__LINE__,$this);
             EventLog::logEvent('xcpd.block.found', ['blockId' => $block_id]);
 
+            // clear all mempool transactions
+            $this->clearAllMempoolTransactions();
+
             // publish all auction states to update the last block seen
             // (we really should separate this to its own socket)
             foreach ($this->auction_manager->allAuctions() as $auction) {
@@ -146,8 +164,8 @@ class AuctioneerDaemon
             }
         });
 
-        $this->xcpd_follower->handleNewSend(function($send_data, $block_id) {
-#            Debug::trace("handleNewSend received \$send_data=".Debug::desc($send_data)."",__FILE__,__LINE__,$this);
+        $this->xcpd_follower->handleNewSend(function($send_data, $block_id, $is_mempool) {
+           Debug::trace("handleNewSend received \$send_data=".Debug::desc($send_data)."",__FILE__,__LINE__,$this);
             // we have a new send from XCPD
             
             // find all auctions
@@ -158,20 +176,23 @@ class AuctioneerDaemon
                 if ($address == $send_data['source']) {
                     // this is a send by the auction
                     // save the transaction
-                    EventLog::logEvent('tx.outgoing', ['auctionId' => $auction['id'], 'tx' => $send_data]);
+                    EventLog::logEvent('tx.outgoing', ['auctionId' => $auction['id'], 'tx' => $send_data, 'mempool' => $is_mempool]);
                     if (!$send_data['assetInfo']['divisible']) {
                         $send_data['quantity'] =  CurrencyUtil::numberToSatoshis($send_data['quantity']);
                     }
-                    $this->updateAuctionWithNewTransaction($send_data, $auction, 'outgoing');
+
+                    $new_transaction = $this->createNewTransaction($send_data, $auction, 'outgoing', false, $is_mempool);
+                    $this->updateAuction($auction, $new_transaction['blockId']);
                 }
                 if ($address == $send_data['destination']) {
                     // this is an incoming transaction
                     //   we will process this
-                    EventLog::logEvent('tx.incoming', ['auctionId' => $auction['id'], 'tx' => $send_data]);
+                    EventLog::logEvent('tx.incoming', ['auctionId' => $auction['id'], 'tx' => $send_data, 'mempool' => $is_mempool]);
                     if (!$send_data['assetInfo']['divisible']) {
                         $send_data['quantity'] = CurrencyUtil::numberToSatoshis($send_data['quantity']);
                     }
-                    $this->updateAuctionWithNewTransaction($send_data, $auction, 'incoming');
+                    $new_transaction = $this->createNewTransaction($send_data, $auction, 'incoming', false, $is_mempool);
+                    $this->updateAuction($auction, $new_transaction['blockId']);
                 }
             }
         });
@@ -212,12 +233,14 @@ class AuctioneerDaemon
                     $btc_send_data['status']      = 'valid';
                     $btc_send_data['tx_hash']     = $transaction['txid'];
 
-                    $this->updateAuctionWithNewTransaction($btc_send_data, $auction, 'incoming');
+                    $new_transaction = $this->createNewTransaction($btc_send_data, $auction, 'incoming', true, false);
+                    $this->updateAuction($auction, $new_transaction['blockId']);
                 }
             }
         });
 
         $this->native_follower->handleOrphanedBlock(function($orphaned_block_id) {
+            Debug::trace("handleOrphanedBlock \$orphaned_block_id=".Debug::desc($orphaned_block_id)."",__FILE__,__LINE__,$this);
             EventLog::logEvent('block.orphan', ['blockId' => $orphaned_block_id]);
 
             // get all auctions affected
@@ -257,6 +280,10 @@ class AuctioneerDaemon
         // return 0;
 
         return $this->xcpd_follower->getLastProcessedBlock();
+    }
+
+    protected function clearAllMempoolTransactions() {
+        $this->blockchain_tx_directory->deleteRaw("DELETE FROM {$this->blockchain_tx_directory->getTableName()} WHERE isMempool = ?", [1]);
     }
 
     //     "block_index" => 313360,

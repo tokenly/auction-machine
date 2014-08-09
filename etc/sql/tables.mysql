@@ -40,12 +40,15 @@ CREATE TABLE IF NOT EXISTS `blockchaintransaction` (
     `id`            int(11) unsigned NOT NULL AUTO_INCREMENT,
     `auctionId`     int(20) unsigned NOT NULL DEFAULT 0,
     `blockId`       int(20) unsigned NOT NULL DEFAULT 0,
-    `transactionId` varbinary(64) NOT NULL DEFAULT '',
+    `tx_hash`       varbinary(64) NOT NULL DEFAULT '',
+    `isMempool`     int(1) NOT NULL DEFAULT '0',
+    `isNative`      int(1) NOT NULL DEFAULT '0',
     `document`      LONGTEXT NOT NULL DEFAULT '',
     PRIMARY KEY (`id`),
     KEY `auctionId` (`auctionId`),
     KEY `blockId` (`blockId`),
-    UNIQUE KEY `transactionId` (`transactionId`)
+    KEY `isMempool_isNative` (`isMempool`,`isNative`),
+    UNIQUE KEY `tx_hash` (`tx_hash`)
 ) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `eventlog` (
