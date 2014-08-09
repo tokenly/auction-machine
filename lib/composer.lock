@@ -1667,12 +1667,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/UTipdMe/XCPDClient.git",
-                "reference": "7864d9c83840691fcde35bac6ceba35e0d013d52"
+                "reference": "fd4997d4ad245567630fb4b2f2102942f49860e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/UTipdMe/XCPDClient/zipball/7864d9c83840691fcde35bac6ceba35e0d013d52",
-                "reference": "7864d9c83840691fcde35bac6ceba35e0d013d52",
+                "url": "https://api.github.com/repos/UTipdMe/XCPDClient/zipball/fd4997d4ad245567630fb4b2f2102942f49860e0",
+                "reference": "fd4997d4ad245567630fb4b2f2102942f49860e0",
                 "shasum": ""
             },
             "require": {
@@ -1700,7 +1700,7 @@
                 }
             ],
             "description": "A client library for the counterparty API",
-            "time": "2014-08-07 20:29:41"
+            "time": "2014-08-09 15:08:21"
         }
     ],
     "packages-dev": [],
