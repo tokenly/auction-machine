@@ -1438,12 +1438,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/UTipdMe/counterparty-follower.git",
-                "reference": "fd7d6aa3b415215611cf3f54ff3f0b0abdf7639f"
+                "reference": "bcaa11d20021fdbfdc6661d2145b6b3ffc13ead9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/UTipdMe/counterparty-follower/zipball/fd7d6aa3b415215611cf3f54ff3f0b0abdf7639f",
-                "reference": "fd7d6aa3b415215611cf3f54ff3f0b0abdf7639f",
+                "url": "https://api.github.com/repos/UTipdMe/counterparty-follower/zipball/bcaa11d20021fdbfdc6661d2145b6b3ffc13ead9",
+                "reference": "bcaa11d20021fdbfdc6661d2145b6b3ffc13ead9",
                 "shasum": ""
             },
             "require": {
@@ -1481,7 +1481,7 @@
                 "counterparty",
                 "transaction"
             ],
-            "time": "2014-08-08 02:41:56"
+            "time": "2014-08-09 13:15:36"
         },
         {
             "name": "utipd/form",
@@ -1532,12 +1532,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/UTipdMe/MysqlModel.git",
-                "reference": "8cfb69e68749de71fa9edcba4573c78181a8dc93"
+                "reference": "d0b1e21bc0b7ea56feddceed19a40a8426a3b78e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/UTipdMe/MysqlModel/zipball/8cfb69e68749de71fa9edcba4573c78181a8dc93",
-                "reference": "8cfb69e68749de71fa9edcba4573c78181a8dc93",
+                "url": "https://api.github.com/repos/UTipdMe/MysqlModel/zipball/d0b1e21bc0b7ea56feddceed19a40a8426a3b78e",
+                "reference": "d0b1e21bc0b7ea56feddceed19a40a8426a3b78e",
                 "shasum": ""
             },
             "require": {
@@ -1566,7 +1566,7 @@
                 }
             ],
             "description": "A minimalistic manager for storing and retrieving MySQL rows as PHP models. Does not handle schemas. Does allow treating mysql rows like documents.",
-            "time": "2014-08-07 20:34:33"
+            "time": "2014-08-08 02:48:15"
         },
         {
             "name": "utipd/native-follower",
