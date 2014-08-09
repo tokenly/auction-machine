@@ -29,7 +29,7 @@ class AuctionStateBuilderTest extends \PHPUnit_Framework_TestCase
         PHPUnit::assertGreaterThan(1, $state_count);
         for ($i=1; $i <= $state_count; $i++) { 
             $filename = "auction-scenario".sprintf('%02d', $i).".yml";
-#            Debug::trace("$filename",__FILE__,__LINE__,$this);
+#           Debug::trace("$filename",__FILE__,__LINE__,$this);
             $state_vars = AuctionStateUtil::buildValidAuctionStateFromScenario($app, $filename);
         }
     }

@@ -105,7 +105,7 @@ class AuctionStateBuilder
 
     protected function handleIncomingBiddingAsset($transaction) {
 #       Debug::trace("handleIncomingBiddingAsset $transaction=".json_encode($transaction, 192),__FILE__,__LINE__,$this);
-        $state = $this->getStateAtBlockAndTime($transaction['blockId'], $transaction['timestamp']);
+        $state = $this->getStateAtBlockAndTime($transaction['blockId'], $transaction['timestamp'], $transaction['isMempool']);
         $token_amount = $transaction['quantity'];
 
         $state->addLog("Received ".CurrencyUtil::satoshisToNumber($token_amount)." {$transaction['asset']}");
@@ -152,7 +152,7 @@ class AuctionStateBuilder
     // BTC
 
     protected function handleIncomingBTC($transaction) {
-        $state = $this->getStateAtBlockAndTime($transaction['blockId'], $transaction['timestamp']);
+        $state = $this->getStateAtBlockAndTime($transaction['blockId'], $transaction['timestamp'], $transaction['isMempool']);
         $token_amount = $transaction['quantity'];
 
         $state->addLog("Received ".CurrencyUtil::satoshisToNumber($token_amount)." BTC");
@@ -186,7 +186,7 @@ class AuctionStateBuilder
     // Prize Token
 
     protected function handleIncomingPrizeToken($transaction) {
-        $state = $this->getStateAtBlockAndTime($transaction['blockId'], $transaction['timestamp']);
+        $state = $this->getStateAtBlockAndTime($transaction['blockId'], $transaction['timestamp'], $transaction['isMempool']);
         $token_amount = $transaction['quantity'];
 
         $state->addLog("Received ".CurrencyUtil::satoshisToNumber($token_amount)." {$transaction['asset']} prize token");
@@ -262,7 +262,7 @@ class AuctionStateBuilder
     // Bidding
 
     protected function applyBid($transaction, $token_amount) {
-        $state = $this->getStateAtBlockAndTime($transaction['blockId'], $transaction['timestamp']);
+        $state = $this->getStateAtBlockAndTime($transaction['blockId'], $transaction['timestamp'], $transaction['isMempool']);
         $state->ensureAccountAt($transaction['source'], $transaction['id']);
         $account = $state->getAccount($transaction['source']);
         $bid_status = $this->determineBidStatus($transaction);
@@ -320,7 +320,7 @@ class AuctionStateBuilder
         if ($prize_token_info = $this->auction->findPrizeTokenRequiredInfo($transaction['asset'])) {
             $this->handleIncomingPrizeToken($transaction, $prize_token_info);
         } else {
-            $state = $this->getStateAtBlockAndTime($transaction['blockId'], $transaction['timestamp']);
+            $state = $this->getStateAtBlockAndTime($transaction['blockId'], $transaction['timestamp'], $transaction['isMempool']);
             $state->addLog("Received ".CurrencyUtil::satoshisToNumber($transaction['quantity'])." of {$transaction['asset']}.  This token is not recognized by this auction.");
         }
     }
@@ -342,8 +342,20 @@ class AuctionStateBuilder
         return $this->auction_state;
     }
 
-    protected function getStateAtBlockAndTime($block_id, $timestamp) {
+    protected function getStateAtBlockAndTime($block_id, $timestamp, $is_mempool) {
         $state = $this->getState();
+        $state['hasMempoolTransactions'] = false;
+
+        if ($is_mempool) {
+            if ($block_id AND $block_id > 0) { throw new Exception("Unexpected block_id of ".Debug::desc($block_id)." for mempool transaction", 1); }
+            // this is a mempool transaction
+            $block_id = $this->meta_info['blockHeight'];
+            $state['hasMempoolTransactions'] = true;
+            $timestamp = $this->now();
+        } else {
+            if (!$block_id) { throw new Exception("Unexpected block_id of ".Debug::desc($block_id)." for non-mempool transaction", 1); }
+        }
+
         $state->setBlockId($block_id);
         $state['timePhase'] = $this->buildAuctionTimePhase($timestamp);
         return $state;

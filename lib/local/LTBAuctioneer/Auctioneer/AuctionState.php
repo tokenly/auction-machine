@@ -19,22 +19,23 @@ class AuctionState extends ArrayObject
 
     public static function initialState() {
         return [
-            'btcFeeSatisfied'      => false,
-            'btcFeeApplied'        => 0,
-            'bidTokenFeeSatisfied' => false,
-            'bidTokenFeeApplied'   => 0,
-            'prizeTokensSatisfied' => false,
-            'prizeTokensApplied'   => [],
-            'active'               => false,
-            'timePhase'            => 'prebid', // prebid, live, ended
+            'btcFeeSatisfied'        => false,
+            'btcFeeApplied'          => 0,
+            'bidTokenFeeSatisfied'   => false,
+            'bidTokenFeeApplied'     => 0,
+            'prizeTokensSatisfied'   => false,
+            'prizeTokensApplied'     => [],
+            'active'                 => false,
+            'timePhase'              => 'prebid', // prebid, live, ended
 
-            'bounty'               => 0,
-            'blockId'              => 0,
+            'bounty'                 => 0,
+            'blockId'                => 0,
+            'hasMempoolTransactions' => false,
 
-            'accounts'             => [],
-            'bids'                 => [],
+            'accounts'               => [],
+            'bids'                   => [],
 
-            'payouts'              => [],
+            'payouts'                => [],
         ];
 
     }

@@ -120,6 +120,8 @@ class AuctioneerDaemonHandler
     public function sendMockNativeTransaction($auction, $info=[]) {
         if (!isset($this->daemon)) { $this->setupDaemon(); }
 
+        $is_mempool = isset($info['is_mempool']) ? $info['is_mempool'] : false;
+
             // a new transaction
             // txid: cc91db2f18b908903cb7c7a4474695016e12afd816f66a209e80b7511b29bba9
             // outputs:
@@ -127,7 +129,7 @@ class AuctioneerDaemonHandler
             //       address: "1aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 
         $transaction = [
-            'txid' => md5($this->mock_native_tx_index++),
+            'txid' => isset($info['txid']) ? $info['txid'] : md5($this->mock_native_tx_index++),
             'outputs' => [
                 [
                     'amount' => CurrencyUtil::numberToSatoshis(isset($info['amount']) ? $info['amount'] : 0.001),
@@ -136,10 +138,14 @@ class AuctioneerDaemonHandler
             ]
         ];
 
-        $block_index = isset($info['blockId']) ? $info['blockId'] : 6000;
+        if ($is_mempool) {
+            $block_index = null;
+        } else {
+            $block_index = isset($info['blockId']) ? $info['blockId'] : 6000;
+        }
 
         $native_transaction_function = $this->native_transaction_function;
-        $native_transaction_function($transaction, $block_index);
+        $native_transaction_function($transaction, $block_index, $is_mempool);
 
         return $transaction;
     }

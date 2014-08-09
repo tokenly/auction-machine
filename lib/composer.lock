@@ -1574,12 +1574,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/UTipdMe/native-follower.git",
-                "reference": "1704b2275a8b124a8bc1709d5e6ba80e275df654"
+                "reference": "e471adaee41fc4b7993bcaa81898728a3046dbfa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/UTipdMe/native-follower/zipball/1704b2275a8b124a8bc1709d5e6ba80e275df654",
-                "reference": "1704b2275a8b124a8bc1709d5e6ba80e275df654",
+                "url": "https://api.github.com/repos/UTipdMe/native-follower/zipball/e471adaee41fc4b7993bcaa81898728a3046dbfa",
+                "reference": "e471adaee41fc4b7993bcaa81898728a3046dbfa",
                 "shasum": ""
             },
             "require": {
@@ -1615,7 +1615,7 @@
                 "orphans",
                 "transaction"
             ],
-            "time": "2014-08-07 20:30:08"
+            "time": "2014-08-09 16:51:09"
         },
         {
             "name": "utipd/simple-daemon",

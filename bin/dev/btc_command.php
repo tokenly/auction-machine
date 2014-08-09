@@ -4,6 +4,7 @@
 declare(ticks=1);
 
 use LTBAuctioneer\Init\Environment;
+use LTBAuctioneer\Util\Params\ParamsUtil;
 
 define('BASE_PATH', realpath(__DIR__.'/../..'));
 require BASE_PATH.'/lib/vendor/autoload.php';
@@ -24,6 +25,7 @@ if (isset($values['p'])) {
 } else {
     $params = null;
 }
+echo "\$params:\n".json_encode($params, 192)."\n";
 
 // run the follower daemon
 $native_client = $app['native.client'];

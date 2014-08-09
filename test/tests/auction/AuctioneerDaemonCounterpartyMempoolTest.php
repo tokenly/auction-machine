@@ -13,10 +13,10 @@ use \PHPUnit_Framework_Assert as PHPUnit;
 /*
 * 
 */
-class AuctioneerDaemonMempoolTest extends SiteTestCase
+class AuctioneerDaemonCounterpartyMempoolTest extends SiteTestCase
 {
 
-    public function testAuctioneerDaemonMempoolTXNormal() {
+    public function testAuctioneerDaemonCounterpartyMempoolTXNormal() {
         $app = Environment::initEnvironment('test');
 
         // handle the daemon mocks
@@ -50,7 +50,7 @@ class AuctioneerDaemonMempoolTest extends SiteTestCase
 
     // new block will always be called first,
     //   but test what happens just in case...
-    public function testAuctioneerDaemonMempoolTXWhenNotCleared() {
+    public function testAuctioneerDaemonCounterpartyMempoolTXWhenNotCleared() {
         $app = Environment::initEnvironment('test');
 
         // handle the daemon mocks

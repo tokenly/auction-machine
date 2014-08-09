@@ -155,7 +155,7 @@ class AuctioneerDaemon
             EventLog::logEvent('xcpd.block.found', ['blockId' => $block_id]);
 
             // clear all mempool transactions
-            $this->clearAllMempoolTransactions();
+            $this->clearAllMempoolTransactions($native=false);
 
             // publish all auction states to update the last block seen
             // (we really should separate this to its own socket)
@@ -203,9 +203,12 @@ class AuctioneerDaemon
             // a new block was found...
             //   just smile and be happy
             EventLog::logEvent('native.block.found', ['blockId' => $block_id]);
+
+            // clear all mempool transactions
+            $this->clearAllMempoolTransactions($native=true);
         });
 
-        $this->native_follower->handleNewTransaction(function($transaction, $block_id) {
+        $this->native_follower->handleNewTransaction(function($transaction, $block_id, $is_mempool) {
             // a new transaction
             // txid: cc91db2f18b908903cb7c7a4474695016e12afd816f66a209e80b7511b29bba9
             // outputs:
@@ -214,6 +217,8 @@ class AuctioneerDaemon
 
             $auction_addresses_map = $this->allAuctionsByAddress();
 
+#            Debug::trace("\$block_id=".Debug::desc($block_id)."",__FILE__,__LINE__,$this);
+#            Debug::trace("\$is_mempool=".Debug::desc($is_mempool)."",__FILE__,__LINE__,$this);
 #            Debug::trace("\$transaction=".json_encode($transaction, 192),__FILE__,__LINE__);
             foreach ($transaction['outputs'] as $output) {
                 if (!$output['address']) { continue; }
@@ -233,7 +238,7 @@ class AuctioneerDaemon
                     $btc_send_data['status']      = 'valid';
                     $btc_send_data['tx_hash']     = $transaction['txid'];
 
-                    $new_transaction = $this->createNewTransaction($btc_send_data, $auction, 'incoming', true, false);
+                    $new_transaction = $this->createNewTransaction($btc_send_data, $auction, 'incoming', true, $is_mempool);
                     $this->updateAuction($auction, $new_transaction['blockId']);
                 }
             }
@@ -282,8 +287,8 @@ class AuctioneerDaemon
         return $this->xcpd_follower->getLastProcessedBlock();
     }
 
-    protected function clearAllMempoolTransactions() {
-        $this->blockchain_tx_directory->deleteRaw("DELETE FROM {$this->blockchain_tx_directory->getTableName()} WHERE isMempool = ?", [1]);
+    protected function clearAllMempoolTransactions($is_native) {
+        $this->blockchain_tx_directory->deleteRaw("DELETE FROM {$this->blockchain_tx_directory->getTableName()} WHERE isMempool = ? AND isNative = ?", [1, intval($is_native)]);
     }
 
     //     "block_index" => 313360,

@@ -103,7 +103,7 @@ class AuctionStateUtil
         $auction_state_vars_for_comparison = (array)$auction_state_vars;
 
         // state var fields to ignore
-        foreach (['logs','bidsAndAccounts','blockId',] as $field) {
+        foreach (['logs','bidsAndAccounts','blockId', 'hasMempoolTransactions',] as $field) {
             if (!isset($expected_state_vars[$field])) { unset($auction_state_vars_for_comparison[$field]); }
         }
 
@@ -136,6 +136,9 @@ class AuctionStateUtil
             foreach (['timestamp'] as $date_field) { if (isset($transaction[$date_field])) { $transaction[$date_field] = strtotime($transaction[$date_field]); } }
             // random txId
             $transaction['transactionId'] = md5(uniqid());
+
+            // isMempool defaults to false
+            $transaction['isMempool'] = isset($transaction['isMempool']) ? $transaction['isMempool'] : false;
 
             $transactions[] = $transaction;
         }

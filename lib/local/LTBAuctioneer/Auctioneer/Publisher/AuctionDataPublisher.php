@@ -42,11 +42,12 @@ class AuctionDataPublisher
         $state = (array)$auction['state'];
 
         $public_state_data = [
-            'timePhase'            => $state['timePhase'],
-            'active'               => $state['active'],
-            'bids'                 => $state['bidsAndAccounts'],
-            'bounty'               => $state['bounty'],
-            'blockId'              => $state['blockId'],
+            'timePhase'              => $state['timePhase'],
+            'active'                 => $state['active'],
+            'bids'                   => $state['bidsAndAccounts'],
+            'bounty'                 => $state['bounty'],
+            'blockId'                => $state['blockId'],
+            'hasMempoolTransactions' => $state['hasMempoolTransactions'],
         ];
         $private_state_data = array_merge($public_state_data, [
             'btcFeeSatisfied'      => $state['btcFeeSatisfied'],
