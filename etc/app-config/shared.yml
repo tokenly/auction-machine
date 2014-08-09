@@ -27,7 +27,7 @@ redis.host              : "localhost"
 redis.port              : "6379"
 
 bitcoin.masterKey       : ""
-bitcoin.passphrase      : ""
+bitcoin.passphrase      : "foolo23958"
 
 xcp.platformAddress       : "1H42mKvwutzE4DAip57tkAc9KEKMGBD2bB"
 
@@ -37,6 +37,8 @@ xcp.payout:
     fee_per_kb               : 0.00005
     multisig_dust_size       : 0.00004
     allow_unconfirmed_inputs : true
+
+genesisBlockID : 314750
 
 auction.defaults:
     confirmationsRequired : 3

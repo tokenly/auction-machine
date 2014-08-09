@@ -46,7 +46,9 @@ class XCPDInit {
         $app['xcpd.follower'] = function($app) {
             $pdo = $app['mysql.client'];
             $pdo->query("use `".$app['mysql.xcpd.databaseName']."`");
-            return new \Utipd\CounterpartyFollower\Follower($app['xcpd.client'], $pdo);
+            $follower = new \Utipd\CounterpartyFollower\Follower($app['xcpd.client'], $pdo);
+            $follower->setGenesisBlock($app['config']['genesisBlockID']);
+            return $follower;
         };
 
 
@@ -79,7 +81,10 @@ class XCPDInit {
         $app['native.follower'] = function($app) {
             $pdo = $app['mysql.client'];
             $pdo->query("use `".$app['mysql.native.databaseName']."`");
-            return new \Utipd\NativeFollower\Follower($app['native.client'], $pdo);
+            $follower = new \Utipd\NativeFollower\Follower($app['native.client'], $pdo);
+            $follower->setGenesisBlock($app['config']['genesisBlockID']);
+            return $follower;
+
         };
 
 

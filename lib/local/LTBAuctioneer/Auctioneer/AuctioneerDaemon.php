@@ -27,6 +27,9 @@ class AuctioneerDaemon
     }
 
     public function setupAndRun() {
+        // genesis blocks
+        
+
         $this->setup();
         $this->run();
     }

@@ -16,4 +16,3 @@ $app = Environment::initEnvironment($app_env);
 echo "Environment: ".$app['config']['env']."\n";
 
 // throw new AdapterException();
-

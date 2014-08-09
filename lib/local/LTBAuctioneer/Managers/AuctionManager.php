@@ -81,6 +81,7 @@ class AuctionManager
             // unlock the wallet if needed
             if ($this->wallet_passphrase) {
                 $result = $this->native_client->walletpassphrase($this->wallet_passphrase, 60);
+#                Debug::trace("called walletpassphrase result=".Debug::desc($result)."",__FILE__,__LINE__,$this);
             }
 
             RetryController::retry(function() use ($new_auction_vars, $private_key) {
