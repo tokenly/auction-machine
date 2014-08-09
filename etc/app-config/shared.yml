@@ -31,6 +31,8 @@ bitcoin.passphrase      : ""
 
 xcp.platformAddress       : "1H42mKvwutzE4DAip57tkAc9KEKMGBD2bB"
 
+admin.password          : "changeme"
+
 xcp.payout:
     fee_per_kb               : 0.00005
     multisig_dust_size       : 0.00004
@@ -73,4 +75,6 @@ allowedEnvironmentOverrides:
     XCP_PLATFORM_ADDRESS      : xcp.platformAddress
 
     APP_DEBUG                 : app.debug
+
+    WWW_ADMIN_PASSWORD        : admin.password
 

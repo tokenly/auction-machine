@@ -33,7 +33,7 @@ class AdminRouter
             {
                 //once the user has provided some details, check them
                 $users = array(
-                    'ltbadmin' => 'drAg6E8knoaR',
+                    'ltbadmin' => $this->app['config']['admin.password'],
                 );
 
                 if($users[$_SERVER['PHP_AUTH_USER']] !== $_SERVER['PHP_AUTH_PW']) {
