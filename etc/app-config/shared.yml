@@ -38,7 +38,7 @@ xcp.payout:
     multisig_dust_size       : 0.00004
     allow_unconfirmed_inputs : true
 
-genesisBlockID : 314750
+genesisBlockID : 314900
 
 auction.defaults:
     confirmationsRequired : 3
@@ -79,4 +79,6 @@ allowedEnvironmentOverrides:
     APP_DEBUG                 : app.debug
 
     WWW_ADMIN_PASSWORD        : admin.password
+
+    GENESIS_BLOCK_ID          : genesisBlockID
 
