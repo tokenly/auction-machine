@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `blockchaintransaction` (
     KEY `auctionId` (`auctionId`),
     KEY `blockId` (`blockId`),
     KEY `isMempool_isNative` (`isMempool`,`isNative`),
-    UNIQUE KEY `tx_hash` (`tx_hash`)
+    UNIQUE KEY `tx_hash_isNative` (`tx_hash`,`isNative`)
 ) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `eventlog` (

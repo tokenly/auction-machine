@@ -27,9 +27,9 @@ redis.host              : "localhost"
 redis.port              : "6379"
 
 bitcoin.masterKey       : ""
-bitcoin.passphrase      : "foolo23958"
+bitcoin.passphrase      : ""
 
-xcp.platformAddress       : "1H42mKvwutzE4DAip57tkAc9KEKMGBD2bB"
+xcp.platformAddress     : "1H42mKvwutzE4DAip57tkAc9KEKMGBD2bB"
 
 admin.password          : "changeme"
 

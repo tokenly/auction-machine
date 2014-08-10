@@ -352,7 +352,10 @@ class AuctionStateBuilder
             $block_id = $this->meta_info['blockHeight'];
             $state['hasMempoolTransactions'] = true;
             $timestamp = $this->now();
+
+#            Debug::trace("\$state['hasMempoolTransactions']=".Debug::desc($state['hasMempoolTransactions'])."",__FILE__,__LINE__,$this);
         } else {
+#            Debug::trace("\$state['hasMempoolTransactions']=".Debug::desc($state['hasMempoolTransactions'])."",__FILE__,__LINE__,$this);
             if (!$block_id) { throw new Exception("Unexpected block_id of ".Debug::desc($block_id)." for non-mempool transaction", 1); }
         }
 

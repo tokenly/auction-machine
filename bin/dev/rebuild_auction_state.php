@@ -35,7 +35,7 @@ try {
     if (!$auction) { throw new Exception("Auction not found for slug: {$values['auction-slug']}", 1); }
 
     // get the most recent tx
-    $tx = $app['directory']('BlockchainTransaction')->findOne([], ['blockId' => -1]);
+    $tx = $app['directory']('BlockchainTransaction')->findOne(['isMempool' => 0], ['blockId' => -1]);
 
     // rebuild the auction state
     $auction = $app['auction.updater']->updateAuctionState($auction, $tx['blockId']);

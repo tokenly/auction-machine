@@ -126,6 +126,9 @@ do ($=jQuery) ->
             el = $("""*[data-state-field="#{stateField}"]""")
             continue if not el.length
             value = formatValueByElementSettings(state[stateField], el)
+            if state.hasMempoolTransactions
+                value = value + ' <span class="pending">pending</span>'
+                
             el.html(value)
 
         for metaField in ['lastBlockSeen',]

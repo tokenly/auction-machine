@@ -92,6 +92,9 @@
           continue;
         }
         value = formatValueByElementSettings(state[stateField], el);
+        if (state.hasMempoolTransactions) {
+          value = value + ' <span class="pending">pending</span>';
+        }
         el.html(value);
       }
       _ref2 = ['lastBlockSeen'];

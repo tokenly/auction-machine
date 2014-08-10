@@ -220,6 +220,17 @@ ul.ordered-bids li {
   font-weight: 300;
   font-size: 0.65rem;
 }
+.pending {
+  color: #aaa;
+  margin-left: 4px;
+  font-size: 0.8rem;
+}
+.pending::before {
+  content: "(";
+}
+.pending::after {
+  content: ")";
+}
 header {
   background-color: #0A323F;
   margin-bottom: 24px;

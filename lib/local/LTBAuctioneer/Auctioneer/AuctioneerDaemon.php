@@ -49,19 +49,27 @@ class AuctioneerDaemon
             $this->runOneIteration();
             ++$count;
 
-            if ($count > 120) { throw new Exception("Debug: forcing process restart", 250); }
+            // restart about every 5 minutes
+            //   curl seems to lose the ability to connect
+            if ($count > 60) { throw new Exception("Debug: forcing process restart", 250); }
         };
 
         $error_handler = function($e) {
-            EventLog::logError('daemon.error', $e);
             if ($e->getCode() == 250) {
                 // force restart
                 throw $e;
             }
+
+            EventLog::logError('daemon.error', $e);
         };
 
         $daemon = $f($loop_function, $error_handler);
-        $daemon->run();
+
+        try {
+            $daemon->run();
+        } catch (Exception $e) {
+            EventLog::logError('daemon.error.final', $e);
+        }
 
         EventLog::logEvent('daemon.shutdown', []);
     }
@@ -81,7 +89,7 @@ class AuctioneerDaemon
 
     public function createNewTransaction($send_data, $auction, $classification, $is_native, $is_mempool) {
         // delete any existing transaction with this tx_hash
-        $this->blockchain_tx_directory->deleteWhere(['tx_hash' => $send_data['tx_hash']]);
+        $this->blockchain_tx_directory->deleteWhere(['tx_hash' => $send_data['tx_hash'], 'isNative' => $is_native ? 1 : 0]);
 
         // create a new transaction
         $new_transaction = $this->blockchain_tx_directory->createAndSave([
@@ -117,6 +125,10 @@ class AuctioneerDaemon
     }
 
     public function updateAuction($auction, $block_height) {
+        if ($block_height === null OR $block_height == 0) {
+            $block_height = $this->getCurrentBlockHeight();
+        }
+
         $auction = $this->auction_updater->updateAuctionState($auction, $block_height);
         $this->data_publisher->publishAuctionState($auction, $block_height);
     }

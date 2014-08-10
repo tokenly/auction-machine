@@ -110,12 +110,6 @@ class AuctionPayer
     }
 
     protected function sendXCPToken($payout, $auction, $private_key) {
-        // make sure bitcoind has the address with the private key in the wallet
-        if (!$this->payout_debug) {
-            // this is no longer necessary - the private key is imported when the auction is created
-            // $no_result = $this->native_client->importprivkey($private_key, $auction['auctionAddress'], false);
-        }
-
         // create a send
         // create_send(source, destination, asset, quantity, encoding='multisig', pubkey=null)
         $send_vars = [
@@ -136,6 +130,11 @@ class AuctionPayer
             EventLog::logEvent('DEBUG.payout.xcp', $send_vars);
             return 'DEBUG_'.md5(json_encode($send_vars));
         }
+
+        // unlock the wallet with the passphrase
+        $this->unlockWallet();
+
+        // create a send
         $raw_tx = $this->xcpd_client->create_send($send_vars);
 
         // sign the transaction
@@ -143,6 +142,7 @@ class AuctionPayer
 
         // broadcast the transaction
         $transaction_id = $this->xcpd_client->broadcast_tx(["signed_tx_hex" => $signed_tx]);
+
         return $transaction_id;
     }
 
@@ -153,9 +153,7 @@ class AuctionPayer
         }
 
         // unlock the wallet if needed
-        if ($this->wallet_passphrase) {
-            $result = $this->native_client->walletpassphrase($this->wallet_passphrase, 60);
-        }
+        $this->unlockWallet();
 
         $float_balance = $this->getTotalOfUnspentOutputs($auction['auctionAddress']);
 
@@ -211,6 +209,13 @@ class AuctionPayer
         $assets = $this->xcpd_client->get_asset_info(['assets' => [$token]]);
 #        Debug::trace("\$assets=",$assets,__FILE__,__LINE__,$this);
         return $assets[0]['divisible'];
+    }
+
+    protected function unlockWallet() {
+        if ($this->wallet_passphrase) {
+            $result = $this->native_client->walletpassphrase($this->wallet_passphrase, 60);
+        }
+
     }
 }
 

@@ -10,3 +10,7 @@ bitcoin.masterKey   : "xprv9s21ZrQH143K3QEka9WE2X9bRhtpWfCGbfD8LLw3PBjoN5bCFNz8b
 
 # just for testing
 xcp.platformAddress : "1H42mKvwutzE4DAip57tkAc9KEKMGBD2bB"
+
+# just for testing
+bitcoin.passphrase  : "foolo23958"
+
