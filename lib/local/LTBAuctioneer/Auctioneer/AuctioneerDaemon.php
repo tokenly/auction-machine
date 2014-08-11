@@ -87,9 +87,24 @@ class AuctioneerDaemon
     }
 
 
+    // this can return a null or a new transaction
     public function createNewTransaction($send_data, $auction, $classification, $is_native, $is_mempool) {
-        // delete any existing transaction with this tx_hash
+        // if this is a mempool transaction, be sure not to delete a transaction
+        if ($is_mempool) {
+            $existing_live_blockchain_tx_entry = $this->blockchain_tx_directory->findOne(['tx_hash' => $send_data['tx_hash'], 'isNative' => $is_native ? 1 : 0, 'isMempool' => 0]);
+
+            if ($existing_live_blockchain_tx_entry) {
+                // this is a mempool transaction arrive AFTER a live version of the transaction has already been recorded
+                //   we never want to erase a live transaction with its mempool equivalent
+                //   so ignore this
+                EventLog::logEvent('tx.ignored', ['tx_hash' => $send_data['tx_hash'], 'isNative' => $is_native, 'isMempool' => $is_mempool]);
+                return;
+            }
+        }
+
+        // delete any existing transactions with this tx_hash
         $this->blockchain_tx_directory->deleteWhere(['tx_hash' => $send_data['tx_hash'], 'isNative' => $is_native ? 1 : 0]);
+
 
         // create a new transaction
         $new_transaction = $this->blockchain_tx_directory->createAndSave([
@@ -111,6 +126,7 @@ class AuctioneerDaemon
 
             'timestamp'      => time(),
         ]);
+        return $new_transaction;
 
 // {
 //     "source": "13UxmTs2Ad2CpMGvLJu3tSV2YVuiNcVkvn",
@@ -198,7 +214,9 @@ class AuctioneerDaemon
                     }
 
                     $new_transaction = $this->createNewTransaction($send_data, $auction, 'outgoing', false, $is_mempool);
-                    $this->updateAuction($auction, $new_transaction['blockId']);
+                    if ($new_transaction) {
+                        $this->updateAuction($auction, $new_transaction['blockId']);
+                    }
                 }
                 if ($address == $send_data['destination']) {
                     // this is an incoming transaction
@@ -208,7 +226,9 @@ class AuctioneerDaemon
                         $send_data['quantity'] = CurrencyUtil::numberToSatoshis($send_data['quantity']);
                     }
                     $new_transaction = $this->createNewTransaction($send_data, $auction, 'incoming', false, $is_mempool);
-                    $this->updateAuction($auction, $new_transaction['blockId']);
+                    if ($new_transaction) {
+                        $this->updateAuction($auction, $new_transaction['blockId']);
+                    }
                 }
             }
         });
@@ -255,7 +275,9 @@ class AuctioneerDaemon
                     $btc_send_data['tx_hash']     = $transaction['txid'];
 
                     $new_transaction = $this->createNewTransaction($btc_send_data, $auction, 'incoming', true, $is_mempool);
-                    $this->updateAuction($auction, $new_transaction['blockId']);
+                    if ($new_transaction) {
+                        $this->updateAuction($auction, $new_transaction['blockId']);
+                    }
                 }
             }
         });
