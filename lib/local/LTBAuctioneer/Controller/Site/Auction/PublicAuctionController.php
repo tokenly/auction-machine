@@ -25,6 +25,11 @@ class PublicAuctionController extends BaseSiteController
     }
 
 
+    public function homeAction(Request $request) {
+        $auctions = $this->auction_manager->allAuctions();
+        return $this->renderTwig('home/home.twig', ['auctions' => $auctions]);
+    }
+
     public function viewAuctionAction(Request $request, $slug) {
         $auction = $this->auction_manager->findBySlug($slug);
         if (!$auction) { throw new WebsiteException("Could not find this auction", 1); }

@@ -24,7 +24,7 @@
         <p>Your new auction has been created.</p>
 
         <p>
-            To begin this auction you must send {{auction.btcFeeRequired|to_currency}} BTC, {{auction.bidTokenFeeRequired|to_currency}} {{auction.bidTokenType}} and the prize tokens listed below to <span class="btc-address" data-select-click>{{auction.auctionAddress}}</span>.  After these have been received, your auction will begin no earlier than <span data-with-timezone data-date-timestamp="{{auction.startDate}}">{{auction.startDate|date("m.d.Y g:i a T")}}</span>.
+            To begin this auction you must send {{auction.btcFeeRequired|to_currency}} BTC, {{auction.bidTokenFeeRequired|to_currency}} {{auction.bidTokenType}} and the prize tokens listed below to <span class="btc-address" data-select-click>{{auction.auctionAddress}}</span>.  After these have been received, your auction will begin no earlier than <span data-with-timezone data-date-timestamp="{{auction.startDate}}">{{auction.startDate|date("n.d.Y g:i A P")}}</span>.
         </p>
 
         <div class="row">
@@ -138,11 +138,11 @@
 
                     <div class="valueDisplay">
                         <label for="startDate">Start Date</label>
-                        <div class="value date"><span data-with-timezone data-date-timestamp="{{auction.startDate}}">{{auction.startDate|date("m.d.Y g:i a T")}}</span></div>
+                        <div class="value date"><span data-with-timezone data-date-timestamp="{{auction.startDate}}">{{auction.startDate|date("n.d.Y g:i A P")}}</span></div>
                     </div>
                     <div class="valueDisplay">
                         <label for="endDate">End Date</label>
-                        <div class="value date"><span data-with-timezone data-date-timestamp="{{auction.endDate}}">{{auction.endDate|date("m.d.Y g:i a T")}}</span></div>
+                        <div class="value date"><span data-with-timezone data-date-timestamp="{{auction.endDate}}">{{auction.endDate|date("n.d.Y g:i A P")}}</span></div>
                     </div>
                     <div class="valueDisplay">
                         <label for="minStartingBid">Minimum Starting Bid</label>

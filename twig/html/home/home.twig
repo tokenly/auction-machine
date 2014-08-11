@@ -1,5 +1,10 @@
 {% extends "base/section.twig" %}
 
+{% block app_css %}
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+
 {% block sectionBody %}
 
 <div class="row">
@@ -12,11 +17,76 @@
 
 
         <p>
-            Welcome to the auctioneer site.
+            Welcome to the LTB auction machine.
         </p>
 
-        <div class="spacer2"></div>
+        <div class="spacer3"></div>
 
+        <h3>Current Auctions</h3>
+
+        <div class="auctions-list">
+            {% set anyAuctionsFound = false %}
+            {% for auction in auctions %}
+            {% set state = auction.state %}
+            {% if state.active and state.timePhase != 'ended' %}
+            {% set anyAuctionsFound = true %}
+            <div class="auction-entry">
+                <div class="row">
+                    <div class="columns">
+                        <div class="section name"><a href="{{url('public-auction', {slug: auction.slug})}}">{{auction.name}}</a></div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="medium-6 columns">
+
+                        <div class="section username">
+                            <label>Seller</label>
+                            by {{auction.username ? auction.username : 'no one'}}
+                        </div>
+
+                        <div class="section prize-list">
+                            <label>Prizes</label>
+                            {% for prize in auction.prizeTokensRequired %}
+                            <div class="prize"><span class="qty">{{prize.amount|to_currency}}</span> <span class="token">{{prize.token}}</span></div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+
+                    <div class="medium-6 columns">
+                        <div class="section">
+                            <label for="">Dates</label>
+                            <div class="date">Starts on <span data-with-timezone data-date-timestamp="{{auction.startDate}}">{{auction.startDate|date("n.d.Y g:i A P")}}</span></div>
+                            <div class="date">Ends on <span data-with-timezone data-date-timestamp="{{auction.endDate}}">{{auction.endDate|date("n.d.Y g:i A P")}}</span></div>
+                        </div>
+
+                        <div class="section status">
+                            <label for="">Status</label>
+                            <span data-auction-status="prebid" class="status-badge prebid" style="display: {{ (state.timePhase == 'prebid' or (state.timePhase == 'live' and not state.active)) ? 'inline' : 'none' }};">
+                                <i class="fa fa-exclamation"></i> waiting
+                            </span>
+                            <span data-auction-status="live" class="status-badge active" style="display: {{ (state.timePhase == 'live' and state.active) ? 'inline' : 'none' }};">
+                                <i class="fa fa-bolt"></i> active
+                            </span>                            
+                            <span data-auction-status="ended" class="status-badge ended" style="display: {{ state.timePhase == 'ended' ? 'inline' : 'none' }};">
+                                <i class="fa fa-gavel"></i> ended
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+
+        {% if not anyAuctionsFound %}
+        <div>Sorry, no auctions are active right now.</div>
+        {% endif %}
+
+
+
+        <div class="spacer5"></div>
         <a href="{{url('create-auction')}}" class="button">Create a New Auction</a>
 
     </div>
@@ -30,4 +100,6 @@
 
 {% block app_js %}
 {{ parent() }}
+<script src="/public/vendor/momentjs/moment.js"></script>
+<script src="/public/js/timezone.js"></script>
 {% endblock %}

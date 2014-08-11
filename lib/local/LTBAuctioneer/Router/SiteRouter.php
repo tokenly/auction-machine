@@ -22,7 +22,8 @@ class SiteRouter
     public function route() {
         // home
         $this->app->match('/', function(Request $request) {
-            return $this->app['twig']->render('home/home.twig', ['error' => $error]);
+            // return $this->app['twig']->render('home/home.twig', ['error' => $error]);
+            return $this->app['controller.auction.public']->homeAction($request, $slug);
         })->method('GET|POST')->bind('home');
 
         // Auction Admin

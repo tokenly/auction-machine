@@ -68,8 +68,8 @@
 
                     <div class="dates-section section">
                         <div class="title">Dates</div>
-                        <div class="date">Starts on <span data-with-timezone data-date-timestamp="{{auction.startDate}}">{{auction.startDate|date("m.d.Y g:i a T")}}</span></div>
-                        <div class="date">Ends on <span data-with-timezone data-date-timestamp="{{auction.endDate}}">{{auction.endDate|date("m.d.Y g:i a T")}}</span></div>
+                        <div class="date">Starts on <span data-with-timezone data-date-timestamp="{{auction.startDate}}">{{auction.startDate|date("n.d.Y g:i A P")}}</span></div>
+                        <div class="date">Ends on <span data-with-timezone data-date-timestamp="{{auction.endDate}}">{{auction.endDate|date("n.d.Y g:i A P")}}</span></div>
                     </div>
 
                     <div class="block-section section">
@@ -134,7 +134,7 @@
                     </div>
                     <div class="address"><span class="btc-address" data-select-click>{{auction.auctionAddress}}</span></div>
                     <div class="bounty-explanation">
-                        to outbit the leader.
+                        to outbid the leader.
                     </div>
                     <div class="bounty-explanation">
                         This is a bid of <span data-next-min-bid>{{nextMinBid|to_currency}}</span> plus a bounty of <span data-bounty>{{bounty|to_currency}} which will be paid to the current leader.</span>

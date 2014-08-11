@@ -231,6 +231,30 @@ ul.ordered-bids li {
 .pending::after {
   content: ")";
 }
+div.auction-entry > div {
+  margin-top: 6px;
+  font-size: 0.85rem;
+}
+div.auction-entry .name {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+div.auction-entry .section {
+  margin-top: 6px;
+  padding-left: 8px;
+}
+div.auction-entry:first-child {
+  border-top: 1px solid #eee;
+}
+div.auction-entry:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+div.auction-entry {
+  padding-top: 6px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eee;
+}
 header {
   background-color: #0A323F;
   margin-bottom: 24px;
