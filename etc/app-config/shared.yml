@@ -68,8 +68,8 @@ allowedEnvironmentOverrides:
     MYSQL_PORT_3306_TCP_PORT  : mysql.port
     MYSQL_PORT_3306_TCP_ADDR  : mysql.host
 
-    REDIS_PORT_3306_TCP_PORT  : redis.port
-    REDIS_PORT_3306_TCP_ADDR  : redis.host
+    REDIS_PORT_6379_TCP_PORT  : redis.port
+    REDIS_PORT_6379_TCP_ADDR  : redis.host
 
     BITCOIN_MASTER_KEY        : bitcoin.masterKey
     BITCOIN_WALLET_PASSPHRASE : bitcoin.passphrase
