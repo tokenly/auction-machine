@@ -124,9 +124,9 @@ class CreateAuctionController extends BaseSiteController
                 'name'      => 'description',
                 'label'     => 'Description',
                 'default'   => '',
-                'validation' => v::string()->length(1,1000,true),
+                'validation' => v::string()->length(1,4000,true),
                 'sanitizer' => function($v) { return trim($v); },
-                'error'     => 'Please enter an auction description up to 1,000 characters long.',
+                'error'     => 'Please enter an auction description up to 4,000 characters long.',
             ],
             'startDate' => [
                 'name'      => 'startDate',
