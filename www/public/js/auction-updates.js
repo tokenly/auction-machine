@@ -11,7 +11,6 @@
       socket = window.io.connect();
       socket.on('status', function(data) {});
       socket.on('auction-update', function(data) {
-        console.log("update", data);
         setTimeout(function() {
           return updateAuction(data, isAdmin);
         }, 1);

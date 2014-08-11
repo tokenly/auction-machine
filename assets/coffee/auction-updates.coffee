@@ -20,7 +20,7 @@ do ($=jQuery) ->
             return
 
         socket.on 'auction-update', (data)->
-            console.log "update",data
+            # console.log "update",data
             setTimeout ()->
                 updateAuction(data, isAdmin)
             , 1
