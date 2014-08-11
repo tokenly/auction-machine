@@ -175,7 +175,8 @@ class AuctioneerDaemon
             // publish all auction states to update the last block seen
             // (we really should separate this to its own socket)
             foreach ($this->auction_manager->allAuctions() as $auction) {
-                $this->data_publisher->publishAuctionState($auction, $block_id);
+                // update the auction because the pending status may have changed
+                $this->updateAuction($auction, $block_id);
             }
         });
 
