@@ -76,20 +76,21 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
+            {% endfor %}
         </div>
-        {% endif %}
-        {% endfor %}
-
-        {% if not anyAuctionsFound %}
-        <div>Sorry, no auctions are active right now.</div>
-        {% endif %}
-
-
-
-        <div class="spacer5"></div>
-        <a href="{{url('create-auction')}}" class="button">Create a New Auction</a>
-
     </div>
+
+    {% if not anyAuctionsFound %}
+    <div>Sorry, no auctions are active right now.</div>
+    {% endif %}
+
+
+
+    <div class="spacer5"></div>
+
+    <a href="{{url('create-auction')}}" class="button">Create a New Auction</a>
+
 </div>
 
 
