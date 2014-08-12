@@ -108,10 +108,19 @@ class AuctionManager
     }
 
     public function allAuctions() {
-        return $this->auction_directory->find([], ['startDate' => 1]);
+        return $this->auction_directory->find([]);
+    }
+    public function findAuctions($where, $sort=['startDate' => 1], $limit=null) {
+        return $this->auction_directory->find($where, $sort, $limit);
     }
 
     public function update($auction, $update_vars) {
+        if (isset($update_vars['description'])) {
+            // description as HTML
+            $Parsedown = new Parsedown();
+            $update_vars['descriptionHTML'] = $Parsedown->text($update_vars['description']);
+        }
+
         return $this->auction_directory->update($auction, $update_vars);
     }
 

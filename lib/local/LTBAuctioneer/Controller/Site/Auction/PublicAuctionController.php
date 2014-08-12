@@ -27,7 +27,8 @@ class PublicAuctionController extends BaseSiteController
 
     public function homeAction(Request $request) {
         $auctions = $this->auction_manager->allAuctions();
-        return $this->renderTwig('home/home.twig', ['auctions' => $auctions]);
+        $recently_ended_auctions = $this->auction_manager->findAuctions(['timePhase' => 'ended'], ['endDate' => -1], 5);
+        return $this->renderTwig('home/home.twig', ['auctions' => iterator_to_array($auctions), 'recentAuctions' => iterator_to_array($recently_ended_auctions)]);
     }
 
     public function viewAuctionAction(Request $request, $slug) {
