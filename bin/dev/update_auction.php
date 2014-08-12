@@ -43,7 +43,7 @@ try {
     print "Updating \$auction {$auction['slug']}\n";
 
 
-    $auction->getDirectory()->update($auction, $update_vars);
+    $app['auction.manager']->update($auction, $update_vars);
 
     echo "done\n";
 
