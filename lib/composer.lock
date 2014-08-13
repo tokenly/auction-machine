@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "4ee6ba925064f4e8afdcffb3f92e2208",
+    "hash": "5b5ba44d3921e4072a10f3256755cdaf",
     "packages": [
         {
             "name": "bitwasp/bitcoin-lib",
@@ -202,16 +202,16 @@
         },
         {
             "name": "guzzlehttp/streams",
-            "version": "1.5.0",
+            "version": "1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/streams.git",
-                "reference": "78f73ec74a87d5c6c29279119773693cc732789e"
+                "reference": "fb0d1ee29987c2bdc59867bffaade6fc88c2675f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/streams/zipball/78f73ec74a87d5c6c29279119773693cc732789e",
-                "reference": "78f73ec74a87d5c6c29279119773693cc732789e",
+                "url": "https://api.github.com/repos/guzzle/streams/zipball/fb0d1ee29987c2bdc59867bffaade6fc88c2675f",
+                "reference": "fb0d1ee29987c2bdc59867bffaade6fc88c2675f",
                 "shasum": ""
             },
             "require": {
@@ -251,7 +251,7 @@
                 "Guzzle",
                 "stream"
             ],
-            "time": "2014-08-08 01:24:01"
+            "time": "2014-08-10 23:57:01"
         },
         {
             "name": "linusu/bitcoin-address-validator",
@@ -374,13 +374,13 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/deweller/bitcoind-php.git",
-                "reference": "a287b07f9d60d44c5d11dbbbb4b46d5294b9bf2e"
+                "url": "https://github.com/nbobtc/bitcoind-php.git",
+                "reference": "1f5deaa35c2e108b0fc1bdd3eea7134ec2fef33b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/deweller/bitcoind-php/zipball/a287b07f9d60d44c5d11dbbbb4b46d5294b9bf2e",
-                "reference": "a287b07f9d60d44c5d11dbbbb4b46d5294b9bf2e",
+                "url": "https://api.github.com/repos/nbobtc/bitcoind-php/zipball/1f5deaa35c2e108b0fc1bdd3eea7134ec2fef33b",
+                "reference": "1f5deaa35c2e108b0fc1bdd3eea7134ec2fef33b",
                 "shasum": ""
             },
             "require": {
@@ -388,13 +388,14 @@
                 "php": ">=5.3.0"
             },
             "require-dev": {
+                "phing/phing": "*",
                 "phpunit/phpunit": "*",
                 "sami/sami": "*"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-develop": "1.x-dev"
                 }
             },
             "autoload": {
@@ -402,6 +403,7 @@
                     "Nbobtc": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -414,14 +416,10 @@
             "homepage": "https://github.com/nbobtc/bitcoind-php",
             "keywords": [
                 "bitcoin",
-                "bitcoind"
+                "bitcoind",
+                "bitcoins"
             ],
-            "support": {
-                "issues": "https://github.com/nbobtc/bitcoind-php/issues",
-                "wiki": "https://github.com/nbobtc/bitcoind-php/wiki",
-                "source": "https://github.com/nbobtc/bitcoind-php"
-            },
-            "time": "2014-08-06 01:32:27"
+            "time": "2014-08-10 17:45:16"
         },
         {
             "name": "pimple/pimple",

@@ -34,8 +34,8 @@ xcp.platformAddress     : "1H42mKvwutzE4DAip57tkAc9KEKMGBD2bB"
 admin.password          : "changeme"
 
 xcp.payout:
-    fee_per_kb               : 0.00005
-    multisig_dust_size       : 0.00004
+    fee_per_kb               : 0.00001
+    multisig_dust_size       : 0.000025
     allow_unconfirmed_inputs : true
 
 genesisBlockID : 314900

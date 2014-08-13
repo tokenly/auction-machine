@@ -33,10 +33,6 @@
         },
         {
             "type": "vcs",
-            "url": "https://github.com/deweller/bitcoind-php"
-        },
-        {
-            "type": "vcs",
             "url": "https://github.com/UTipdMe/Config"
         },
         {
