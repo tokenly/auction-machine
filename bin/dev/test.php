@@ -2,9 +2,11 @@
 <?php 
 
 
-use LTBAuctioneer\Init\Environment;
 use BitWasp\BitcoinLib\BIP32;
 use BitWasp\BitcoinLib\BitcoinLib;
+use LTBAuctioneer\Auctioneer\Payer\BTCSweeper;
+use LTBAuctioneer\Currency\CurrencyUtil;
+use LTBAuctioneer\Init\Environment;
 
 
 define('BASE_PATH', realpath(__DIR__.'/../..'));
@@ -15,4 +17,3 @@ $app_env = isset($values['e']) ? $values['e'] : null;
 $app = Environment::initEnvironment($app_env);
 echo "Environment: ".$app['config']['env']."\n";
 
-// throw new AdapterException();
