@@ -25,6 +25,10 @@ class SiteRouter
             return $this->app['controller.auction.public']->homeAction($request, $slug);
         })->method('GET')->bind('home');
 
+        $this->app->match('/auctions.json', function(Request $request) {
+            return $this->app['controller.auction.public']->auctionsData($request);
+        })->method('GET')->bind('auctions-data');
+
         // Auction Admin
         $this->app->match('/create/auction/new', function(Request $request) {
             return $this->app['controller.auction.admin']->newAuctionAction($request);

@@ -24,4 +24,18 @@ class AuctionModel extends BaseDocumentMysqlModel
         return isset($this['paidOut']) ? !!$this['paidOut'] : false;
     }
 
+
+    public function publicStatus() {
+        $state = $this['state'];
+        if ($this['timePhase'] == 'prebid' OR ($state['timePhase'] == 'live' AND !$state['active'])) {
+            return 'prebid';
+        }
+        if ($this['timePhase'] == 'live' AND $state['active']) {
+            return 'active';
+        }
+        if ($this['timePhase'] == 'ended') {
+            return 'ended';
+        }
+    }
+
 }
