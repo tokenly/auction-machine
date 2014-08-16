@@ -110,7 +110,8 @@ class AuctionManager
     public function allAuctions() {
         return $this->auction_directory->find([]);
     }
-    public function findAuctions($where, $sort=['startDate' => 1], $limit=null) {
+    public function findAuctions($where, $sort=null, $limit=null) {
+        if ($sort === null) { $sort = ['startDate' => 1]; }
         return $this->auction_directory->find($where, $sort, $limit);
     }
 
