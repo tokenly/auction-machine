@@ -5,14 +5,15 @@ USE `{{db}}`;
 
 
 CREATE TABLE IF NOT EXISTS `auction` (
-    `id`        int(11) unsigned NOT NULL AUTO_INCREMENT,
-    `refId`     varbinary(41) NOT NULL DEFAULT '',
-    `slug`      varchar(127) NOT NULL DEFAULT '',
-    `startDate` int(11) unsigned NOT NULL DEFAULT 0,
-    `endDate`   int(11) unsigned NOT NULL DEFAULT 0,
-    `timePhase` varchar(127) NOT NULL DEFAULT '',
-    `paidOut`   int(1) NOT NULL DEFAULT '0',
-    `document`  LONGTEXT NOT NULL DEFAULT '',
+    `id`               int(11) unsigned NOT NULL AUTO_INCREMENT,
+    `refId`            varbinary(41) NOT NULL DEFAULT '',
+    `slug`             varchar(127) NOT NULL DEFAULT '',
+    `startDate`        int(11) unsigned NOT NULL DEFAULT 0,
+    `endDate`          int(11) unsigned NOT NULL DEFAULT 0,
+    `timePhase`        varchar(127) NOT NULL DEFAULT '',
+    `paidOut`          int(1) NOT NULL DEFAULT '0',
+    `payoutsConfirmed` int(1) NOT NULL DEFAULT '0',
+    `document`         LONGTEXT NOT NULL DEFAULT '',
     PRIMARY KEY (`id`),
     UNIQUE KEY `refId` (`refId`),
     UNIQUE KEY `slug` (`slug`),
