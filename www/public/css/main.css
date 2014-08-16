@@ -307,6 +307,9 @@ footer div.contents ul {
   padding: 12px 24px;
   font-size: 0.8rem;
 }
+body {
+  line-height: 1;
+}
 div#wrapper {
   margin: 0 auto -48px;
   /* the bottom margin is the negative value of the footer's height */
