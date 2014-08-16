@@ -127,22 +127,29 @@
                     <i class="fa fa-question fa-2x left"></i>
 
 
-                    {% if state.timePhase == 'ended' %}
-                    <div class="amount">This Auction has ended.  Bids are no longer accepted at this address.</div>
-                    {% else %}
-                    <div class="amount">Send a total of at least <span data-next-payment class="amount-value">{{nextPayment|to_currency}}</span> <span class="token-type">{{auction.bidTokenType}}</span> to
+                    {# ended #}
+                    <div class="explanation" data-explanation-type="ended" style="display: {{state.timePhase == 'ended' ? 'block' : 'none'}};">
+                        <div class="section amount">This Auction has ended.  Bids are no longer accepted at this address.</div>
                     </div>
-                    <div class="address"><span class="btc-address" data-select-click>{{auction.auctionAddress}}</span></div>
-                    <div class="bounty-explanation">
-                        to outbid the leader.
+
+                    {# live #}
+                    <div class="explanation" data-explanation-type="live" style="display: {{state.timePhase == 'ended' ? 'none' : 'block'}};">
+                        <div class="section">
+                            To bid, send <span class="token-type">{{auction.bidTokenType}}</span> to
+                        </div>
+                        <div class="section address">
+                            <span class="btc-address" data-select-click>{{auction.auctionAddress}}</span>
+                        </div>
+
+                        <div class="section amount">
+                            If your total bid is at least <span data-next-payment class="amount-value">{{nextPayment|to_currency}}</span> <span class="token-type">{{auction.bidTokenType}}</span> then you will become the new leader.
+                            If you become the leader, you will pay a bounty of <span data-bounty>{{bounty|to_currency}}</span> <span class="token-type">{{auction.bidTokenType}}</span> to the previous high bidder.
+                        </div>
+
+                        <div class="section faq">
+                            You may increase an existing bid by sending more {{auction.bidTokenType}} from the same address.  Please see the <a href="{{url('faq')}}">FAQ</a>.
+                        </div>
                     </div>
-                    <div class="bounty-explanation">
-                        This is a bid of <span data-next-min-bid>{{nextMinBid|to_currency}}</span> plus a bounty of <span data-bounty>{{bounty|to_currency}} which will be paid to the current leader.</span>
-                    </div>
-                    <div class="bounty-explanation">
-                        All bids except for the winner will be returned at the end of the auction.
-                    </div>
-                    {% endif %}
 
                 </div>
 

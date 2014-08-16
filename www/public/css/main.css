@@ -157,6 +157,7 @@ ul.ordered-bids li {
   padding-bottom: 6px;
   padding-left: 8px;
   padding-right: 8px;
+  min-height: 65px;
   margin-top: 3px;
   margin-bottom: 3px;
   border: 1px solid #e4e4e4;
@@ -168,19 +169,16 @@ ul.ordered-bids li {
   font-size: 2.6rem;
   margin-top: 6px;
 }
-.bid-instructions div {
-  margin-top: 4px;
-  margin-bottom: 4px;
+.bid-instructions .section {
+  margin-bottom: 16px;
   margin-left: 43px;
   font-size: 0.9rem;
 }
-.bid-instructions .address {
-  margin-top: 8px;
-  font-size: 1rem;
+.bid-instructions .explanation {
+  margin-top: 12px;
 }
-.bid-instructions .bounty-explanation {
-  margin-top: 8px;
-  font-size: 0.9rem;
+.bid-instructions .address {
+  font-size: 1rem;
 }
 .bid-instructions .amount-value {
   font-weight: 500;
@@ -231,6 +229,26 @@ ul.ordered-bids li {
 .pending::after {
   content: ")";
 }
+.question-group {
+  font-size: 0.875rem;
+  margin-top: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #ECECEC;
+}
+.question-group .question {
+  font-weight: 500;
+  color: #222;
+  font-size: 1.05rem;
+}
+.question-group .answer {
+  font-weight: 300;
+  color: #444;
+  margin-top: 10px;
+  line-height: 1.1rem;
+}
+.question-group:last-child {
+  border: none;
+}
 div.auction-entry > div {
   margin-top: 6px;
   font-size: 0.85rem;
@@ -264,6 +282,10 @@ header h1 {
   margin: 0;
   font-size: 1.8rem;
   font-weight: 300;
+  color: white;
+}
+header h1 a,
+header h1 a:hover {
   color: white;
 }
 footer {

@@ -22,9 +22,8 @@ class SiteRouter
     public function route() {
         // home
         $this->app->match('/', function(Request $request) {
-            // return $this->app['twig']->render('home/home.twig', ['error' => $error]);
             return $this->app['controller.auction.public']->homeAction($request, $slug);
-        })->method('GET|POST')->bind('home');
+        })->method('GET')->bind('home');
 
         // Auction Admin
         $this->app->match('/create/auction/new', function(Request $request) {
@@ -33,12 +32,16 @@ class SiteRouter
 
         $this->app->match('/create/auction/{auctionRefId}', function(Request $request, $auctionRefId) {
             return $this->app['controller.auction.admin']->confirmAuctionAction($request, $auctionRefId);
-        })->method('GET|POST')->bind('create-auction-confirm');
+        })->method('GET')->bind('create-auction-confirm');
 
 
         $this->app->match('/auction/{slug}', function(Request $request, $slug) {
             return $this->app['controller.auction.public']->viewAuctionAction($request, $slug);
-        })->method('GET|POST')->bind('public-auction');
+        })->method('GET')->bind('public-auction');
+
+        $this->app->match('/faq', function(Request $request) {
+            return $this->app['twig']->render('faq/faq.twig', []);
+        })->method('GET')->bind('faq');
 
 
 
