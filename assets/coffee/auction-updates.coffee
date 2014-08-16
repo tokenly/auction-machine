@@ -1,5 +1,5 @@
 do ($=jQuery) ->
-    # FADE_SPEED = 75
+    FADE_SPEED = 200
     bidEntries = {}
 
     BID_EL_HEIGHT = 66
@@ -154,6 +154,16 @@ do ($=jQuery) ->
             $('*[data-no-bids]').hide()
         else
             $('*[data-no-bids]').show()
+
+        # show/hide ended explanation
+        if state.timePhase == 'ended'
+            if $('*[data-explanation-type=live]').is(':visible')
+                $('*[data-explanation-type=live]').fadeOut FADE_SPEED, ()->
+                    $('*[data-explanation-type=ended]').fadeIn FADE_SPEED
+        else
+            if $('*[data-explanation-type=ended]').is(':visible')
+                $('*[data-explanation-type=ended]').fadeOut FADE_SPEED, ()->
+                    $('*[data-explanation-type=live]').fadeIn FADE_SPEED
 
 
     initBidsByAddress = ()->
