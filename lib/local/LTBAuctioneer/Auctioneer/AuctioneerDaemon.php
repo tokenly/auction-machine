@@ -178,6 +178,11 @@ class AuctioneerDaemon
                 }
             }
         } 
+
+
+        // TODO: confirm auction payouts
+        // foreach ($this->auction_manager->findAuctionsPendingPayoutConfirmation() as $auction) {
+        // } 
     }
 
     protected function setupXCPDFollowerCallbacks() {

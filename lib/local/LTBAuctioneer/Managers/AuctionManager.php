@@ -136,6 +136,10 @@ class AuctionManager
         return $this->auction_directory->find(['timePhase' => 'ended', 'paidOut' => false], ['startDate' => 1]);
     }
 
+    public function findAuctionsPendingPayoutConfirmation() {
+        return $this->auction_directory->find(['timePhase' => 'ended', 'paidOut' => true, 'payoutsConfirmed' => false], ['startDate' => 1]);
+    }
+
 
     ////////////////////////////////////////////////////////////////////////
 
