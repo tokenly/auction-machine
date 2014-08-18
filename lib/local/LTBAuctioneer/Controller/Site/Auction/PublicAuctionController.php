@@ -98,7 +98,7 @@ class PublicAuctionController extends BaseSiteController
                     'owner'          => $auction['username'],
                     'lastAction'     => $state['blockId'],
                     'lastBlock'      => $last_block_seen,
-                    'highBidAmount'  => $high_bid ? CurrencyUtil::satoshisToNumber($high_bid['amount']) : null,
+                    'highBidAmount'  => $high_bid ? round($high_bid['amount'] / CurrencyUtil::SATOSHI, 7) : null,
                     'highBidAsset'   => $high_bid ? $high_bid['token'] : null,
                 ];
 
