@@ -31,9 +31,20 @@ class AuctionPayoutTest extends SiteTestCase
         }));
 
         $send_from_data = [];
-        $mock_native_client->method('sendfrom')->will($this->returnCallback(function($from, $to, $amount) use (&$send_from_data)  {
-            $send_from_data = ['from' => $from, 'to' => $to, 'amount' => $amount];
+        // $mock_native_client->method('sendfrom')->will($this->returnCallback(function($from, $to, $amount) use (&$send_from_data)  {
+        //     $send_from_data = ['from' => $from, 'to' => $to, 'amount' => $amount];
+        //     return 'faketxid';
+        // }));
+        $mock_native_client->method('createrawtransaction')->will($this->returnCallback(function($inputs, $outputs) use (&$send_from_data)  {
+            foreach ($outputs as $to => $amount) {
+                $send_from_data = ['to' => $to, 'amount' => $amount];
+                break;
+            }
             return 'faketxid';
+        }));
+
+        $mock_native_client->method('signrawtransaction')->will($this->returnCallback(function($raw_tx, $opts, $keys)  {
+            return ['hex' => 'abcdef', 'complete' => true];
         }));
 
 
@@ -52,7 +63,8 @@ class AuctionPayoutTest extends SiteTestCase
 
 
         // check payouts through xcpd and btc clients
-        PHPUnit::assertEquals($auction['auctionAddress'], $send_from_data['from']);
+        Debug::trace("\$send_from_data=\n".json_encode($send_from_data, 192),__FILE__,__LINE__,$this);
+        // PHPUnit::assertEquals($auction['auctionAddress'], $send_from_data['from']);
         PHPUnit::assertEquals($auction['platformAddress'], $send_from_data['to']);
 
     } 

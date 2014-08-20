@@ -39,11 +39,16 @@ class AuctioneerDaemonHandler
             $this->initNativeOrphanBlockFunction();
         }
         return $this->native_follower;
-        return $this->native_follower;
     }
     public function getCounterpartyFollower() {
         if (!isset($this->counterparty_follower)) {
-            $this->counterparty_follower = $this->test_case->getMockBuilder('\Utipd\CounterpartyFollower\Follower')->disableOriginalConstructor()->getMock();
+            $pdo = $this->app['mysql.client'];
+            $pdo->query("use `".$this->app['mysql.xcpd.databaseName']."`");
+
+            $this->counterparty_follower = $this->test_case->getMockBuilder('\Utipd\CounterpartyFollower\Follower')
+                ->setConstructorArgs([$this->app['xcpd.client'], $pdo])
+                ->setMethods(['handleNewSend','handleNewBlock','getLastProcessedBlock','processOneNewBlock',])
+                ->getMock();
             $this->initXCPFollowerFunctions();
             $this->initXCPOtherFunctions();
         }

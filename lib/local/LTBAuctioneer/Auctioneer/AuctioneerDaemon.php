@@ -288,7 +288,7 @@ class AuctioneerDaemon
         });
 
         $this->native_follower->handleOrphanedBlock(function($orphaned_block_id) {
-#            Debug::trace("handleOrphanedBlock \$orphaned_block_id=".Debug::desc($orphaned_block_id)."",__FILE__,__LINE__,$this);
+           Debug::trace("handleOrphanedBlock \$orphaned_block_id=".Debug::desc($orphaned_block_id)."",__FILE__,__LINE__,$this);
             EventLog::logEvent('block.orphan', ['blockId' => $orphaned_block_id]);
 
             // get all auctions affected
@@ -300,6 +300,9 @@ class AuctioneerDaemon
 
             // delete transactions
             $this->blockchain_tx_directory->deleteWhere(['blockId' => $orphaned_block_id]);
+
+            // inform the counterparty follower that a block has been orphaned
+            $this->xcpd_follower->orphanBlock($orphaned_block_id);
 
             // update and republish all affected auctions
             foreach($auction_ids as $auction_id => $_nothin) {

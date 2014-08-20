@@ -72,6 +72,32 @@ class AuctioneerDaemonTest extends SiteTestCase
         PHPUnit::greaterThanOrEqual(time() - 300, $tx_in_db['timestamp']);
     } 
 
+    public function testAuctioneerDaemonOrphanReloadsCounterpartyTransaction() {
+        $app = Environment::initEnvironment('test');
+        $mock_auctioneer_handler = new AuctioneerDaemonHandler($this, $app);
+
+        $follower = $app['xcpd.follower'];
+        $mysql = $app['mysql.client'];
+        $mysql->query("use `".$app['mysql.xcpd.databaseName']."`");
+
+
+        $sql = "REPLACE INTO blocks VALUES (?,?,?)";
+        $sth = $mysql->prepare($sql);
+        $result = $sth->execute([5999, 'processed', time()]);
+        $result = $sth->execute([6000, 'processed', time()]);
+        $result = $sth->execute([6001, 'processed', time()]);
+
+        // check that next xcp block will be 6002
+        PHPUnit::assertEquals(6001, $follower->getLastProcessedBlock());
+
+        // now orphan block 6001
+        // $native_orphaned_block_function(6001);
+        $mock_auctioneer_handler->orphanBlock(6001);
+
+        // check that next xcp block will be 6001 again
+        PHPUnit::assertEquals(6000, $follower->getLastProcessedBlock());
+    } 
+
 
     public function testAuctioneerDaemonTimePhaseChanges() {
         $app = Environment::initEnvironment('test');
