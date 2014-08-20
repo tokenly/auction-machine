@@ -63,7 +63,7 @@ class AuctionPayoutTest extends SiteTestCase
 
 
         // check payouts through xcpd and btc clients
-        Debug::trace("\$send_from_data=\n".json_encode($send_from_data, 192),__FILE__,__LINE__,$this);
+#        Debug::trace("\$send_from_data=\n".json_encode($send_from_data, 192),__FILE__,__LINE__,$this);
         // PHPUnit::assertEquals($auction['auctionAddress'], $send_from_data['from']);
         PHPUnit::assertEquals($auction['platformAddress'], $send_from_data['to']);
 

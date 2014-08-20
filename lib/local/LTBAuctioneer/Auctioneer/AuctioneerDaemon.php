@@ -288,7 +288,7 @@ class AuctioneerDaemon
         });
 
         $this->native_follower->handleOrphanedBlock(function($orphaned_block_id) {
-           Debug::trace("handleOrphanedBlock \$orphaned_block_id=".Debug::desc($orphaned_block_id)."",__FILE__,__LINE__,$this);
+#           Debug::trace("handleOrphanedBlock \$orphaned_block_id=".Debug::desc($orphaned_block_id)."",__FILE__,__LINE__,$this);
             EventLog::logEvent('block.orphan', ['blockId' => $orphaned_block_id]);
 
             // get all auctions affected
