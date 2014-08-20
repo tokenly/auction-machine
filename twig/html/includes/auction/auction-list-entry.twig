@@ -1,10 +1,22 @@
 {% set startWord = auction.startDate > "now"|date("U") ? 'Starts' : 'Started' %}
 {% set endWord = auction.endDate > "now"|date("U") ? 'Ends' : 'Ended' %}
 
+{% set state = auction.state %}
+{% set bids = state.bids %}
+{% set bounty = state.bounty %}
+{% if bids %}
+{% set nextMinBid = bids[0].amount + auction.minBidIncrement %}
+{% else %}
+{% set nextMinBid = auction.minStartingBid %}
+{% endif %}
+{% set nextPayment = nextMinBid + bounty %}
+
+
 <div class="auction-entry">
     <div class="row">
         <div class="columns">
             <div class="section name"><a href="{{url('public-auction', {slug: auction.slug})}}">{{auction.name}}</a></div>
+            <div class="section address"><span class="btc-address" data-select-click>{{auction.auctionAddress}}</span></div>
         </div>
     </div>
     <div class="row">
@@ -23,6 +35,12 @@
                 {% endfor %}
 
             </div>
+
+            <div class="section">
+                <label for="">Dates</label>
+                <div class="date">{{startWord}} <span data-with-timezone data-date-timestamp="{{auction.startDate}}">{{auction.startDate|date("n.d.Y g:i A P")}}</span></div>
+                <div class="date">{{endWord}} <span data-with-timezone data-date-timestamp="{{auction.endDate}}">{{auction.endDate|date("n.d.Y g:i A P")}}</span></div>
+            </div>
         </div>
 
         <div class="medium-6 columns">
@@ -39,12 +57,23 @@
                 </span>
             </div>
 
-            <div class="section">
-                <label for="">Dates</label>
-                <div class="date">{{startWord}} <span data-with-timezone data-date-timestamp="{{auction.startDate}}">{{auction.startDate|date("n.d.Y g:i A P")}}</span></div>
-                <div class="date">{{endWord}} <span data-with-timezone data-date-timestamp="{{auction.endDate}}">{{auction.endDate|date("n.d.Y g:i A P")}}</span></div>
+            <div class="section bids">
+                <label for="">Total Bids</label>
+                <div class="bid-data">Total Bids: {{bids|length}}</div>
             </div>
+            
+            <div class="section bids">
+                <label for="">
+                    {% if state.timePhase == 'ended' %}
+                    Winning Bid: 
+                    {% else %}
+                    Next High Bid: 
+                    {% endif %}
+                </label>
+                <div class="bid-data">
+                    {{nextPayment|to_currency}} {{auction.bidTokenType}}</div>
+                </div>
 
+            </div>
         </div>
     </div>
-</div>

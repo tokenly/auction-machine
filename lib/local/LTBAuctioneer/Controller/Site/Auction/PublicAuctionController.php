@@ -84,22 +84,45 @@ class PublicAuctionController extends BaseSiteController
             foreach($auctions as $auction) {
                 $state = $auction['state'];
                 $high_bid = isset($state['bidsAndAccounts'][0]) ? $state['bidsAndAccounts'][0] : [];
+                if ($high_bid) {
+                    $next_min_bid = ($high_bid ? $high_bid['amount'] : 0) + $auction['minBidIncrement'];
+                } else {
+                    $next_min_bid = $auction['minStartingBid'];
+                }
+                $next_payment = $next_min_bid + $state['bounty'];
+
+                $bids_and_accounts = [];
+                foreach ($state['bidsAndAccounts'] as $bid_entry) {
+                    $bid_entry['amount'] = CurrencyUtil::satoshisToUnFormattedNumber($bid_entry['amount']);
+                    $account = []; 
+                    foreach ($bid_entry['account'] as $type => $satoshis) {
+                        $account[$type] = CurrencyUtil::satoshisToUnFormattedNumber($satoshis);
+                    }
+                    $bid_entry['account'] = $account;
+                    // $bid_entry['amount'] = CurrencyUtil::satoshisToUnFormattedNumber($bid_entry['amount']);
+                    $bids_and_accounts[] = $bid_entry;
+                }
 
                 $entry = [
-                    'name'           => $auction['name'],
-                    'address'        => $auction['auctionAddress'],
-                    'slug'           => $auction['slug'],
-                    'url'            => $this->app->url('public-auction', ['slug' => $auction['slug']]),
-                    'status'         => $auction->publicStatus(),
-                    'start'          => date('r', $auction['startDate']),
+                    'name'              => $auction['name'],
+                    'address'           => $auction['auctionAddress'],
+                    'slug'              => $auction['slug'],
+                    'url'               => $this->app->url('public-auction', ['slug' => $auction['slug']]),
+                    'status'            => $auction->publicStatus(),
+                    'start'             => date('r', $auction['startDate']),
                     // 'startTimestamp' => $auction['startDate'],
-                    'end'            => date('r', $auction['endDate']),
+                    'end'               => date('r', $auction['endDate']),
                     // 'endTimestamp'   => $auction['endDate'],
-                    'owner'          => $auction['username'],
-                    'lastAction'     => $state['blockId'],
-                    'lastBlock'      => $last_block_seen,
-                    'highBidAmount'  => $high_bid ? round($high_bid['amount'] / CurrencyUtil::SATOSHI, 7) : null,
-                    'highBidAsset'   => $high_bid ? $high_bid['token'] : null,
+                    'owner'             => $auction['username'],
+                    'lastAction'        => $state['blockId'],
+                    'lastBlock'         => $last_block_seen,
+                    'highBidAmount'     => $high_bid ? CurrencyUtil::satoshisToUnFormattedNumber($high_bid['amount']) : null,
+                    'highBidAsset'      => $high_bid ? $high_bid['token'] : null,
+
+                    'startingBid'       => CurrencyUtil::satoshisToUnFormattedNumber($auction['minStartingBid']),
+                    'currentBids'       => $bids_and_accounts,
+                    'bounty'            => CurrencyUtil::satoshisToUnFormattedNumber($state['bounty']),
+                    'nextMinBid'        => CurrencyUtil::satoshisToUnFormattedNumber($next_payment),
                 ];
 
                 $data[$type][] = $entry;

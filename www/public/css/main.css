@@ -256,11 +256,15 @@ div.auction-entry > div {
 div.auction-entry .name {
   font-size: 1.3rem;
   font-weight: 600;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 div.auction-entry .section {
   margin-top: 6px;
   padding-left: 8px;
+}
+div.auction-entry .address {
+  margin-top: 0px;
+  margin-bottom: 8px;
 }
 div.auction-entry:first-child {
   border-top: 1px solid #eee;

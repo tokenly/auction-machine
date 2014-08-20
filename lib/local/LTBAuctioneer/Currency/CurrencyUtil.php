@@ -31,6 +31,12 @@ class CurrencyUtil
         return $out;
     }
 
+    public static function satoshisToUnFormattedNumber($satoshis, $places=null) {
+        if ($places === null) { $places = 7; }
+        $out = round($satoshis / self::SATOSHI, $places);
+        return $out;
+    } 
+
     public static function addTwigFilters($twig) {
         $filter = new \Twig_SimpleFilter('to_currency', function ($satoshis) {
             return CurrencyUtil::satoshisToNumber($satoshis);
