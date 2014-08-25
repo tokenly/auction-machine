@@ -1,7 +1,8 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
     ],
     "hash": "5b5ba44d3921e4072a10f3256755cdaf",
     "packages": [
@@ -137,21 +138,21 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "4.1.7",
+            "version": "4.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "448f2c2076cf0fb756230611491c4f7ecb735a29"
+                "reference": "47ca212e985d962b3cbd67675eec54bb72d66062"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/448f2c2076cf0fb756230611491c4f7ecb735a29",
-                "reference": "448f2c2076cf0fb756230611491c4f7ecb735a29",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/47ca212e985d962b3cbd67675eec54bb72d66062",
+                "reference": "47ca212e985d962b3cbd67675eec54bb72d66062",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "guzzlehttp/streams": "~1.4",
+                "guzzlehttp/streams": "~2.1",
                 "php": ">=5.4.0"
             },
             "require-dev": {
@@ -165,7 +166,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.1-dev"
+                    "dev-master": "4.2-dev"
                 }
             },
             "autoload": {
@@ -198,20 +199,20 @@
                 "rest",
                 "web service"
             ],
-            "time": "2014-08-08 01:30:43"
+            "time": "2014-08-20 05:30:12"
         },
         {
             "name": "guzzlehttp/streams",
-            "version": "1.5.1",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/streams.git",
-                "reference": "fb0d1ee29987c2bdc59867bffaade6fc88c2675f"
+                "reference": "f91b721d73f0e561410903b3b3c90a5d0e40b534"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/streams/zipball/fb0d1ee29987c2bdc59867bffaade6fc88c2675f",
-                "reference": "fb0d1ee29987c2bdc59867bffaade6fc88c2675f",
+                "url": "https://api.github.com/repos/guzzle/streams/zipball/f91b721d73f0e561410903b3b3c90a5d0e40b534",
+                "reference": "f91b721d73f0e561410903b3b3c90a5d0e40b534",
                 "shasum": ""
             },
             "require": {
@@ -223,7 +224,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.5-dev"
+                    "dev-master": "2.0-dev"
                 }
             },
             "autoload": {
@@ -251,20 +252,20 @@
                 "Guzzle",
                 "stream"
             ],
-            "time": "2014-08-10 23:57:01"
+            "time": "2014-08-17 21:15:53"
         },
         {
             "name": "linusu/bitcoin-address-validator",
-            "version": "v0.1.1",
+            "version": "v0.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/LinusU/php-bitcoin-address-validator.git",
-                "reference": "56fc7b43711fc56a3d0f524e19b83bbb11bdd24d"
+                "reference": "60dd66e7be5e7f5127e65a581eb67aacb3fe553c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/LinusU/php-bitcoin-address-validator/zipball/56fc7b43711fc56a3d0f524e19b83bbb11bdd24d",
-                "reference": "56fc7b43711fc56a3d0f524e19b83bbb11bdd24d",
+                "url": "https://api.github.com/repos/LinusU/php-bitcoin-address-validator/zipball/60dd66e7be5e7f5127e65a581eb67aacb3fe553c",
+                "reference": "60dd66e7be5e7f5127e65a581eb67aacb3fe553c",
                 "shasum": ""
             },
             "require": {
@@ -296,10 +297,10 @@
                 "validator"
             ],
             "support": {
-                "source": "https://github.com/LinusU/php-bitcoin-address-validator/tree/v0.1.1",
+                "source": "https://github.com/LinusU/php-bitcoin-address-validator/tree/v0.1.2",
                 "issues": "https://github.com/LinusU/php-bitcoin-address-validator/issues"
             },
-            "time": "2014-04-14 17:28:05"
+            "time": "2014-08-20 13:04:51"
         },
         {
             "name": "monolog/monolog",
@@ -1436,12 +1437,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/UTipdMe/counterparty-follower.git",
-                "reference": "5789d35d9e4605d251a5c0c36313b2bce32208fb"
+                "reference": "4a1282d4306a9a18757f8935170777145b4e2e00"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/UTipdMe/counterparty-follower/zipball/5789d35d9e4605d251a5c0c36313b2bce32208fb",
-                "reference": "5789d35d9e4605d251a5c0c36313b2bce32208fb",
+                "url": "https://api.github.com/repos/UTipdMe/counterparty-follower/zipball/4a1282d4306a9a18757f8935170777145b4e2e00",
+                "reference": "4a1282d4306a9a18757f8935170777145b4e2e00",
                 "shasum": ""
             },
             "require": {
@@ -1473,13 +1474,13 @@
                     "homepage": "http://devonweller.com"
                 }
             ],
-            "description": "A library",
+            "description": "A Counterparty send transaction follower.",
             "keywords": [
                 "bitcoin",
                 "counterparty",
                 "transaction"
             ],
-            "time": "2014-08-09 20:08:40"
+            "time": "2014-08-20 23:43:52"
         },
         {
             "name": "utipd/form",
@@ -1530,12 +1531,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/UTipdMe/MysqlModel.git",
-                "reference": "d0b1e21bc0b7ea56feddceed19a40a8426a3b78e"
+                "reference": "6285752a54471f787c591b316652fb73ceabfbf6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/UTipdMe/MysqlModel/zipball/d0b1e21bc0b7ea56feddceed19a40a8426a3b78e",
-                "reference": "d0b1e21bc0b7ea56feddceed19a40a8426a3b78e",
+                "url": "https://api.github.com/repos/UTipdMe/MysqlModel/zipball/6285752a54471f787c591b316652fb73ceabfbf6",
+                "reference": "6285752a54471f787c591b316652fb73ceabfbf6",
                 "shasum": ""
             },
             "require": {
@@ -1564,7 +1565,7 @@
                 }
             ],
             "description": "A minimalistic manager for storing and retrieving MySQL rows as PHP models. Does not handle schemas. Does allow treating mysql rows like documents.",
-            "time": "2014-08-08 02:48:15"
+            "time": "2014-08-20 12:05:53"
         },
         {
             "name": "utipd/native-follower",
@@ -1572,12 +1573,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/UTipdMe/native-follower.git",
-                "reference": "73ce8bf0557c2b347385276077edfa82fe314905"
+                "reference": "2e923da8822c848a368c6af9f1ed3f705241a55d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/UTipdMe/native-follower/zipball/73ce8bf0557c2b347385276077edfa82fe314905",
-                "reference": "73ce8bf0557c2b347385276077edfa82fe314905",
+                "url": "https://api.github.com/repos/UTipdMe/native-follower/zipball/2e923da8822c848a368c6af9f1ed3f705241a55d",
+                "reference": "2e923da8822c848a368c6af9f1ed3f705241a55d",
                 "shasum": ""
             },
             "require": {
@@ -1613,7 +1614,7 @@
                 "orphans",
                 "transaction"
             ],
-            "time": "2014-08-09 20:09:59"
+            "time": "2014-08-23 13:10:49"
         },
         {
             "name": "utipd/simple-daemon",
@@ -1715,6 +1716,7 @@
         "nbobtc/bitcoind-php": 20,
         "bitwasp/bitcoin-lib": 20
     },
+    "prefer-stable": false,
     "platform": [],
     "platform-dev": []
 }
