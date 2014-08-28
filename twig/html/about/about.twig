@@ -1,0 +1,50 @@
+{% extends "base/section.twig" %}
+
+{% block app_css %}
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block sectionBody %}
+
+
+<div class="row">
+    <div class="medium-12 large-10 columns small-centered">
+
+        <h3>About this Site</h3>
+
+        <p>
+            This site was created for the LTB Network.
+        </p>
+
+        <p>
+            This project is <a href="https://github.com/deweller/auction-machine">open source</a>.
+        </p>
+
+        <p>
+            Check out the <a href="http://letstalkbitcoin.com/forum/post/auction-vending-machines-are-now-operational">LTB forums</a> for discussion and support.
+        </p>
+
+
+        <div class="spacer2"></div>
+
+        <h3>Credits</h3>
+
+        <ul>
+            <li>Original concept and specification by <a href="http://letstalkbitcoin.com/profile/user/adam">Adam B. Levine</a></li>
+            <li>Programming and website by <a href="http://letstalkbitcoin.com/profile/user/deweller">Devon Weller</a></li>
+            <li>Logo and Header Graphic by <a href="http://letstalkbitcoin.com/profile/user/rob">Rob Mitchell</a></li>
+        </ul>
+
+    </div>
+</div>
+
+
+
+
+{% endblock %}
+
+
+{% block app_js %}
+{{ parent() }}
+<script src="/public/js/select-click.js"></script>
+{% endblock %}

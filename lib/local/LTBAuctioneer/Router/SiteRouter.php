@@ -25,6 +25,12 @@ class SiteRouter
             return $this->app['controller.auction.public']->homeAction($request, $slug);
         })->method('GET')->bind('home');
 
+        // about
+        $this->app->match('/about', function(Request $request) {
+            return $this->app['controller.plain']->renderPlainTemplate('about/about.twig');
+        })->method('GET')->bind('about');
+
+
         $this->app->match('/auctions.json', function(Request $request) {
             return $this->app['controller.auction.public']->auctionsData($request);
         })->method('GET')->bind('auctions-data');

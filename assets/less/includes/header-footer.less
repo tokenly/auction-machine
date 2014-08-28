@@ -1,21 +1,30 @@
 header {
-    background-color: #0A323F;
+    height: 86px;
+    background: #0A323F url(/public/img/AuctioneerLogo.png) no-repeat 14px 6px;
 
     h1 {
-        padding: 8px 24px;
+        padding: 28px 24px;
         margin: 0;
-        font-size: 1.8rem;
+        font-size: 3rem;
         font-weight: 300;
         color: white;
 
         a, a:hover {
             color: white;
+            opacity: 0;
         }
     }
 
     margin-bottom: 24px;
 }
 
+@media (-webkit-min-device-pixel-ratio: 2), 
+(min-resolution: 192dpi) { 
+    header {
+        background-image: url(/public/img/AuctioneerLogo2x.png);
+        background-size: 325px 76px;
+    }
+}
 
 
 
