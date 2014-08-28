@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1150c1c0bf00a6ffb7a195c034312456",
+    "hash": "14269038977f55219eccbd1b273abd69",
     "packages": [
         {
             "name": "bitwasp/bitcoin-lib",

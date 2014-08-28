@@ -31,22 +31,6 @@
         {
             "type": "vcs",
             "url": "https://github.com/LinusU/php-bitcoin-address-validator"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/UTipdMe/Config"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/UTipdMe/HmacAuth"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/UTipdMe/simple-daemon"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/UTipdMe/form"
         }
     ]
 
