@@ -4,7 +4,6 @@
 
 use BitWasp\BitcoinLib\BIP32;
 use BitWasp\BitcoinLib\BitcoinLib;
-use LTBAuctioneer\Auctioneer\Payer\BTCSweeper;
 use LTBAuctioneer\Currency\CurrencyUtil;
 use LTBAuctioneer\Init\Environment;
 

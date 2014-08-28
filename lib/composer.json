@@ -11,6 +11,7 @@
         "utipd/counterparty-follower": "dev-master",
         "utipd/native-follower": "dev-master",
         "utipd/simple-daemon": "dev-master",
+        "utipd/bitcoin-payer": "dev-master",
         "respect/validation": "~0",
         "deweller/cliopts": "~1",
         "linusu/bitcoin-address-validator": "~0",

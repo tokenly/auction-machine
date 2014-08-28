@@ -2,9 +2,9 @@
 <?php 
 
 
-use LTBAuctioneer\Auctioneer\Payer\BTCSweeper;
 use LTBAuctioneer\Currency\CurrencyUtil;
 use LTBAuctioneer\Init\Environment;
+use Utipd\BitcoinPayer\BitcoinPayer;
 
 
 define('BASE_PATH', realpath(__DIR__.'/../..'));
@@ -20,7 +20,7 @@ echo "Environment: ".$app['config']['env']."\n";
 $private_key = getenv('PRIVATE_KEY');
 $src_address = getenv('SRC_ADDRESS');
 $dest_address = getenv('DEST_ADDRESS');
-$sweeper = new BTCSweeper($app['native.client']);
+$sweeper = new BitcoinPayer($app['native.client']);
 $fee = $app['config']['xcp.payout']['fee_per_kb'];
 list($transaction_id, $float_balance_sent) = $sweeper->sweepBTC($src_address, $dest_address, $private_key, $fee);
 $result = [$transaction_id, CurrencyUtil::numberToSatoshis($float_balance_sent)];

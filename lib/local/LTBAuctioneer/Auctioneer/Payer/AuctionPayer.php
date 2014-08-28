@@ -4,10 +4,10 @@ namespace LTBAuctioneer\Auctioneer\Payer;
 
 use Exception;
 use GuzzleHttp\Client as GuzzleClient;
-use LTBAuctioneer\Auctioneer\Payer\BTCSweeper;
 use LTBAuctioneer\Currency\CurrencyUtil;
 use LTBAuctioneer\Debug\Debug;
 use LTBAuctioneer\EventLog\EventLog;
+use Utipd\BitcoinPayer\BitcoinPayer;
 /*
 * AuctionPayer
 */
@@ -148,41 +148,10 @@ class AuctionPayer
     }
 
     protected function sweepBTC($payout, $auction, $private_key) {
-        $sweeper = new BTCSweeper($this->native_client);
+        $sweeper = new BitcoinPayer($this->native_client);
         $fee = $this->payouts_config['fee_per_kb'];
         list($transaction_id, $float_balance_sent) = $sweeper->sweepBTC($auction['auctionAddress'], $auction['platformAddress'], $private_key, $fee);
         return [$transaction_id, CurrencyUtil::numberToSatoshis($float_balance_sent)];
-
-//         // this is a bit hack-y
-//         //   start with a $fee of 0.0001 and increase it by 0.0001 until bitcoind accepts it
-//         $fee = 0.0001;
-//         while ($fee <= 0.001) {
-//             try {
-// #                Debug::trace("fee: $fee",__FILE__,__LINE__,$this);
-//                 $float_balance_sent = ($float_balance - $fee);
-//                 if ($this->payout_debug) {
-//                     EventLog::logEvent('DEBUG.payout.btc', ['from' => $auction['auctionAddress'], 'to' => $auction['platformAddress'], 'amount' => $float_balance_sent]);
-//                     $result = 'DEBUG_'.md5(json_encode(['from' => $auction['auctionAddress'], 'to' => $auction['platformAddress'], 'amount' => $float_balance_sent]));
-//                 } else {
-//                     $result = $this->native_client->sendfrom($auction['auctionAddress'], $auction['platformAddress'], $float_balance_sent);
-//                 }
-// #                Debug::trace("\$result=".Debug::desc($result)."",__FILE__,__LINE__,$this);
-//                 if ($result) { break; }
-//             } catch (Exception $e) {
-//                 if ($e->getCode() == -4) {
-//                     // "This transaction requires a transaction fee of at least 0.0001 because of its amount, complexity, or use of recently received funds!""
-//                     // try increasing the fees and sending again
-//                     $fee += 0.0001;
-//                     continue;
-//                 }
-
-//                 throw $e;
-//             }
-
-//             if (!$result) { throw new Exception("Could not send with fee up to $fee", 1); }
-//         }
-
-        // return [$result, CurrencyUtil::numberToSatoshis($float_balance_sent)];
     }
 
 

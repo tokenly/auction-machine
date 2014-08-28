@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5b5ba44d3921e4072a10f3256755cdaf",
+    "hash": "1150c1c0bf00a6ffb7a195c034312456",
     "packages": [
         {
             "name": "bitwasp/bitcoin-lib",
@@ -1387,17 +1387,59 @@
             "time": "2014-07-05 12:19:05"
         },
         {
+            "name": "utipd/bitcoin-payer",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/UTipdMe/bitcoin-payer.git",
+                "reference": "10210f9dba6e25db6115432f02ef9ffe3b3a595e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/UTipdMe/bitcoin-payer/zipball/10210f9dba6e25db6115432f02ef9ffe3b3a595e",
+                "reference": "10210f9dba6e25db6115432f02ef9ffe3b3a595e",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "4.*",
+                "nbobtc/bitcoind-php": "dev-master",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Utipd\\BitcoinPayer": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Devon Weller",
+                    "email": "dweller@devonweller.com",
+                    "homepage": "http://devonweller.com"
+                }
+            ],
+            "description": "A bitcoin payment library",
+            "time": "2014-08-27 12:48:18"
+        },
+        {
             "name": "utipd/config",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/UTipdMe/Config.git",
-                "reference": "ad8abf2ad64ae67993855569a962d25d69e6180d"
+                "reference": "742a8cf21f0a1faba2423b6f9abad25ef4a1afcd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/UTipdMe/Config/zipball/ad8abf2ad64ae67993855569a962d25d69e6180d",
-                "reference": "ad8abf2ad64ae67993855569a962d25d69e6180d",
+                "url": "https://api.github.com/repos/UTipdMe/Config/zipball/742a8cf21f0a1faba2423b6f9abad25ef4a1afcd",
+                "reference": "742a8cf21f0a1faba2423b6f9abad25ef4a1afcd",
                 "shasum": ""
             },
             "require": {
@@ -1429,7 +1471,7 @@
                 "source": "https://github.com/UTipdMe/Config/tree/master",
                 "issues": "https://github.com/UTipdMe/Config/issues"
             },
-            "time": "2014-08-07 22:30:24"
+            "time": "2014-08-27 12:08:36"
         },
         {
             "name": "utipd/counterparty-follower",
@@ -1531,12 +1573,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/UTipdMe/MysqlModel.git",
-                "reference": "6285752a54471f787c591b316652fb73ceabfbf6"
+                "reference": "5092e69fa1213c8440c995cfbd32dcc7c5960e5b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/UTipdMe/MysqlModel/zipball/6285752a54471f787c591b316652fb73ceabfbf6",
-                "reference": "6285752a54471f787c591b316652fb73ceabfbf6",
+                "url": "https://api.github.com/repos/UTipdMe/MysqlModel/zipball/5092e69fa1213c8440c995cfbd32dcc7c5960e5b",
+                "reference": "5092e69fa1213c8440c995cfbd32dcc7c5960e5b",
                 "shasum": ""
             },
             "require": {
@@ -1565,7 +1607,7 @@
                 }
             ],
             "description": "A minimalistic manager for storing and retrieving MySQL rows as PHP models. Does not handle schemas. Does allow treating mysql rows like documents.",
-            "time": "2014-08-20 12:05:53"
+            "time": "2014-08-27 23:52:37"
         },
         {
             "name": "utipd/native-follower",
@@ -1713,6 +1755,7 @@
         "utipd/counterparty-follower": 20,
         "utipd/native-follower": 20,
         "utipd/simple-daemon": 20,
+        "utipd/bitcoin-payer": 20,
         "nbobtc/bitcoind-php": 20,
         "bitwasp/bitcoin-lib": 20
     },
