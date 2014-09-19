@@ -28,6 +28,9 @@ class ControllersInit {
         $app['controller.admin'] = function($app) {
             return new \LTBAuctioneer\Controller\Site\Admin\AdminController($app, $app['directory']('EventLog'), $app['directory']('Auction'));
         };
+        $app['controller.admin.auction'] = function($app) {
+            return new \LTBAuctioneer\Controller\Site\Admin\AdminAuctionEditController($app, $app['auction.manager']);
+        };
 
         $app['controller.plain'] = function($app) {
             return new \LTBAuctioneer\Controller\Site\Plain\PlainController($app);

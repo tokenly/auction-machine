@@ -56,11 +56,14 @@ class AdminController extends BaseSiteController
         $entries = [];
         $results = AdminUtil::findWithFormData($this->auction_directory, $form_spec, $form_data);
         foreach ($results as $auction) {
+            $href = $this->app->url('admin-edit-auction', ['auctionId' => $auction['id']]);
+            $edit_link = "<a href=\"$href\">[edit]</a>";
             $entries[] = [
-                'title'    => $auction['name'],
+                'title'       => $auction['name'],
                 // 'subtitle' => date("Y-m-d H:i:s T", $auction['startDate']),
-                'subtitle' => $auction['startDate'],
-                'data'     => $auction,
+                'subtitle'    => $auction['startDate'],
+                'link'        => $edit_link,
+                'data'        => $auction,
             ];
         }
 #        Debug::trace("\$entries=".Debug::desc($entries)."",__FILE__,__LINE__,$this);

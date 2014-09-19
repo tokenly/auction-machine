@@ -1,0 +1,36 @@
+{% extends "admin/base/admin.twig" %}
+
+{% block sectionBody %}
+
+
+    <div class="row">
+        <div class="medium-centered medium-8 large-6 columns">
+
+            <p>Auction Edited.</p>
+
+            <a href="{{url('admin-auctions')}}" class="button">Back To Auctions</a>
+            
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+
+{% block app_css %}
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/public/vendor/datetimepicker/jquery.datetimepicker.css"/ >
+{% endblock %}
+
+
+{% block app_js %}
+{{ parent() }}
+
+<script src="/public/vendor/datetimepicker/jquery.datetimepicker.js"></script>
+<script src="/public/vendor/momentjs/moment.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jstimezonedetect/1.0.4/jstz.min.js"></script>
+<script src="/public/js/new-auction.js"></script>
+{% endblock %}
+
+

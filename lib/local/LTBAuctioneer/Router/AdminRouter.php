@@ -49,7 +49,14 @@ class AdminRouter
 
         $this->app->match('/admin/auctions', function(Request $request) use($app) {
             return $this->app['controller.admin']->auctionsAction($request);
-        })->method('GET|POST')->before($http_auth);
+        })->method('GET|POST')->before($http_auth)->bind('admin-auctions');
+
+        $this->app->match('/admin/auction/edit/{auctionId}', function(Request $request, $auctionId) use($app) {
+            return $this->app['controller.admin.auction']->editAuctionAction($request, $auctionId);
+        })->method('GET|POST')->before($http_auth)->bind('admin-edit-auction');
+        $this->app->match('/admin/auction/edit-complete/{auctionId}', function(Request $request, $auctionId) use($app) {
+            return $this->app['controller.admin.auction']->editAuctionConfirmAction($request, $auctionId);
+        })->method('GET|POST')->before($http_auth)->bind('admin-edit-auction-confirm');
 
     }
 
