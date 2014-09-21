@@ -43,35 +43,43 @@ class AuctioneerDaemon
         EventLog::logEvent('daemon.start', []);
 
         $f = $this->simple_daemon_factory;
-        $count = 0;
+        $iteration_count = 0;
 
-        $loop_function = function() use (&$count) {
+        $loop_function = function() use (&$iteration_count) {
             $this->runOneIteration();
-            ++$count;
+            ++$iteration_count;
 
             // restart about every 5 minutes
-            //   curl seems to lose the ability to connect
-            if ($count > 60) { throw new Exception("Debug: forcing process restart", 250); }
+            if ($iteration_count > 60) { throw new Exception("forcing process restart", 250); }
         };
 
-        $error_handler = function($e) {
+        $error_handler = function($e) use (&$iteration_count) {
             if ($e->getCode() == 250) {
                 // force restart
                 throw $e;
             }
 
             EventLog::logError('daemon.error', $e);
+
+            // restart about every 5 minutes
+            ++$iteration_count;
+            if ($iteration_count > 60) { throw new Exception("forcing process restart", 250); }
         };
+
 
         $daemon = $f($loop_function, $error_handler);
 
         try {
             $daemon->run();
         } catch (Exception $e) {
-            EventLog::logError('daemon.error.final', $e);
+            if ($e->getCode() == 250) {
+                EventLog::logEvent('daemon.shutdown', ['reason' => $e->getMessage()]);
+            } else { 
+                EventLog::logError('daemon.error.final', $e);
+                EventLog::logEvent('daemon.shutdown', []);
+            }
         }
 
-        EventLog::logEvent('daemon.shutdown', []);
     }
 
     public function runOneIteration() {
