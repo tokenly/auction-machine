@@ -133,7 +133,7 @@ class AuctionPayer
         }
 
         // unlock the wallet with the passphrase
-        $this->unlockWallet();
+        // $this->unlockWallet();
 
         // create a send
         $raw_tx = $this->xcpd_client->create_send($send_vars);
@@ -161,11 +161,11 @@ class AuctionPayer
         return $assets[0]['divisible'];
     }
 
-    protected function unlockWallet() {
-        if ($this->wallet_passphrase) {
-            $result = $this->native_client->walletpassphrase($this->wallet_passphrase, 60);
-        }
+    // protected function unlockWallet() {
+    //     if ($this->wallet_passphrase) {
+    //         $result = $this->native_client->walletpassphrase($this->wallet_passphrase, 60);
+    //     }
 
-    }
+    // }
 }
 

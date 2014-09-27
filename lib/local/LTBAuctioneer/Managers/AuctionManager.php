@@ -74,20 +74,20 @@ class AuctionManager
         $Parsedown = new Parsedown();
         $new_auction_vars['descriptionHTML'] = $Parsedown->text($new_auction_vars['description']);
 
-        // import the private key and address into the bitcoin wallet
-        if ($this->native_client) {
-            $private_key = $this->address_generator->WIFPrivateKey($new_auction_vars['keyToken']);
+//         // import the private key and address into the bitcoin wallet
+//         if ($this->native_client) {
+//             $private_key = $this->address_generator->WIFPrivateKey($new_auction_vars['keyToken']);
 
-            // unlock the wallet if needed
-            if ($this->wallet_passphrase) {
-                $result = $this->native_client->walletpassphrase($this->wallet_passphrase, 60);
-#                Debug::trace("called walletpassphrase result=".Debug::desc($result)."",__FILE__,__LINE__,$this);
-            }
+//             // unlock the wallet if needed
+//             if ($this->wallet_passphrase) {
+//                 $result = $this->native_client->walletpassphrase($this->wallet_passphrase, 60);
+// #                Debug::trace("called walletpassphrase result=".Debug::desc($result)."",__FILE__,__LINE__,$this);
+//             }
 
-            RetryController::retry(function() use ($new_auction_vars, $private_key) {
-                $result = $this->native_client->importprivkey($private_key, $new_auction_vars['auctionAddress'], false);
-            });
-        }
+//             RetryController::retry(function() use ($new_auction_vars, $private_key) {
+//                 $result = $this->native_client->importprivkey($private_key, $new_auction_vars['auctionAddress'], false);
+//             });
+//         }
         
 
         $auction = $this->auction_directory->createAndSave($new_auction_vars);
