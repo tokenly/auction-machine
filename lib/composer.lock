@@ -99,16 +99,16 @@
         },
         {
             "name": "erusev/parsedown",
-            "version": "1.0.1",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/erusev/parsedown.git",
-                "reference": "d24439ada0704948deef0d3eda2ea20fd8db1747"
+                "reference": "c62365adc4488e1c35a8f45ea86f7d4a22bd58a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/erusev/parsedown/zipball/d24439ada0704948deef0d3eda2ea20fd8db1747",
-                "reference": "d24439ada0704948deef0d3eda2ea20fd8db1747",
+                "url": "https://api.github.com/repos/erusev/parsedown/zipball/c62365adc4488e1c35a8f45ea86f7d4a22bd58a0",
+                "reference": "c62365adc4488e1c35a8f45ea86f7d4a22bd58a0",
                 "shasum": ""
             },
             "type": "library",
@@ -134,20 +134,20 @@
                 "markdown",
                 "parser"
             ],
-            "time": "2014-05-21 20:20:46"
+            "time": "2014-09-25 23:06:16"
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "4.2.1",
+            "version": "4.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "47ca212e985d962b3cbd67675eec54bb72d66062"
+                "reference": "9c4fbbf6457768f5036fbd88f1229f3fca812a5d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/47ca212e985d962b3cbd67675eec54bb72d66062",
-                "reference": "47ca212e985d962b3cbd67675eec54bb72d66062",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/9c4fbbf6457768f5036fbd88f1229f3fca812a5d",
+                "reference": "9c4fbbf6457768f5036fbd88f1229f3fca812a5d",
                 "shasum": ""
             },
             "require": {
@@ -199,7 +199,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2014-08-20 05:30:12"
+            "time": "2014-09-08 22:11:58"
         },
         {
             "name": "guzzlehttp/streams",
@@ -613,16 +613,16 @@
         },
         {
             "name": "silex/silex",
-            "version": "v1.2.1",
+            "version": "v1.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/silexphp/Silex.git",
-                "reference": "cb9fd447c168640ae14862cfffa1fa23d3a24fe9"
+                "reference": "8c5e86eb97f3eee633729b22e950082fb5591328"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/silexphp/Silex/zipball/cb9fd447c168640ae14862cfffa1fa23d3a24fe9",
-                "reference": "cb9fd447c168640ae14862cfffa1fa23d3a24fe9",
+                "url": "https://api.github.com/repos/silexphp/Silex/zipball/8c5e86eb97f3eee633729b22e950082fb5591328",
+                "reference": "8c5e86eb97f3eee633729b22e950082fb5591328",
                 "shasum": ""
             },
             "require": {
@@ -680,14 +680,11 @@
             "authors": [
                 {
                     "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
+                    "email": "fabien@symfony.com"
                 },
                 {
                     "name": "Igor Wiedler",
-                    "email": "igor@wiedler.ch",
-                    "homepage": "http://wiedler.ch/igor/"
+                    "email": "igor@wiedler.ch"
                 }
             ],
             "description": "The PHP micro-framework based on the Symfony2 Components",
@@ -695,21 +692,21 @@
             "keywords": [
                 "microframework"
             ],
-            "time": "2014-07-01 10:16:56"
+            "time": "2014-09-26 09:32:30"
         },
         {
             "name": "symfony/config",
-            "version": "v2.5.3",
+            "version": "v2.5.4",
             "target-dir": "Symfony/Component/Config",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Config.git",
-                "reference": "8d044668c7ccb4ade684e368d910e3aadcff6f6c"
+                "reference": "080eabdc256c1d7a3a7cf6296271edb68eb1ab2b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Config/zipball/8d044668c7ccb4ade684e368d910e3aadcff6f6c",
-                "reference": "8d044668c7ccb4ade684e368d910e3aadcff6f6c",
+                "url": "https://api.github.com/repos/symfony/Config/zipball/080eabdc256c1d7a3a7cf6296271edb68eb1ab2b",
+                "reference": "080eabdc256c1d7a3a7cf6296271edb68eb1ab2b",
                 "shasum": ""
             },
             "require": {
@@ -743,11 +740,11 @@
             ],
             "description": "Symfony Config Component",
             "homepage": "http://symfony.com",
-            "time": "2014-08-05 09:00:40"
+            "time": "2014-08-31 03:22:04"
         },
         {
             "name": "symfony/debug",
-            "version": "v2.5.3",
+            "version": "v2.5.4",
             "target-dir": "Symfony/Component/Debug",
             "source": {
                 "type": "git",
@@ -802,7 +799,7 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v2.5.3",
+            "version": "v2.5.4",
             "target-dir": "Symfony/Component/EventDispatcher",
             "source": {
                 "type": "git",
@@ -859,17 +856,17 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v2.5.3",
+            "version": "v2.5.4",
             "target-dir": "Symfony/Component/Filesystem",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Filesystem.git",
-                "reference": "c1309b0ee195ad264a4314435bdaecdfacb8ae9c"
+                "reference": "a765efd199e02ff4001c115c318e219030be9364"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Filesystem/zipball/c1309b0ee195ad264a4314435bdaecdfacb8ae9c",
-                "reference": "c1309b0ee195ad264a4314435bdaecdfacb8ae9c",
+                "url": "https://api.github.com/repos/symfony/Filesystem/zipball/a765efd199e02ff4001c115c318e219030be9364",
+                "reference": "a765efd199e02ff4001c115c318e219030be9364",
                 "shasum": ""
             },
             "require": {
@@ -902,21 +899,21 @@
             ],
             "description": "Symfony Filesystem Component",
             "homepage": "http://symfony.com",
-            "time": "2014-07-09 09:05:48"
+            "time": "2014-09-03 09:00:14"
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v2.5.3",
+            "version": "v2.5.4",
             "target-dir": "Symfony/Component/HttpFoundation",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpFoundation.git",
-                "reference": "53296aa0794ebe1e3880e3f2c68fe10ddad6c3e3"
+                "reference": "cec87359655f901a11de336576851d3957449947"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/53296aa0794ebe1e3880e3f2c68fe10ddad6c3e3",
-                "reference": "53296aa0794ebe1e3880e3f2c68fe10ddad6c3e3",
+                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/cec87359655f901a11de336576851d3957449947",
+                "reference": "cec87359655f901a11de336576851d3957449947",
                 "shasum": ""
             },
             "require": {
@@ -955,21 +952,21 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "http://symfony.com",
-            "time": "2014-08-05 09:00:40"
+            "time": "2014-09-03 09:00:14"
         },
         {
             "name": "symfony/http-kernel",
-            "version": "v2.5.3",
+            "version": "v2.5.4",
             "target-dir": "Symfony/Component/HttpKernel",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpKernel.git",
-                "reference": "d3e1fa28d23fe00f2b932ca9d1e4371f9053f05e"
+                "reference": "a8a0cda5d51891f1246959c6bffdc1519ad0742f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/d3e1fa28d23fe00f2b932ca9d1e4371f9053f05e",
-                "reference": "d3e1fa28d23fe00f2b932ca9d1e4371f9053f05e",
+                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/a8a0cda5d51891f1246959c6bffdc1519ad0742f",
+                "reference": "a8a0cda5d51891f1246959c6bffdc1519ad0742f",
                 "shasum": ""
             },
             "require": {
@@ -977,7 +974,7 @@
                 "psr/log": "~1.0",
                 "symfony/debug": "~2.5",
                 "symfony/event-dispatcher": "~2.5",
-                "symfony/http-foundation": "~2.4"
+                "symfony/http-foundation": "~2.5"
             },
             "require-dev": {
                 "symfony/browser-kit": "~2.2",
@@ -1026,21 +1023,21 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "http://symfony.com",
-            "time": "2014-08-06 07:03:01"
+            "time": "2014-09-03 09:51:48"
         },
         {
             "name": "symfony/routing",
-            "version": "v2.5.3",
+            "version": "v2.5.4",
             "target-dir": "Symfony/Component/Routing",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Routing.git",
-                "reference": "1c285e6fffaa026c8073a387f403b1052d61ed95"
+                "reference": "de58587ae3fb17fdc802893cf934bbb03e6b8eb5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Routing/zipball/1c285e6fffaa026c8073a387f403b1052d61ed95",
-                "reference": "1c285e6fffaa026c8073a387f403b1052d61ed95",
+                "url": "https://api.github.com/repos/symfony/Routing/zipball/de58587ae3fb17fdc802893cf934bbb03e6b8eb5",
+                "reference": "de58587ae3fb17fdc802893cf934bbb03e6b8eb5",
                 "shasum": ""
             },
             "require": {
@@ -1092,21 +1089,21 @@
                 "uri",
                 "url"
             ],
-            "time": "2014-07-28 13:20:46"
+            "time": "2014-08-26 14:16:33"
         },
         {
             "name": "symfony/security-core",
-            "version": "v2.5.3",
+            "version": "v2.5.4",
             "target-dir": "Symfony/Component/Security/Core",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security-core.git",
-                "reference": "d6a8860f015e1f8e8e42c2141a4a88b1965c32ec"
+                "reference": "3294aea1af045eb67346257d364c3065cdda23b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security-core/zipball/d6a8860f015e1f8e8e42c2141a4a88b1965c32ec",
-                "reference": "d6a8860f015e1f8e8e42c2141a4a88b1965c32ec",
+                "url": "https://api.github.com/repos/symfony/security-core/zipball/3294aea1af045eb67346257d364c3065cdda23b9",
+                "reference": "3294aea1af045eb67346257d364c3065cdda23b9",
                 "shasum": ""
             },
             "require": {
@@ -1154,11 +1151,11 @@
             ],
             "description": "Symfony Security Component - Core Library",
             "homepage": "http://symfony.com",
-            "time": "2014-08-05 09:00:40"
+            "time": "2014-09-03 09:22:15"
         },
         {
             "name": "symfony/security-csrf",
-            "version": "v2.5.3",
+            "version": "v2.5.4",
             "target-dir": "Symfony/Component/Security/Csrf",
             "source": {
                 "type": "git",
@@ -1212,7 +1209,7 @@
         },
         {
             "name": "symfony/twig-bridge",
-            "version": "v2.5.3",
+            "version": "v2.5.4",
             "target-dir": "Symfony/Bridge/Twig",
             "source": {
                 "type": "git",
@@ -1284,17 +1281,17 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.5.3",
+            "version": "v2.5.4",
             "target-dir": "Symfony/Component/Yaml",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Yaml.git",
-                "reference": "5a75366ae9ca8b4792cd0083e4ca4dff9fe96f1f"
+                "reference": "01a7695bcfb013d0a15c6757e15aae120342986f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Yaml/zipball/5a75366ae9ca8b4792cd0083e4ca4dff9fe96f1f",
-                "reference": "5a75366ae9ca8b4792cd0083e4ca4dff9fe96f1f",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/01a7695bcfb013d0a15c6757e15aae120342986f",
+                "reference": "01a7695bcfb013d0a15c6757e15aae120342986f",
                 "shasum": ""
             },
             "require": {
@@ -1327,7 +1324,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "http://symfony.com",
-            "time": "2014-08-05 09:00:40"
+            "time": "2014-08-31 03:22:04"
         },
         {
             "name": "twig/twig",
@@ -1479,12 +1476,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/UTipdMe/counterparty-follower.git",
-                "reference": "4a1282d4306a9a18757f8935170777145b4e2e00"
+                "reference": "1d3eedfaa13a6fd3a71d273f7a676fb66f2e0289"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/UTipdMe/counterparty-follower/zipball/4a1282d4306a9a18757f8935170777145b4e2e00",
-                "reference": "4a1282d4306a9a18757f8935170777145b4e2e00",
+                "url": "https://api.github.com/repos/UTipdMe/counterparty-follower/zipball/1d3eedfaa13a6fd3a71d273f7a676fb66f2e0289",
+                "reference": "1d3eedfaa13a6fd3a71d273f7a676fb66f2e0289",
                 "shasum": ""
             },
             "require": {
@@ -1522,7 +1519,7 @@
                 "counterparty",
                 "transaction"
             ],
-            "time": "2014-08-20 23:43:52"
+            "time": "2014-09-04 02:41:43"
         },
         {
             "name": "utipd/form",
@@ -1530,12 +1527,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/UTipdMe/form.git",
-                "reference": "6bf0b345d754085be1be5539ea874266b51ada12"
+                "reference": "34e966a6fb92c5922343ecafc494d0cdad5eef35"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/UTipdMe/form/zipball/6bf0b345d754085be1be5539ea874266b51ada12",
-                "reference": "6bf0b345d754085be1be5539ea874266b51ada12",
+                "url": "https://api.github.com/repos/UTipdMe/form/zipball/34e966a6fb92c5922343ecafc494d0cdad5eef35",
+                "reference": "34e966a6fb92c5922343ecafc494d0cdad5eef35",
                 "shasum": ""
             },
             "require": {
@@ -1550,6 +1547,7 @@
                     "Utipd\\Form": "src"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "mit"
             ],
@@ -1561,11 +1559,7 @@
                 }
             ],
             "description": "A library",
-            "support": {
-                "source": "https://github.com/UTipdMe/form/tree/master",
-                "issues": "https://github.com/UTipdMe/form/issues"
-            },
-            "time": "2014-08-02 02:32:04"
+            "time": "2014-08-30 16:31:21"
         },
         {
             "name": "utipd/mysqlmodel",
@@ -1573,17 +1567,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/UTipdMe/MysqlModel.git",
-                "reference": "5092e69fa1213c8440c995cfbd32dcc7c5960e5b"
+                "reference": "f011ba996b3b73a0405100379f177ce76dd95118"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/UTipdMe/MysqlModel/zipball/5092e69fa1213c8440c995cfbd32dcc7c5960e5b",
-                "reference": "5092e69fa1213c8440c995cfbd32dcc7c5960e5b",
+                "url": "https://api.github.com/repos/UTipdMe/MysqlModel/zipball/f011ba996b3b73a0405100379f177ce76dd95118",
+                "reference": "f011ba996b3b73a0405100379f177ce76dd95118",
                 "shasum": ""
             },
             "require": {
                 "ext-pdo": "*",
-                "php": ">=5.5.0"
+                "php": ">=5.5.0",
+                "psr/log": "~1"
             },
             "require-dev": {
                 "phpunit/phpunit": "~4",
@@ -1607,7 +1602,7 @@
                 }
             ],
             "description": "A minimalistic manager for storing and retrieving MySQL rows as PHP models. Does not handle schemas. Does allow treating mysql rows like documents.",
-            "time": "2014-08-27 23:52:37"
+            "time": "2014-08-28 15:25:39"
         },
         {
             "name": "utipd/native-follower",
@@ -1615,12 +1610,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/UTipdMe/native-follower.git",
-                "reference": "2e923da8822c848a368c6af9f1ed3f705241a55d"
+                "reference": "9f574688edd3b27dcbd6d4b93a80ab192db49468"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/UTipdMe/native-follower/zipball/2e923da8822c848a368c6af9f1ed3f705241a55d",
-                "reference": "2e923da8822c848a368c6af9f1ed3f705241a55d",
+                "url": "https://api.github.com/repos/UTipdMe/native-follower/zipball/9f574688edd3b27dcbd6d4b93a80ab192db49468",
+                "reference": "9f574688edd3b27dcbd6d4b93a80ab192db49468",
                 "shasum": ""
             },
             "require": {
@@ -1656,7 +1651,7 @@
                 "orphans",
                 "transaction"
             ],
-            "time": "2014-08-23 13:10:49"
+            "time": "2014-08-28 19:35:21"
         },
         {
             "name": "utipd/simple-daemon",
@@ -1708,12 +1703,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/UTipdMe/XCPDClient.git",
-                "reference": "fd4997d4ad245567630fb4b2f2102942f49860e0"
+                "reference": "2110918bf3244f2ca7428c516a0a42aa08fb1507"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/UTipdMe/XCPDClient/zipball/fd4997d4ad245567630fb4b2f2102942f49860e0",
-                "reference": "fd4997d4ad245567630fb4b2f2102942f49860e0",
+                "url": "https://api.github.com/repos/UTipdMe/XCPDClient/zipball/2110918bf3244f2ca7428c516a0a42aa08fb1507",
+                "reference": "2110918bf3244f2ca7428c516a0a42aa08fb1507",
                 "shasum": ""
             },
             "require": {
@@ -1741,7 +1736,7 @@
                 }
             ],
             "description": "A client library for the counterparty API",
-            "time": "2014-08-09 15:08:21"
+            "time": "2014-09-10 17:40:31"
         }
     ],
     "packages-dev": [],
