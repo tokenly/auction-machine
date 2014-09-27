@@ -6,8 +6,10 @@
 {% set bounty = state.bounty %}
 {% if bids %}
 {% set nextMinBid = bids[0].amount + auction.minBidIncrement %}
+{% set winningBid = bids[0].amount %}
 {% else %}
 {% set nextMinBid = auction.minStartingBid %}
+{% set winningBid = 0 %}
 {% endif %}
 {% set nextPayment = nextMinBid + bounty %}
 
@@ -63,16 +65,25 @@
             </div>
             
             <div class="section bids">
+                {% if state.timePhase == 'ended' %}
+
                 <label for="">
-                    {% if state.timePhase == 'ended' %}
                     Winning Bid: 
-                    {% else %}
+                </label>
+                <div class="bid-data">
+                    {{winningBid|to_currency}} {{auction.bidTokenType}}</div>
+                </div>
+
+                {% else %}
+
+                <label for="">
                     Next High Bid: 
-                    {% endif %}
                 </label>
                 <div class="bid-data">
                     {{nextPayment|to_currency}} {{auction.bidTokenType}}</div>
                 </div>
+
+                {% endif %}
 
             </div>
         </div>
