@@ -49,7 +49,11 @@ do ($=jQuery) ->
             formatDate: "MM.DD.YYYY"
         }
     
-        tzName = moment().format("Z")
+        tzName = $("#TimezoneInput").val()
+
+        if not tzName
+            tzName = moment().format("Z")
+
         $("#TimezoneInput").val tzName
         $("span[data-timezone-label]").html tzName
 
