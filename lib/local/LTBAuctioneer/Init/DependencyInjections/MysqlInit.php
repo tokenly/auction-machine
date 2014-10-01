@@ -48,6 +48,13 @@ class MysqlInit {
         $app['mysql.transactionHandler'] = function($app) {
             return new \Utipd\MysqlModel\MysqlTransaction($app['mysql.db']);
         };
+
+        $app['mysql.connectionManager'] = $app->share(function($app) {
+            $manager = new \Utipd\MysqlModel\ConnectionManager($app['mysql.connection'].';dbname='.$app['mysql.databaseName'], $app['config']['mysql.username'], $app['config']['mysql.password']);
+            $manager->getConnection()->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+            return $manager;
+        });
+
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -56,7 +63,7 @@ class MysqlInit {
         $app['directory'] = function($app) {
             return function($directory_name) use ($app) {
                 $class = "LTBAuctioneer\\Models\\Directory\\{$directory_name}Directory";
-                return new $class($app['mysql.db']);
+                return new $class($app['mysql.connectionManager']);
             };
         };
         $app['modelFactory'] = function($app) {

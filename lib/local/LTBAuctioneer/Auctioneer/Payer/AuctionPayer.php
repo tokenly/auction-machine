@@ -4,6 +4,7 @@ namespace LTBAuctioneer\Auctioneer\Payer;
 
 use Exception;
 use GuzzleHttp\Client as GuzzleClient;
+use LTBAuctioneer\Bitcoin\BitcoinKeyUtils;
 use LTBAuctioneer\Currency\CurrencyUtil;
 use LTBAuctioneer\Debug\Debug;
 use LTBAuctioneer\EventLog\EventLog;
@@ -14,16 +15,19 @@ use Utipd\BitcoinPayer\BitcoinPayer;
 class AuctionPayer
 {
 
+    var $USE_LOCAL_SENDER = true;
+
     ////////////////////////////////////////////////////////////////////////
 
-    public function __construct($auction_manager, $xcpd_client, $native_client, $address_generator, $payouts_config, $wallet_passphrase, $payout_debug) {
-        $this->auction_manager = $auction_manager;
-        $this->xcpd_client = $xcpd_client;
-        $this->native_client = $native_client;
+    public function __construct($auction_manager, $xcpd_sender, $xcpd_client, $native_client, $address_generator, $payouts_config, $wallet_passphrase, $payout_debug) {
+        $this->auction_manager   = $auction_manager;
+        $this->xcpd_sender       = $xcpd_sender;
+        $this->xcpd_client       = $xcpd_client;
+        $this->native_client     = $native_client;
         $this->address_generator = $address_generator;
-        $this->payouts_config = $payouts_config;
+        $this->payouts_config    = $payouts_config;
         $this->wallet_passphrase = $wallet_passphrase;
-        $this->payout_debug = $payout_debug;
+        $this->payout_debug      = $payout_debug;
     }
 
     public function payoutAuction($auction) {
@@ -72,11 +76,12 @@ class AuctionPayer
     protected function doPayout($payout, $auction, $private_key) {
 #        Debug::trace("doPayout called",__FILE__,__LINE__,$this);
         try {
-            // talk to the daemon, etc
             if ($payout['sweep']) {
+                // sweep the remaining BTC
                 list($transaction_id, $amount_sent) = $this->sweepBTC($payout, $auction, $private_key);
                 EventLog::logEvent('payout.btcSweep', ['auctionId' => $auction['id'], 'tx' => $transaction_id, 'amount' => $amount_sent]);
             } else {
+                // send a counterparty token
                 $transaction_id = $this->sendXCPToken($payout, $auction, $private_key);
                 $amount_sent = $payout['amount'];
                 EventLog::logEvent('payout.sendToken', ['auctionId' => $auction['id'], 'tx' => $transaction_id, 'amount' => $payout['amount'], 'token' => $payout['token']]);
@@ -111,38 +116,15 @@ class AuctionPayer
     }
 
     protected function sendXCPToken($payout, $auction, $private_key) {
-        // create a send
-        // create_send(source, destination, asset, quantity, encoding='multisig', pubkey=null)
-        $send_vars = [
-            'source'             => $auction['auctionAddress'],
-            'destination'        => $payout['address'],
-            'asset'              => $payout['token'],
-
-            // quantity is different if divisible
-            'quantity'           => intval($this->isDivisible($payout['token']) ? $payout['amount'] : CurrencyUtil::satoshisToNumber($payout['amount'])),
-
-            // custom dust size and fees
-            'multisig_dust_size' => CurrencyUtil::numberToSatoshis($this->payouts_config['multisig_dust_size']),
-            'fee_per_kb'         => CurrencyUtil::numberToSatoshis($this->payouts_config['fee_per_kb']),
-        ];
-        if ($this->payouts_config['allow_unconfirmed_inputs']) { $send_vars['allow_unconfirmed_inputs'] = true; }
-#        Debug::trace("\$send_vars=".json_encode($send_vars, 192),__FILE__,__LINE__,$this);
-        if ($this->payout_debug) {
-            EventLog::logEvent('DEBUG.payout.xcp', $send_vars);
-            return 'DEBUG_'.md5(json_encode($send_vars));
+        if ($this->USE_LOCAL_SENDER AND !$this->payout_debug) {
+            // use the CounterpartySender to send and sign the raw transaction
+            //   This doesn't use the bitcoin wallet to pay the BTC fees, but generates them using the private key for the address
+            $transaction_id = $this->sendXCPTokenWithSender($payout, $auction, $private_key);
+        } else {
+            // unlock the wallet with the passphrase
+            $this->unlockWallet();
+            $transaction_id = $this->sendXCPTokenWithBitcoinWallet($payout, $auction, $private_key);
         }
-
-        // unlock the wallet with the passphrase
-        // $this->unlockWallet();
-
-        // create a send
-        $raw_tx = $this->xcpd_client->create_send($send_vars);
-
-        // sign the transaction
-        $signed_tx = $this->xcpd_client->sign_tx(["unsigned_tx_hex" => $raw_tx]);
-
-        // broadcast the transaction
-        $transaction_id = $this->xcpd_client->broadcast_tx(["signed_tx_hex" => $signed_tx]);
 
         return $transaction_id;
     }
@@ -161,11 +143,72 @@ class AuctionPayer
         return $assets[0]['divisible'];
     }
 
-    // protected function unlockWallet() {
-    //     if ($this->wallet_passphrase) {
-    //         $result = $this->native_client->walletpassphrase($this->wallet_passphrase, 60);
-    //     }
+    protected function unlockWallet() {
+        if ($this->wallet_passphrase) {
+            $result = $this->native_client->walletpassphrase($this->wallet_passphrase, 60);
+        }
 
-    // }
+    }
+
+    protected function sendXCPTokenWithSender($payout, $auction, $private_key) {
+        $public_key = BitcoinKeyUtils::publicKeyFromWIF($private_key, $auction['auctionAddress']);
+
+        $quantity = $this->buildPayoutQuantity($payout);
+
+        $other_counterparty_vars = [
+            'multisig_dust_size' => CurrencyUtil::numberToSatoshis($this->payouts_config['multisig_dust_size']),
+            'fee_per_kb'         => CurrencyUtil::numberToSatoshis($this->payouts_config['fee_per_kb']),
+        ];
+        if ($this->payouts_config['allow_unconfirmed_inputs']) {
+            $other_counterparty_vars['allow_unconfirmed_inputs'] = true;
+        }
+
+        // unlock the wallet with the passphrase
+        //   I don't think this is necessary with the sender
+        // $this->unlockWallet();
+
+        $transaction_id = $this->xcpd_sender->send($public_key, $private_key, $auction['auctionAddress'], $payout['address'], $quantity, $payout['token'], $other_counterparty_vars);
+
+        return $transaction_id;
+    }
+
+    protected function sendXCPTokenWithBitcoinWallet($payout, $auction, $private_key) {
+        // create a send
+        // create_send(source, destination, asset, quantity, encoding='multisig', pubkey=null)
+        $send_vars = [
+            'source'             => $auction['auctionAddress'],
+            'destination'        => $payout['address'],
+            'asset'              => $payout['token'],
+
+            // quantity is different if divisible
+            'quantity'           => $this->buildPayoutQuantity($payout),
+
+            // custom dust size and fees
+            'multisig_dust_size' => CurrencyUtil::numberToSatoshis($this->payouts_config['multisig_dust_size']),
+            'fee_per_kb'         => CurrencyUtil::numberToSatoshis($this->payouts_config['fee_per_kb']),
+        ];
+        if ($this->payouts_config['allow_unconfirmed_inputs']) { $send_vars['allow_unconfirmed_inputs'] = true; }
+
+        if ($this->payout_debug) {
+            EventLog::logEvent('DEBUG.payout.xcp', $send_vars);
+            return 'DEBUG_'.md5(json_encode($send_vars));
+        }
+
+        // create a send
+        $raw_tx = $this->xcpd_client->create_send($send_vars);
+
+        // sign the transaction
+        $signed_tx = $this->xcpd_client->sign_tx(["unsigned_tx_hex" => $raw_tx]);
+
+        // broadcast the transaction
+        $transaction_id = $this->xcpd_client->broadcast_tx(["signed_tx_hex" => $signed_tx]);
+
+        return $transaction_id;
+    }
+
+    protected function buildPayoutQuantity($payout) {
+        return intval($this->isDivisible($payout['token']) ? $payout['amount'] : CurrencyUtil::satoshisToNumber($payout['amount']));
+    }
+
 }
 

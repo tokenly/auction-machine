@@ -9,6 +9,7 @@
         "utipd/mysqlmodel": "dev-master",
         "utipd/form": "dev-master",
         "utipd/counterparty-follower": "dev-master",
+        "utipd/counterparty-sender": "dev-master",
         "utipd/native-follower": "dev-master",
         "utipd/simple-daemon": "dev-master",
         "utipd/bitcoin-payer": "dev-master",

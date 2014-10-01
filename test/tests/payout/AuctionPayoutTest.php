@@ -52,6 +52,7 @@ class AuctionPayoutTest extends SiteTestCase
         $auction = AuctionStateUtil::runAuctionScenario($app, 5);
 
         $payer = $app['auction.payer'];
+        $payer->USE_LOCAL_SENDER = false;
         $auction = $payer->payoutAuction($auction);
 
         // check receipts

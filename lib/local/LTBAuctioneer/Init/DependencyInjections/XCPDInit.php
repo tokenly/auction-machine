@@ -17,6 +17,7 @@ class XCPDInit {
         self::initNative($app);
         self::initNativeFollower($app);
         self::initAddresses($app);
+        self::initXCPDSender($app);
     }
 
     public static function initXCPD($app) {
@@ -99,6 +100,14 @@ class XCPDInit {
 
 
     }
+
+
+    public static function initXCPDSender($app) {
+        $app['xcp.sender'] = function($app) {
+            return new \Utipd\CounterpartySender\CounterpartySender($app['xcpd.client'], $app['native.client']);
+        };
+    }
+
 
 
 }
