@@ -4,7 +4,7 @@ namespace LTBAuctioneer\Auctioneer\Builder;
 
 use Exception;
 use LTBAuctioneer\Auctioneer\AuctionState;
-use LTBAuctioneer\Currency\CurrencyUtil;
+use Utipd\CurrencyLib\CurrencyUtil;
 use LTBAuctioneer\Debug\Debug;
 
 /*

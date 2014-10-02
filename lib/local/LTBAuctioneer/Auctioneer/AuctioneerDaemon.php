@@ -3,9 +3,9 @@
 namespace LTBAuctioneer\Auctioneer;
 
 use Exception;
-use LTBAuctioneer\Currency\CurrencyUtil;
 use LTBAuctioneer\Debug\Debug;
 use LTBAuctioneer\EventLog\EventLog;
+use Utipd\CurrencyLib\CurrencyUtil;
 
 /*
 * AuctioneerDaemon

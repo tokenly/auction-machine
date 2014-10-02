@@ -1,7 +1,7 @@
 <?php
 
 use LTBAuctioneer\Auctioneer\AuctioneerDaemon;
-use LTBAuctioneer\Currency\CurrencyUtil;
+use Utipd\CurrencyLib\CurrencyUtil;
 use LTBAuctioneer\Debug\Debug;
 use LTBAuctioneer\Init\Environment;
 use LTBAuctioneer\Test\Auction\AuctionStateUtil;

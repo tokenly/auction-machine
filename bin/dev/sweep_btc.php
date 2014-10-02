@@ -2,7 +2,7 @@
 <?php 
 
 
-use LTBAuctioneer\Currency\CurrencyUtil;
+use Utipd\CurrencyLib\CurrencyUtil;
 use LTBAuctioneer\Init\Environment;
 use Utipd\BitcoinPayer\BitcoinPayer;
 

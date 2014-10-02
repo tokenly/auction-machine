@@ -3,7 +3,7 @@
 namespace LTBAuctioneer\Controller\Site\Admin\Util;
 
 use Exception;
-use LTBAuctioneer\Currency\CurrencyUtil;
+use Utipd\CurrencyLib\CurrencyUtil;
 use LTBAuctioneer\Debug\Debug;
 use Symfony\Component\HttpFoundation\Request;
 

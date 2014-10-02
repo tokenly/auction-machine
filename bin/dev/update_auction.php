@@ -3,7 +3,7 @@
 
 declare(ticks=1);
 
-use LTBAuctioneer\Currency\CurrencyUtil;
+use Utipd\CurrencyLib\CurrencyUtil;
 use LTBAuctioneer\Init\Environment;
 use LTBAuctioneer\Test\Auction\AuctionStateUtil;
 use LTBAuctioneer\Util\DB\DBUpdater;

@@ -95,7 +95,7 @@ class XCPDInit {
     public static function initAddresses($app) {
 
         $app['bitcoin.addressGenerator'] = function($app) {
-            return new \LTBAuctioneer\Bitcoin\BitcoinAddressGenerator($app['config']['bitcoin.masterKey']);
+            return new \Utipd\BitcoinAddressLib\BitcoinAddressGenerator($app['config']['bitcoin.masterKey']);
         };
 
 

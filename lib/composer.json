@@ -13,6 +13,8 @@
         "utipd/native-follower": "dev-master",
         "utipd/simple-daemon": "dev-master",
         "utipd/bitcoin-payer": "dev-master",
+        "utipd/bitcoin-address-lib": "dev-master",
+        "utipd/currency-lib": "dev-master",
         "respect/validation": "~0",
         "deweller/cliopts": "~1",
         "linusu/bitcoin-address-validator": "~0",

@@ -5,7 +5,7 @@ namespace LTBAuctioneer\Controller\Site\Admin;
 use Exception;
 use LTBAuctioneer\Controller\Site\Admin\Util\AdminUtil;
 use LTBAuctioneer\Controller\Site\Base\BaseSiteController;
-use LTBAuctioneer\Currency\CurrencyUtil;
+use Utipd\CurrencyLib\CurrencyUtil;
 use LTBAuctioneer\Debug\Debug;
 use LTBAuctioneer\EventLog\EventLog;
 use LinusU\Bitcoin\AddressValidator;

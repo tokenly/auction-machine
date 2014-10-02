@@ -4,7 +4,7 @@ namespace LTBAuctioneer\Auctioneer\Payout;
 
 use ArrayObject;
 use Exception;
-use LTBAuctioneer\Currency\CurrencyUtil;
+use Utipd\CurrencyLib\CurrencyUtil;
 use LTBAuctioneer\Debug\Debug;
 
 /*

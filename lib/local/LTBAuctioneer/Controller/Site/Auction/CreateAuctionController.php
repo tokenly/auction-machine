@@ -6,7 +6,7 @@ use Exception;
 use InvalidArgumentException;
 use LTBAuctioneer\Controller\Exception\WebsiteException;
 use LTBAuctioneer\Controller\Site\Base\BaseSiteController;
-use LTBAuctioneer\Currency\CurrencyUtil;
+use Utipd\CurrencyLib\CurrencyUtil;
 use LTBAuctioneer\Debug\Debug;
 use LTBAuctioneer\EventLog\EventLog;
 use LinusU\Bitcoin\AddressValidator;

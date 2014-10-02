@@ -1,6 +1,6 @@
 <?php
 
-use LTBAuctioneer\Currency\CurrencyUtil;
+use Utipd\CurrencyLib\CurrencyUtil;
 use LTBAuctioneer\Debug\Debug;
 use \PHPUnit_Framework_Assert as PHPUnit;
 

@@ -4,10 +4,10 @@ namespace LTBAuctioneer\Auctioneer\Payer;
 
 use Exception;
 use GuzzleHttp\Client as GuzzleClient;
-use LTBAuctioneer\Bitcoin\BitcoinKeyUtils;
-use LTBAuctioneer\Currency\CurrencyUtil;
+use Utipd\CurrencyLib\CurrencyUtil;
 use LTBAuctioneer\Debug\Debug;
 use LTBAuctioneer\EventLog\EventLog;
+use Utipd\BitcoinAddressLib\BitcoinKeyUtils;
 use Utipd\BitcoinPayer\BitcoinPayer;
 /*
 * AuctionPayer

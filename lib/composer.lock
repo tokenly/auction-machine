@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f86478dc215d7528169ef60829de6c35",
+    "hash": "fcb7144998fae6174135acd39fa14960",
     "packages": [
         {
             "name": "bitwasp/bitcoin-lib",
@@ -1390,6 +1390,47 @@
             "time": "2014-07-05 12:19:05"
         },
         {
+            "name": "utipd/bitcoin-address-lib",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/UTipdMe/bitcoin-address-lib.git",
+                "reference": "083636a4ec29453f86175f0061c5d7be72628357"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/UTipdMe/bitcoin-address-lib/zipball/083636a4ec29453f86175f0061c5d7be72628357",
+                "reference": "083636a4ec29453f86175f0061c5d7be72628357",
+                "shasum": ""
+            },
+            "require": {
+                "bitwasp/bitcoin-lib": "dev-master",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Utipd\\BitcoinAddressLib": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Devon Weller",
+                    "email": "dweller@devonweller.com",
+                    "homepage": "http://devonweller.com"
+                }
+            ],
+            "description": "A bitcoin address helper library",
+            "time": "2014-10-02 12:15:36"
+        },
+        {
             "name": "utipd/bitcoin-payer",
             "version": "dev-master",
             "source": {
@@ -1568,6 +1609,46 @@
             ],
             "description": "A library",
             "time": "2014-09-04 01:40:25"
+        },
+        {
+            "name": "utipd/currency-lib",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/UTipdMe/currency-lib.git",
+                "reference": "a6233c0d375050be1aa8efd2f84d5502f5c19b55"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/UTipdMe/currency-lib/zipball/a6233c0d375050be1aa8efd2f84d5502f5c19b55",
+                "reference": "a6233c0d375050be1aa8efd2f84d5502f5c19b55",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Utipd\\CurrencyLib": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Devon Weller",
+                    "email": "dweller@devonweller.com",
+                    "homepage": "http://devonweller.com"
+                }
+            ],
+            "description": "A simple bitcoin currency library",
+            "time": "2014-10-02 12:31:52"
         },
         {
             "name": "utipd/form",
@@ -1800,6 +1881,8 @@
         "utipd/native-follower": 20,
         "utipd/simple-daemon": 20,
         "utipd/bitcoin-payer": 20,
+        "utipd/bitcoin-address-lib": 20,
+        "utipd/currency-lib": 20,
         "nbobtc/bitcoind-php": 20,
         "bitwasp/bitcoin-lib": 20
     },
