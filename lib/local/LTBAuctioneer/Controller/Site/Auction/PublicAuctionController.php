@@ -30,11 +30,26 @@ class PublicAuctionController extends BaseSiteController
         $auctions = $this->auction_manager->findAuctions([], ['endDate' => 1]);
 
         $recently_ended_auctions = [];
-        foreach ($this->auction_manager->findAuctions(['timePhase' => 'ended'], ['endDate' => -1], 5) as $auction) {
-            if ($auction['state']['active']) { $recently_ended_auctions[] = $auction; }
+        $counter = 0;
+        $NUMBER_OF_RECENT_AUCTIONS = 5;
+        foreach ($this->auction_manager->findAuctions(['timePhase' => 'ended'], ['endDate' => -1], 20) as $auction) {
+            if ($auction['state']['active']) {
+                $recently_ended_auctions[] = $auction;
+                ++$counter;
+                if ($counter >= $NUMBER_OF_RECENT_AUCTIONS) { break; }
+            }
         }
 
         return $this->renderTwig('home/home.twig', ['auctions' => iterator_to_array($auctions), 'recentAuctions' => $recently_ended_auctions]);
+    }
+
+    public function viewHistoryAction(Request $request) {
+        $auctions = [];
+        foreach ($this->auction_manager->findAuctions(['timePhase' => 'ended'], ['endDate' => -1]) as $auction) {
+            if ($auction['state']['active']) { $auctions[] = $auction; }
+        }
+
+        return $this->renderTwig('history/history.twig', ['auctions' => $auctions]);
     }
 
     public function viewAuctionAction(Request $request, $slug) {

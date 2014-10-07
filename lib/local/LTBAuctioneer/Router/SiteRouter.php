@@ -49,6 +49,10 @@ class SiteRouter
             return $this->app['controller.auction.public']->viewAuctionAction($request, $slug);
         })->method('GET')->bind('public-auction');
 
+        $this->app->match('/history', function(Request $request) {
+            return $this->app['controller.auction.public']->viewHistoryAction($request);
+        })->method('GET')->bind('history');
+
         $this->app->match('/faq', function(Request $request) {
             return $this->app['twig']->render('faq/faq.twig', []);
         })->method('GET')->bind('faq');

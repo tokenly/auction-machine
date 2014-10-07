@@ -1,0 +1,70 @@
+{% extends "base/section.twig" %}
+
+{% block app_css %}
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+
+{% block sectionBody %}
+
+<div class="row">
+    <div class="medium-centered medium-12 large-10 columns">
+
+        <div class="header">
+            <h2>FAQ</h2>
+        </div>
+
+        <p>
+            Here is the history of auctions listed by end date from oldest to newest.
+        </p>
+
+        <div class="spacer3"></div>
+
+        <h3>Ended Auctions</h3>
+
+        <div class="auctions-list">
+            {% set anyAuctionsFound = false %}
+            {% for auction in auctions %}
+            {% set state = auction.state %}
+            {% if state.timePhase == 'ended' %}
+            {% set anyAuctionsFound = true %}
+
+            {% include 'includes/auction/auction-list-entry.twig' with {auction: auction} %}
+
+            {% endif %}
+            {% endfor %}
+        </div>
+
+        {% if not anyAuctionsFound %}
+        <div>No ended auctions were found.</div>
+        {% endif %}
+
+
+        <div class="spacer5"></div>
+
+        <div class="row">
+            <div class="columns medium-4">
+                <a href="{{url('home')}}" class="small button secondary">Return Home</a>
+            </div>
+            <div class="columns medium-4">
+                <a href="{{url('create-auction')}}" class="small button">Create a New Auction</a>
+            </div>
+            <div class="columns medium-4"></div>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+{% endblock %}
+
+
+{% block app_js %}
+{{ parent() }}
+<script src="/public/vendor/momentjs/moment.js"></script>
+<script src="/public/js/timezone.js"></script>
+<script src="/public/js/select-click.js"></script>
+{% endblock %}
