@@ -28,12 +28,6 @@ class Auctioneer
             $state = $this->buildAllPrebids($state);
 
         } else {
-            // if there are any early prebids, convert them to live now
-            if ($state->hasEarlyBids()) {
-                // apply all early bids
-                return $this->convertEarlyBidsToLiveBids($state);
-            }
-
             // current top bid (if any)
             $top_bid = $state->getTopBid();
 
@@ -53,6 +47,17 @@ class Auctioneer
             }
         }
 
+        return $state;
+    }
+
+    // if there are any early prebids, convert them to live now
+    public function convertPrebidsIfReady(AuctionState $state) {
+        if ($state['timePhase'] != 'prebid' AND $state['active']) {
+            if ($state->hasEarlyBids()) {
+                // apply all early bids
+                $state = $this->convertEarlyBidsToLiveBids($state);
+            }
+        }
         return $state;
     }
 

@@ -263,6 +263,10 @@ class AuctionStateBuilder
 
     protected function applyBid($transaction, $token_amount) {
         $state = $this->getStateAtBlockAndTime($transaction['blockId'], $transaction['timestamp'], $transaction['isMempool']);
+
+        // convert any prebids if we are ready before processing bids
+        $state = $this->getAuctioneer()->convertPrebidsIfReady($state);
+
         $state->ensureAccountAt($transaction['source'], $transaction['id']);
         $account = $state->getAccount($transaction['source']);
         $bid_status = $this->determineBidStatus($transaction);
@@ -371,6 +375,9 @@ class AuctionStateBuilder
         // update the state status based on the current time (not the last transaction)
         $state['timePhase'] = $this->buildAuctionTimePhase($this->now());
 #       Debug::trace("finalizeState this->now()=".Debug::desc(date("Y-m-d H:i:s", $this->now()))." \$state['timePhase']=".Debug::desc($state['timePhase'])."",__FILE__,__LINE__,$this);
+
+        // convert any prebids if the auction ended with prebids
+        $state = $this->getAuctioneer()->convertPrebidsIfReady($state);
 
         // bring bids up to date
         $this->getAuctioneer()->updateAllBids($state);
