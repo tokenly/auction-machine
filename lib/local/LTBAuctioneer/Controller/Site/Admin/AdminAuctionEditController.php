@@ -77,7 +77,7 @@ class AdminAuctionEditController extends BaseSiteController
 
         return $this->renderTwig('admin/auction/edit-auction.twig', [
             'auctionId'     => $auction['id'],
-            'submittedData' => isset($submitted_data) ? $submitted_data : $validator->getDefaultValues(),
+            'submittedData' => isset($submitted_data) ? array_merge($validator->getDefaultValues(), $submitted_data) : $validator->getDefaultValues(),
             'error'         => isset($error) ? $error : null,
         ]);
     }
@@ -206,6 +206,16 @@ class AdminAuctionEditController extends BaseSiteController
                 'sanitizer'  => Sanitizer::trim(),
                 'error'      => 'timezone was invalid.',
             ],
+
+            'longTimezone' => [
+                'name'      => 'longTimezone',
+                'label'     => 'Long Timezone',
+                'default'   => '',
+                'validation' => v::string(),
+                'sanitizer'  => Sanitizer::trim(),
+                'error'      => 'timezone (long) was invalid.',
+            ],
+
         ]);
 
         return $spec;

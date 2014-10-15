@@ -56,8 +56,18 @@
                 </div>
 
                 <label for="TimezoneInputDisplay">Your Timezone</label>
-                <input type="text" name="timezone-display" id="TimezoneInputDisplay" value="{{submittedData.timezone}}" disabled>
-                <input type="hidden" name="timezone" id="TimezoneInput" value="{{submittedData.timezone}}">
+
+                <div class="row">
+                    <div class="small-6 columns">
+                        <input type="text" name="timezone-display" id="TimezoneInputDisplay" value="{{submittedData.timezone}}" disabled>
+                        <input type="hidden" name="timezone" id="TimezoneInput" value="{{submittedData.timezone}}">
+                    </div>
+                    <div class="small-6 columns">
+                        <input type="text" name="long-timezone-display" id="LongTimezoneInputDisplay" value="{{submittedData.longTimezone}}" disabled>
+                        <input type="hidden" name="longTimezone" id="LongTimezoneInput" value="{{submittedData.longTimezone}}">
+                    </div>
+                </div>
+
 
 
                 <div class="spacer1"></div>

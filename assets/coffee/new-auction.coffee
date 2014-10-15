@@ -50,12 +50,18 @@ do ($=jQuery) ->
         }
     
         tzName = $("#TimezoneInput").val()
-
         if not tzName
             tzName = moment().format("Z")
-
         $("#TimezoneInput").val tzName
+
+        tzLongName = $("#LongTimezoneInput").val()
+        if not tzLongName
+            tzLongName = window.jstz.determine().name()
+        $("#LongTimezoneInput").val tzLongName
+
+
         $("span[data-timezone-label]").html tzName
+        $("span[data-timezone-label]").attr('title', tzLongName)
 
 
     # ####################################################################################################################

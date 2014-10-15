@@ -133,7 +133,7 @@ class CreateAuctionController extends BaseSiteController
                 'label'     => 'Auction Start',
                 'default'   => date("m.d.Y g:00 a", time()+3600+900),
                 'validation' => v::int()->min(time() - 60,true),
-                'sanitizer' => function($v, $d) { return ($_d = \DateTime::createFromFormat('m.d.Y g:i a', $v, new \DateTimeZone($this->calulcateTimezone($d['timezone'])))) ? $_d->getTimestamp() : 0; },
+                'sanitizer' => function($v, $d) { return ($_d = \DateTime::createFromFormat('m.d.Y g:i a', $v, $this->buildDateTimezone($d['timezone'], $d['longTimezone']))) ? $_d->getTimestamp() : 0; },
                 'error'     => 'Please enter a start date between today and 30 days from now.',
             ],
             'endDate' => [
@@ -141,7 +141,7 @@ class CreateAuctionController extends BaseSiteController
                 'label'     => 'Auction End',
                 'default'   => date("m.d.Y g:00 a", time()+3600+900 + 86400*7),
                 'validation' => v::int()->min(strtotime('+1 day -1 minute'), true)->max(strtotime('+30 days'), true),
-                'sanitizer' => function($v, $d) { return ($_d = \DateTime::createFromFormat('m.d.Y g:i a', $v, new \DateTimeZone($this->calulcateTimezone($d['timezone'])))) ? $_d->getTimestamp() : 0; },
+                'sanitizer' => function($v, $d) { return ($_d = \DateTime::createFromFormat('m.d.Y g:i a', $v, $this->buildDateTimezone($d['timezone'], $d['longTimezone']))) ? $_d->getTimestamp() : 0; },
                 'error'     => 'Please enter an end date between 24 hours and 30 days from now.',
             ],
 
@@ -215,6 +215,15 @@ class CreateAuctionController extends BaseSiteController
                 'sanitizer'  => Sanitizer::trim(),
                 'error'      => 'timezone was invalid.',
             ],
+
+            'longTimezone' => [
+                'name'      => 'longTimezone',
+                'label'     => 'Long Timezone',
+                'default'   => '',
+                'validation' => v::string(),
+                'sanitizer'  => Sanitizer::trim(),
+                'error'      => 'timezone (long) was invalid.',
+            ],
         ]);
 
         // Debug::trace("\$spec=\n".json_encode($spec, 192),__FILE__,__LINE__,$this);
@@ -263,10 +272,31 @@ class CreateAuctionController extends BaseSiteController
         return $new_auction_vars;
     }
 
-    protected function calulcateTimezone($timezone_in) {
-        $timezone = preg_replace('/[^0-9-]/', '', $timezone_in) * 36;
-        return timezone_name_from_abbr(null, $timezone, date('I', time()));
+    protected function buildDateTimezone($short_timezone_in, $long_timezone_in) {
+        if (strlen($long_timezone_in)) {
+            try {
+                $tz_obj = new \DateTimeZone($long_timezone_in);
+                return $tz_obj;
+            } catch (Exception $e) {
+                $error = "Bad Timezone (Long): ".Debug::desc($long_timezone_in).".";
+                Debug::errorTrace("ERROR: $error",__FILE__,__LINE__,$this);
+            }
+        }
 
+        $timezone_numbers_only = preg_replace('/[^0-9-]/', '', $short_timezone_in) * 36;
+        $timezone = timezone_name_from_abbr(null, $timezone_numbers_only, date('I', time()));
+
+        try {
+            $tz_obj = new \DateTimeZone($timezone);
+            return $tz_obj;
+        } catch(Exception $e) {
+            $error = "Bad Timezone: ".Debug::desc($short_timezone_in).". \$timezone_numbers_only=".Debug::desc($timezone_numbers_only)."  \$timezone=".Debug::desc($timezone);
+            Debug::errorTrace("ERROR: $error",__FILE__,__LINE__,$this);
+
+        }
+
+        // fallback to UTC
+        return new \DateTimeZone('UTC');
     }
 
 

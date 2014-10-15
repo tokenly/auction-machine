@@ -24,6 +24,7 @@ class AuctionUtil
             'startDate'               => date('m.d.Y g:i a'),
             'endDate'                 => date('m.d.Y g:i a', strtotime('+1 day')),
             'timezone'                => '-05:00',
+            'longTimezone'            => 'America/Chicago',
             'minStartingBid'          => 1000,
             'bidTokenType'            => 'LTBCOIN',
 

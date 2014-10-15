@@ -74,11 +74,23 @@ class CreateAuctionTest extends SiteTestCase
         $start_date_string = date('m.d.Y g:i a', strtotime('+5 hours'));
         $end_date_string = date('m.d.Y g:i a', strtotime('+3 days'));
 #        Debug::trace("\$start_date_string=$start_date_string \$end_date_string=$end_date_string",__FILE__,__LINE__,$this);
-        $auction = AuctionUtil::createNewAuction($app, ['startDate' => $start_date_string, 'endDate' => $end_date_string, 'timezone' => '-04:00']);
+        $auction = AuctionUtil::createNewAuction($app, ['startDate' => $start_date_string, 'endDate' => $end_date_string, 'timezone' => '-04:00', 'longTimezone' => 'America/New_York']);
 
         PHPUnit::assertNotNull($auction);
         $expected_dt = DateTime::createFromFormat('m.d.Y g:i a', $start_date_string, new \DateTimeZone('-04:00'));
         PHPUnit::assertEquals($expected_dt->getTimestamp(), $auction['startDate']);
+    }
+
+    public function testNewAuctionLongTimezone() {
+        $app = Environment::initEnvironment('test');
+        $start_date_string = date('m.d.Y g:i a', strtotime('+5 hours'));
+        $end_date_string = date('m.d.Y g:i a', strtotime('+3 days'));
+#        Debug::trace("\$start_date_string=$start_date_string \$end_date_string=$end_date_string",__FILE__,__LINE__,$this);
+        $auction = AuctionUtil::createNewAuction($app, ['startDate' => $start_date_string, 'endDate' => $end_date_string, 'timezone' => '01:00', 'longTimezone' => 'America/Chicago']);
+
+        PHPUnit::assertNotNull($auction);
+        $expected_dt = DateTime::createFromFormat('m.d.Y g:i a', $start_date_string, new \DateTimeZone('-05:00'));
+        PHPUnit::assertEquals(date("Y-m-d H:i:s", $expected_dt->getTimestamp()), date("Y-m-d H:i:s", $auction['startDate']));
     }
 
     public function testNewAuctionConfirmation() {
