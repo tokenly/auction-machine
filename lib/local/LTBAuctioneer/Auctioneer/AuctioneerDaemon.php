@@ -187,7 +187,7 @@ class AuctioneerDaemon
             } else {
                 // automatic payouts are not an option
                 // check for manual payouts
-                if (isset($auction['manualPayoutsToTrigger'])) {
+                if (isset($auction['manualPayoutsToTrigger']) AND $auction['manualPayoutsToTrigger']) {
                     try {
                         $this->auction_payer->payoutAuction($auction, $auction['manualPayoutsToTrigger']);
                     } catch (Exception $e) {
