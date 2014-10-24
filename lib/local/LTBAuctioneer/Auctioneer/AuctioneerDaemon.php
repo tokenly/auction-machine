@@ -184,6 +184,16 @@ class AuctioneerDaemon
                 } catch (Exception $e) {
                     Debug::errorTrace("ERROR: ".$e->getMessage(),__FILE__,__LINE__,$this);                    
                 }
+            } else {
+                // automatic payouts are not an option
+                // check for manual payouts
+                if (isset($auction['manualPayoutsToTrigger'])) {
+                    try {
+                        $this->auction_payer->payoutAuction($auction, $auction['manualPayoutsToTrigger']);
+                    } catch (Exception $e) {
+                        Debug::errorTrace("ERROR: ".$e->getMessage(),__FILE__,__LINE__,$this);                    
+                    }
+                }
             }
         } 
 

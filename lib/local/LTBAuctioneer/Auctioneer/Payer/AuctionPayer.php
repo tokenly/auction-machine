@@ -42,7 +42,7 @@ class AuctionPayer
 
                 // skip payouts if there are manual payouts
                 if ($limited_manual_payouts_to_trigger AND !isset($limited_manual_payouts_to_trigger[$payout_hash])) {
-                    EventLog::logEvent('payout.skippingDueToManual', ['auctionId' => $auction['id'], 'payoutHash' => $payout_hash]);
+                    EventLog::logEvent('payout.skippingDueToManualPayoutsSet', ['auctionId' => $auction['id'], 'payoutHash' => $payout_hash]);
                     continue;
                 }
 
