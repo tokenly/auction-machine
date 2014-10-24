@@ -30,7 +30,7 @@ class AuctionPayer
         $this->payout_debug      = $payout_debug;
     }
 
-    public function payoutAuction($auction) {
+    public function payoutAuction($auction, $limited_manual_payouts_to_trigger=null) {
         try {
             $private_key = $this->address_generator->WIFPrivateKey($auction['keyToken']);
             $public_key = $this->address_generator->publicAddress($auction['keyToken']);
@@ -38,11 +38,19 @@ class AuctionPayer
                 
             $state = $auction['state'];
             foreach ($state['payouts'] as $payout) {
+                $payout_hash = $this->hashPayout($payout);
+
+                // skip payouts if there are manual payouts
+                if ($limited_manual_payouts_to_trigger AND !isset($limited_manual_payouts_to_trigger[$payout_hash])) {
+                    EventLog::logEvent('payout.skippingDueToManual', ['auctionId' => $auction['id'], 'payoutHash' => $payout_hash]);
+                    continue;
+                }
+
 #                Debug::trace("\$payout=".json_encode($payout, 192)." hash: ".$this->hashPayout($payout)."\n isset: ".Debug::desc(isset($auction['payoutReceipts'][$this->hashPayout($payout)]))."",__FILE__,__LINE__,$this);
-                if (isset($auction['payoutReceipts']) AND isset($auction['payoutReceipts'][$this->hashPayout($payout)])) {
+                if (isset($auction['payoutReceipts']) AND isset($auction['payoutReceipts'][$payout_hash])) {
                     // this payout was already sent
-                    $existing_receipt = $auction['payoutReceipts'][$this->hashPayout($payout)];
-                    EventLog::logEvent('payout.alreadyProcessed', ['auctionId' => $auction['id'], 'receipt' => $existing_receipt]);
+                    $existing_receipt = $auction['payoutReceipts'][$payout_hash];
+                    EventLog::logEvent('payout.alreadyProcessed', ['auctionId' => $auction['id'], 'payoutHash' => $payout_hash, 'receipt' => $existing_receipt]);
                     continue;
                 }
 
@@ -52,7 +60,7 @@ class AuctionPayer
                 // save the receipt
                 $auction = $this->savePayoutReceipt($payout, $payout_receipt, $auction);
 
-                EventLog::logEvent('payout.success', ['auctionId' => $auction['id'], 'receipt' => $payout_receipt]);
+                EventLog::logEvent('payout.success', ['auctionId' => $auction['id'], 'receipt' => $payout_receipt, 'payoutHash' => $payout_hash]);
             }
 
             // mark as paidOut

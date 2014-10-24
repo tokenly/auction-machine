@@ -103,7 +103,7 @@ class AuctionStateUtil
         $auction_state_vars_for_comparison = (array)$auction_state_vars;
 
         // state var fields to ignore
-        foreach (['logs','bidsAndAccounts','blockId', 'hasMempoolTransactions',] as $field) {
+        foreach (['logs','bidsAndAccounts','blockId', 'hasMempoolTransactions', 'payoutHashes'] as $field) {
             if (!isset($expected_state_vars[$field])) { unset($auction_state_vars_for_comparison[$field]); }
         }
 

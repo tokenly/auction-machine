@@ -70,6 +70,7 @@ class Auctioneer
             $this->buildSellerPayout($state);
             $this->buildPlatformPayouts($state);
             $this->authorizePayouts($state, $current_block_height);
+            $this->hashPayouts($state);
         } 
     }
     
@@ -429,6 +430,22 @@ class Auctioneer
             $payout['authorized'] = $authorized;
         }
 
+    }
+
+    protected function hashPayouts($state) {
+        $payout_hashes = [];
+
+        foreach ($state->getAllPayouts() as $payout) {
+            $hash = $this->hashPayout($payout);
+            $payout_hashes[$hash] = $payout;
+        }
+
+        $state['payoutHashes'] = $payout_hashes;
+
+    }
+
+    protected function hashPayout($payout) {
+        return md5(json_encode((array)$payout));
     }
 
 }
