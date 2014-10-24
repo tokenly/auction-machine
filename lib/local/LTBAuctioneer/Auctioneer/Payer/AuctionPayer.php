@@ -64,9 +64,11 @@ class AuctionPayer
             }
 
             // mark as paidOut
-            $this->auction_manager->update($auction, [
-                'paidOut' => true,
-            ]);
+            if (!$limited_manual_payouts_to_trigger) {
+                $this->auction_manager->update($auction, [
+                    'paidOut' => true,
+                ]);
+            }
 
             // done
             EventLog::logEvent('payout.complete', ['auctionId' => $auction['id']]);

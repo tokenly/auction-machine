@@ -174,6 +174,19 @@ class AuctioneerDaemon
     protected function checkForPayouts() {
         $current_block_height = $this->getCurrentBlockHeight();
         foreach ($this->auction_manager->findAuctionsPendingPayout() as $auction) {
+
+            // check for manual payouts
+            if (isset($auction['manualPayoutsToTrigger']) AND $auction['manualPayoutsToTrigger']) {
+                try {
+                    $this->auction_payer->payoutAuction($auction, $auction['manualPayoutsToTrigger']);
+                } catch (Exception $e) {
+                    Debug::errorTrace("ERROR: ".$e->getMessage(),__FILE__,__LINE__,$this);                    
+                }
+
+                // never process automatic payouts for auctions that are manually paid out
+                continue;
+            }
+
             // check confirmations
 #          Debug::trace("\$current_block_height=".Debug::desc($current_block_height)." auction blockId=".Debug::desc($auction['state']['blockId'])."  confirmations: ".Debug::desc($current_block_height - $auction['state']['blockId'])."",__FILE__,__LINE__,$this);
             if (($current_block_height - $auction['state']['blockId']) >= $auction['confirmationsRequired']) {
@@ -183,16 +196,6 @@ class AuctioneerDaemon
                     $this->auction_payer->payoutAuction($auction);
                 } catch (Exception $e) {
                     Debug::errorTrace("ERROR: ".$e->getMessage(),__FILE__,__LINE__,$this);                    
-                }
-            } else {
-                // automatic payouts are not an option
-                // check for manual payouts
-                if (isset($auction['manualPayoutsToTrigger']) AND $auction['manualPayoutsToTrigger']) {
-                    try {
-                        $this->auction_payer->payoutAuction($auction, $auction['manualPayoutsToTrigger']);
-                    } catch (Exception $e) {
-                        Debug::errorTrace("ERROR: ".$e->getMessage(),__FILE__,__LINE__,$this);                    
-                    }
                 }
             }
         } 
