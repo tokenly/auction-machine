@@ -380,12 +380,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nbobtc/bitcoind-php.git",
-                "reference": "1f5deaa35c2e108b0fc1bdd3eea7134ec2fef33b"
+                "reference": "d81380bcbd6cfd71b6eb9b30244c55a235eda87e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nbobtc/bitcoind-php/zipball/1f5deaa35c2e108b0fc1bdd3eea7134ec2fef33b",
-                "reference": "1f5deaa35c2e108b0fc1bdd3eea7134ec2fef33b",
+                "url": "https://api.github.com/repos/nbobtc/bitcoind-php/zipball/d81380bcbd6cfd71b6eb9b30244c55a235eda87e",
+                "reference": "d81380bcbd6cfd71b6eb9b30244c55a235eda87e",
                 "shasum": ""
             },
             "require": {
@@ -424,7 +424,7 @@
                 "bitcoind",
                 "bitcoins"
             ],
-            "time": "2014-08-10 17:45:16"
+            "time": "2014-11-04 13:31:07"
         },
         {
             "name": "pimple/pimple",
