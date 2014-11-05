@@ -286,16 +286,20 @@ class Auctioneer
         foreach ($this->getAccountsByMostAmount($state, null, 'prebid') as $account) {
             // build a new live bid
             $amount = $account->getBalance($this->bid_token, 'prebid');
-            $new_bid = [
-                'address' => $account['address'],
-                'amount'  => $amount,
-                'token'   => $this->bid_token,
-                'status'  => ($rank === 0 AND $amount >= $this->auction['minStartingBid']) ? 'active' : 'outbid',
-                'rank'    => $rank,
-            ];
-            $new_bids[] = $new_bid;
 
-            ++$rank;
+            // only treat it as a bid if it meets the minimum
+            if ($amount >= $this->auction['minStartingBid']) {
+                $new_bid = [
+                    'address' => $account['address'],
+                    'amount'  => $amount,
+                    'token'   => $this->bid_token,
+                    'status'  => ($rank === 0 AND $amount >= $this->auction['minStartingBid']) ? 'active' : 'outbid',
+                    'rank'    => $rank,
+                ];
+                $new_bids[] = $new_bid;
+
+                ++$rank;
+            }
 
             // convert any prebid account balance to a live balance
             $account->subtractBalance($amount, $this->bid_token, 'prebid');
@@ -352,12 +356,15 @@ class Auctioneer
         }
 
 
+        $accounts_refunded = [];
+
         $bid_token = $this->bid_token;
         foreach ($state['bids'] as $bid) {
             $payout = $state->findOrCreatePayout($bid['address'], $bid_token);
             $account = $state->getAccount($bid['address']);
 
-            if ($bid['address'] == $top_bidder_address) {
+            $amount = null;
+            if ($bid['address'] == $top_bidder_address AND $bid['status'] == 'active') {
                 // for the top bidder,
                 //   the payout is only the token fee
                 $amount = $state['bidTokenFeeApplied'];
@@ -377,7 +384,17 @@ class Auctioneer
             $payout['amount'] = $payout['amount'] + $amount;
 
             $state->addLog("{$type_desc} ".$payout);
+
+            $accounts_refunded[$bid['address']] = true;
         }
+
+        // refund any remaining accounts (this is for bids that never beat the minimum bid)
+        foreach ($this->getAccountsByMostAmount($state) as $account) {
+            if (isset($accounts_refunded[$account['address']])) { continue; }
+
+            $this->refundAccount($account, $state);
+        }
+        
     }
 
     protected function buildSellerPayout($state) {
@@ -418,6 +435,24 @@ class Auctioneer
 
             $state->addLog("Refund bid token fee with ".$payout);
         }
+    }
+
+    protected function refundAccount($account, $state) {
+        $bid_token = $this->bid_token;
+
+        // build a payout
+        $payout = $state->findOrCreatePayout($account['address'], $bid_token);
+
+        // determine the amount
+        $amount = $account->getBalance($bid_token, 'live');
+        $amount = $amount + $account->getBalance($bid_token, 'late');
+        $amount = $amount + $account->getBalance($bid_token, 'prebid');
+
+        // add the refund amount to the payout
+        $payout['amount'] = $payout['amount'] + $amount;
+
+        // log the refund
+        $state->addLog("Refund ".$payout);
     }
 
     protected function authorizePayouts($state, $current_block_height) {

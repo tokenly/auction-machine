@@ -34,7 +34,4 @@ class AuctionStateBuilderTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-
-    
-
 }

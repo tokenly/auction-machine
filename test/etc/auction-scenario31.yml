@@ -1,4 +1,4 @@
-# overbid bidTokenFee
+# Received less than the minimum bid
 
 auction:
   id                    : 101
@@ -9,7 +9,7 @@ auction:
   create                : 2014-07-31
   startDate             : 2014-08-01 00:00:00
   endDate               : 2014-08-05 00:00:00
-  minStartingBid        : 1000
+  minStartingBid        : 25000
   bidTokenType          : "LTBCOIN"
   minBidIncrement       : 1000
   bountyPercent         : 0.001
@@ -37,11 +37,10 @@ transactions:
     source         : 1OWNER01
     destination    : 1AUCTION01
     asset          : LTBCOIN
-    quantity       : 5
+    quantity       : 1000
     status         : valid
-    tx_hash        : HASH01________________________________
+    tx_hash        : HASH01
     timestamp      : 2014-07-31
-
   -
     auctionId      : 101
     transactionId  : 1ffd99a9e55a771b8cc077c465fb7311f68346c0981fb20477377401f5e686fd
@@ -54,13 +53,12 @@ transactions:
     asset          : BTC
     quantity       : 0.05
     status         : valid
-    tx_hash        : HASH02________________________________
+    tx_hash        : HASH02
     timestamp      : 2014-07-31
-
   -
     auctionId      : 101
     transactionId  : TXBLAH
-    blockId        : 6003
+    blockId        : 6002
 
     classification : incoming
 
@@ -69,71 +67,76 @@ transactions:
     asset          : SPONSOR
     quantity       : 1
     status         : valid
-    tx_hash        : HASH02________________________________
+    tx_hash        : HASH03
     timestamp      : 2014-07-31
 
+  # ########################################################################
+
+
+  # ########################################################################
+  # Bid One
+  # ########################################################################
   -
     auctionId      : 101
-    transactionId  : 5001
+    transactionId  : HASH0003________________________________________________________
     blockId        : 6004
 
     classification : incoming
 
-    source         : 1OWNER01
+    source         : 1BUYER01
     destination    : 1AUCTION01
     asset          : LTBCOIN
-    quantity       : 1000
+    quantity       : 1050
     status         : valid
-    tx_hash        : HASH01________________________________
-    timestamp      : 2014-07-31
+    tx_hash        : HASH04
+    timestamp      : 2014-08-04 00:00:00
 
+
+  # ########################################################################
 
 
 
 meta:
   now: 2014-08-06 00:00:00
-  blockHeight: 6020
+  blockHeight: 6005
 
 expectedState:
     btcFeeSatisfied      : true
     btcFeeApplied        : 0.05
     bidTokenFeeSatisfied : true
     bidTokenFeeApplied   : 1000
-    prizeTokensSatisfied : true
+    prizeTokensSatisfied       : true
     prizeTokensApplied:
       SPONSOR: 1
     active               : true
     timePhase            : ended
     bounty               : 0
     accounts:
-      1OWNER01:
-        address: 1OWNER01
+      1BUYER01:
+        address: 1BUYER01
         balances:
           LTBCOIN:
-            live: 5
-            prebid: 0
-    bids: [] # didn't reach minimum
+            live: 1050
+    bids: []
     payouts:
       # these were refunded
       - address: 1SELLER
         token: SPONSOR
         amount: 1
-        authorized: true
+        authorized: false
         sweep: false
       - address: 1SELLER
         token: LTBCOIN
         amount: 1000
-        authorized: true
+        authorized: false
         sweep: false
-      - address: 1OWNER01
+      - address: 1BUYER01
         token: LTBCOIN
-        amount: 5
-        authorized: true
+        amount: 1050
+        authorized: false
         sweep: false
       - address: 1PLATFORM
         token: BTC
         amount: 0.05
         sweep: true
-        authorized: true
-
-
+        authorized: false
