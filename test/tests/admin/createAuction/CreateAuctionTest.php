@@ -77,7 +77,7 @@ class CreateAuctionTest extends SiteTestCase
         $auction = AuctionUtil::createNewAuction($app, ['startDate' => $start_date_string, 'endDate' => $end_date_string, 'timezone' => '-04:00', 'longTimezone' => 'America/New_York']);
 
         PHPUnit::assertNotNull($auction);
-        $expected_dt = DateTime::createFromFormat('m.d.Y g:i a', $start_date_string, new \DateTimeZone('-04:00'));
+        $expected_dt = DateTime::createFromFormat('m.d.Y g:i a', $start_date_string, new \DateTimeZone(date('I') ? '-04:00' : '-05:00'));
         PHPUnit::assertEquals($expected_dt->getTimestamp(), $auction['startDate']);
     }
 
@@ -89,7 +89,7 @@ class CreateAuctionTest extends SiteTestCase
         $auction = AuctionUtil::createNewAuction($app, ['startDate' => $start_date_string, 'endDate' => $end_date_string, 'timezone' => '01:00', 'longTimezone' => 'America/Chicago']);
 
         PHPUnit::assertNotNull($auction);
-        $expected_dt = DateTime::createFromFormat('m.d.Y g:i a', $start_date_string, new \DateTimeZone('-05:00'));
+        $expected_dt = DateTime::createFromFormat('m.d.Y g:i a', $start_date_string, new \DateTimeZone(date('I') ? '-05:00' : '-06:00'));
         PHPUnit::assertEquals(date("Y-m-d H:i:s", $expected_dt->getTimestamp()), date("Y-m-d H:i:s", $auction['startDate']));
     }
 
