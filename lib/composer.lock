@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fcb7144998fae6174135acd39fa14960",
+    "hash": "028602fad6bf879462b55494ef267ad4",
     "packages": [
         {
             "name": "bitwasp/bitcoin-lib",
@@ -1333,6 +1333,48 @@
             "time": "2014-09-22 09:14:18"
         },
         {
+            "name": "tokenly/hmac-auth",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tokenly/hmac-auth.git",
+                "reference": "358091aeeef583760dc064fd1c4bfed38c987d49"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tokenly/hmac-auth/zipball/358091aeeef583760dc064fd1c4bfed38c987d49",
+                "reference": "358091aeeef583760dc064fd1c4bfed38c987d49",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "~4",
+                "php": ">=5.4.0",
+                "symfony/http-foundation": "~2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Tokenly\\HmacAuth": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "mit"
+            ],
+            "authors": [
+                {
+                    "name": "Devon Weller",
+                    "email": "dweller@devonweller.com",
+                    "homepage": "http://devonweller.com"
+                }
+            ],
+            "description": "A library",
+            "time": "2014-12-11 14:51:54"
+        },
+        {
             "name": "twig/twig",
             "version": "v1.16.0",
             "source": {
@@ -1884,7 +1926,8 @@
         "utipd/bitcoin-address-lib": 20,
         "utipd/currency-lib": 20,
         "nbobtc/bitcoind-php": 20,
-        "bitwasp/bitcoin-lib": 20
+        "bitwasp/bitcoin-lib": 20,
+        "tokenly/hmac-auth": 20
     },
     "prefer-stable": false,
     "platform": [],
