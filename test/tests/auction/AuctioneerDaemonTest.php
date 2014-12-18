@@ -6,7 +6,7 @@ use LTBAuctioneer\Debug\Debug;
 use LTBAuctioneer\Init\Environment;
 use LTBAuctioneer\Test\Auction\AuctionStateUtil;
 use LTBAuctioneer\Test\Auction\AuctionUtil;
-use LTBAuctioneer\Test\AuctioneerDaemon\AuctioneerDaemonHandler;
+use LTBAuctioneer\Test\AuctioneerDaemon\AuctioneerDaemonNotificationHandler;
 use LTBAuctioneer\Test\TestCase\SiteTestCase;
 use \PHPUnit_Framework_Assert as PHPUnit;
 
@@ -20,13 +20,13 @@ class AuctioneerDaemonTest extends SiteTestCase
         $app = Environment::initEnvironment('test');
 
         // handle the daemon mocks
-        $mock_auctioneer_handler = new AuctioneerDaemonHandler($this, $app);
+        $auctioneer_handler = new AuctioneerDaemonNotificationHandler($this, $app);
 
         // create an auction
         $auction = AuctionUtil::createNewAuction($app);
 
         // insert a sample counterparty transaction
-        $sent_data = $mock_auctioneer_handler->sendMockCounterpartyTransaction($auction);
+        $sent_data = $auctioneer_handler->sendMockCounterpartyTransaction($auction);
 
         // load the tx
         $tx_in_db = $app['directory']('BlockchainTransaction')->findOne([]);
@@ -41,14 +41,14 @@ class AuctioneerDaemonTest extends SiteTestCase
         $app = Environment::initEnvironment('test');
 
         // handle the daemon mocks
-        $mock_auctioneer_handler = new AuctioneerDaemonHandler($this, $app);
+        $auctioneer_handler = new AuctioneerDaemonNotificationHandler($this, $app);
 
         // create an auction
         $auction = AuctionUtil::createNewAuction($app);
 
         // insert 2 sample counterparty transaction
-        $sent_data = $mock_auctioneer_handler->sendMockCounterpartyTransaction($auction);
-        $sent_data = $mock_auctioneer_handler->sendMockCounterpartyTransaction($auction, ['block_index' => 6001]);
+        $sent_data = $auctioneer_handler->sendMockCounterpartyTransaction($auction);
+        $sent_data = $auctioneer_handler->sendMockCounterpartyTransaction($auction, ['block_index' => 6001]);
 
         // load the tx's
         $txs = iterator_to_array($app['directory']('BlockchainTransaction')->findAll());
@@ -56,7 +56,7 @@ class AuctioneerDaemonTest extends SiteTestCase
 
         // now orphan block 6001
         // $native_orphaned_block_function(6001);
-        $mock_auctioneer_handler->orphanBlock(6001);
+        $auctioneer_handler->orphanBlock(6001);
 
 
         // only 1 transaction is in the db
@@ -74,39 +74,44 @@ class AuctioneerDaemonTest extends SiteTestCase
 
     public function testAuctioneerDaemonOrphanReloadsCounterpartyTransaction() {
         $app = Environment::initEnvironment('test');
-        $mock_auctioneer_handler = new AuctioneerDaemonHandler($this, $app);
+        $auctioneer_handler = new AuctioneerDaemonNotificationHandler($this, $app);
 
-        $follower = $app['xcpd.follower'];
-        $mysql = $app['mysql.client'];
-        $mysql->query("use `".$app['mysql.xcpd.databaseName']."`");
+        // $mysql = $app['mysql.client'];
+        // $mysql->query("use `".$app['mysql.xcpd.databaseName']."`");
 
 
-        $sql = "REPLACE INTO blocks VALUES (?,?,?)";
-        $sth = $mysql->prepare($sql);
-        $result = $sth->execute([5999, 'processed', time()]);
-        $result = $sth->execute([6000, 'processed', time()]);
-        $result = $sth->execute([6001, 'processed', time()]);
+        // $sql = "REPLACE INTO blocks VALUES (?,?,?)";
+        // $sth = $mysql->prepare($sql);
+        // $result = $sth->execute([5999, 'processed', time()]);
+        // $result = $sth->execute([6000, 'processed', time()]);
+        // $result = $sth->execute([6001, 'processed', time()]);
+
+        $auctioneer_handler->processNativeBlock(5999, 'block5999');
+        $auctioneer_handler->processNativeBlock(6000, 'block6000');
+        $auctioneer_handler->processNativeBlock(6001, 'block6001');
+
 
         // check that next xcp block will be 6002
-        PHPUnit::assertEquals(6001, $follower->getLastProcessedBlock());
+        PHPUnit::assertEquals(6001, $auctioneer_handler->getLastProcessedBlockHeight());
 
         // now orphan block 6001
         // $native_orphaned_block_function(6001);
-        $mock_auctioneer_handler->orphanBlock(6001);
+        $auctioneer_handler->orphanBlock(6001);
 
         // check that next xcp block will be 6001 again
-        PHPUnit::assertEquals(6000, $follower->getLastProcessedBlock());
+        PHPUnit::assertEquals(6000, $auctioneer_handler->getLastProcessedBlockHeight());
     } 
 
 
     public function testAuctioneerDaemonTimePhaseChanges() {
         $app = Environment::initEnvironment('test');
 
-        // handle the daemon mocks
-        $mock_auctioneer_handler = new AuctioneerDaemonHandler($this, $app);
+        // setup daemon handler with a default block
+        $auctioneer_handler = new AuctioneerDaemonNotificationHandler($this, $app);
+        $auctioneer_handler->processNativeBlock(5999, 'block5999');
 
         // setup the daemon
-        $daemon = $mock_auctioneer_handler->setupDaemon();
+        $daemon = $auctioneer_handler->setupDaemon();
 
 
         // create an auction
@@ -151,11 +156,12 @@ class AuctioneerDaemonTest extends SiteTestCase
     public function testAuctioneerDaemonPayout() {
         $app = Environment::initEnvironment('test');
 
-        // handle the daemon mocks
-        $mock_auctioneer_handler = new AuctioneerDaemonHandler($this, $app);
+        // setup daemon handler with a default block
+        $auctioneer_handler = new AuctioneerDaemonNotificationHandler($this, $app);
+        $auctioneer_handler->processNativeBlock(5999, 'block5999');
 
         // setup the daemon
-        $daemon = $mock_auctioneer_handler->setupDaemon();
+        $daemon = $auctioneer_handler->setupDaemon();
 
         // create an auction
         $auction = AuctionStateUtil::runAuctionScenario($app, 16);
@@ -173,7 +179,7 @@ class AuctioneerDaemonTest extends SiteTestCase
         PHPUnit::assertEquals(false, !!$auction['paidOut']);
 
         // process a couple more native blocks (auction ends at 6006)
-        $mock_auctioneer_handler->processNativeBlock(6009);
+        $auctioneer_handler->processNativeBlock(6009);
         
         // run an iteration
         $daemon->runOneIteration();
@@ -187,11 +193,12 @@ class AuctioneerDaemonTest extends SiteTestCase
     public function testAuctioneerBTCTransaction() {
         $app = Environment::initEnvironment('test');
 
-        // handle the daemon mocks
-        $mock_auctioneer_handler = new AuctioneerDaemonHandler($this, $app);
+        // setup daemon handler with a default block
+        $auctioneer_handler = new AuctioneerDaemonNotificationHandler($this, $app);
+        $auctioneer_handler->processNativeBlock(5999, 'block5999');
 
         // setup the daemon
-        $daemon = $mock_auctioneer_handler->setupDaemon();
+        $daemon = $auctioneer_handler->setupDaemon();
 
         // create an auction
         $auction = AuctionStateUtil::runAuctionScenario($app, 1);
@@ -199,7 +206,7 @@ class AuctioneerDaemonTest extends SiteTestCase
         PHPUnit::assertEquals(0, $auction['state']['btcFeeApplied']);
 
         // receive a BTC payment
-        $sent_tx_vars = $mock_auctioneer_handler->sendMockNativeTransaction($auction, ['amount' => 0.002, 'blockId' => 6002]);
+        $sent_tx_vars = $auctioneer_handler->sendMockNativeTransaction($auction, ['amount' => 0.002, 'blockId' => 6002]);
 
         // make sure the tx was added
         $tx_in_db = $app['directory']('BlockchainTransaction')->findOne([], ['blockId' => -1]);
@@ -220,7 +227,7 @@ class AuctioneerDaemonTest extends SiteTestCase
 
 
         // receive a BTC payment
-        $sent_tx_vars = $mock_auctioneer_handler->sendMockNativeTransaction($auction, ['amount' => 0.003, 'blockId' => 6003]);
+        $sent_tx_vars = $auctioneer_handler->sendMockNativeTransaction($auction, ['amount' => 0.003, 'blockId' => 6003]);
 
         // run an iteration
         $daemon->runOneIteration();

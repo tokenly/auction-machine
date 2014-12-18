@@ -6,7 +6,7 @@ use LTBAuctioneer\Debug\Debug;
 use LTBAuctioneer\Init\Environment;
 use LTBAuctioneer\Test\Auction\AuctionStateUtil;
 use LTBAuctioneer\Test\Auction\AuctionUtil;
-use LTBAuctioneer\Test\AuctioneerDaemon\AuctioneerDaemonHandler;
+use LTBAuctioneer\Test\AuctioneerDaemon\AuctioneerDaemonNotificationHandler;
 use LTBAuctioneer\Test\TestCase\SiteTestCase;
 use \PHPUnit_Framework_Assert as PHPUnit;
 
@@ -20,7 +20,7 @@ class AuctioneerDaemonCounterpartyMempoolTest extends SiteTestCase
         $app = Environment::initEnvironment('test');
 
         // handle the daemon mocks
-        $mock_auctioneer_handler = new AuctioneerDaemonHandler($this, $app);
+        $mock_auctioneer_handler = new AuctioneerDaemonNotificationHandler($this, $app);
 
         // create an auction
         $auction = AuctionUtil::createNewAuction($app);
@@ -54,7 +54,7 @@ class AuctioneerDaemonCounterpartyMempoolTest extends SiteTestCase
         $app = Environment::initEnvironment('test');
 
         // handle the daemon mocks
-        $mock_auctioneer_handler = new AuctioneerDaemonHandler($this, $app);
+        $mock_auctioneer_handler = new AuctioneerDaemonNotificationHandler($this, $app);
 
         // create an auction
         $auction = AuctionUtil::createNewAuction($app);

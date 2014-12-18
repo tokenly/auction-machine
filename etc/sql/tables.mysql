@@ -52,6 +52,17 @@ CREATE TABLE IF NOT EXISTS `blockchaintransaction` (
     UNIQUE KEY `tx_hash_isNative` (`tx_hash`,`isNative`)
 ) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `block` (
+    `id`            int(11) unsigned NOT NULL AUTO_INCREMENT,
+    `blockId`       int(20) unsigned NOT NULL DEFAULT 0,
+    `blockHash`     varbinary(64) NOT NULL DEFAULT '',
+    `blockDate`     int(11) unsigned NOT NULL DEFAULT 0,
+    `document`      LONGTEXT NOT NULL DEFAULT '',
+    PRIMARY KEY (`id`),
+    KEY `blockId` (`blockId`),
+    UNIQUE KEY `blockHash` (`blockHash`)
+) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
+
 CREATE TABLE IF NOT EXISTS `eventlog` (
     `id`        int(11) unsigned NOT NULL AUTO_INCREMENT,
     `timestamp` int(11) unsigned NOT NULL DEFAULT 0,

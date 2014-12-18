@@ -25,7 +25,7 @@ class AuctioneerInit {
         };
 
         $app['auctioneer.daemon'] = function($app) {
-            return new \LTBAuctioneer\Auctioneer\AuctioneerDaemon($app['xcpd.follower'], $app['native.follower'], $app['simpleDaemon'], $app['auction.manager'], $app['auction.updater'], $app['auction.payer'], $app['auction.publisher'], $app['directory']('BlockchainTransaction'));
+            return new \LTBAuctioneer\Auctioneer\AuctioneerDaemon($app['simpleDaemon'], $app['auction.manager'], $app['auction.updater'], $app['auction.payer'], $app['auction.publisher'], $app['directory']('BlockchainTransaction'), $app['directory']('Block'));
         };
 
         $app['auction.stateBuilder'] = function($app) {

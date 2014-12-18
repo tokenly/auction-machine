@@ -15,28 +15,22 @@ class AuctioneerDaemon
 
     ////////////////////////////////////////////////////////////////////////
 
-    public function __construct($xcpd_follower, $native_follower, $simple_daemon_factory, $auction_manager, $auction_updater, $auction_payer, $data_publisher, $blockchain_tx_directory) {
-        $this->xcpd_follower           = $xcpd_follower;
-        $this->native_follower         = $native_follower;
+    public function __construct($simple_daemon_factory, $auction_manager, $auction_updater, $auction_payer, $data_publisher, $blockchain_tx_directory, $block_directory) {
         $this->simple_daemon_factory   = $simple_daemon_factory;
         $this->auction_manager         = $auction_manager;
         $this->auction_updater         = $auction_updater;
         $this->auction_payer           = $auction_payer;
         $this->data_publisher          = $data_publisher;
         $this->blockchain_tx_directory = $blockchain_tx_directory;
+        $this->block_directory         = $block_directory;
     }
 
     public function setupAndRun() {
-        // genesis blocks
-        
-
         $this->setup();
         $this->run();
     }
 
     public function setup() {
-        $this->setupXCPDFollowerCallbacks();
-        $this->setupNativeFollowerCallbacks();
     }
 
     public function run() {
@@ -83,16 +77,147 @@ class AuctioneerDaemon
     }
 
     public function runOneIteration() {
-        $this->native_follower->processOneNewBlock();
-
-        $this->xcpd_follower->processOneNewBlock();
-
-        // and check for any starting or expired auctions
+        // check for any starting or expired auctions
         $this->checkForAuctionTimePhaseChanges();
 
         // and check for any auctions that need to be paid out
-        $this->checkForPayouts();
+        $this->checkForPayouts($this->getCurrentBlockHeight());
     }
+
+    // handle new blocks
+    public function handleNewBlock($block_height, $block_hash, $timestamp=null) {
+        EventLog::logEvent('xcpd.block.found', ['blockId' => $block_height]);
+
+        // store the block
+        $block = $this->block_directory->createAndSave([
+            'blockId'   => $block_height,
+            'blockHash' => $block_hash,
+            'blockDate' => ($timestamp === null ? time() : $timestamp),
+        ]);
+
+
+        // clear all mempool transactions (native and xcp)
+        $this->clearAllMempoolTransactions();
+
+        // publish all auction states to update the last block seen
+        // (we really should separate this to its own socket)
+        foreach ($this->auction_manager->allAuctions() as $auction) {
+            // update the auction because the pending status may have changed
+            $this->updateAuction($auction, $block_height);
+        }
+    }
+
+    // public function handleNewSend($send_data, $block_id, $is_mempool) {
+    //     $is_xcpd = true;
+    //     $this->handleNewXCPSend($send_data, $block_id, $is_mempool);
+    //     $this->handleNewBTCTransaction($transaction, $block_id, $is_mempool);
+    // }
+
+    public function handleNewXCPSend($send_data, $current_block_height, $is_mempool) {
+        // we have a new send from XCPD
+        if ($current_block_height === null OR $current_block_height == 0) {
+            throw new Exception("Current block height must not be 0", 1);
+        }
+        
+        // find all auctions
+        foreach ($this->auction_manager->allAuctions() as $auction) {
+            $address = $auction['auctionAddress'];
+            if (!$address) { continue; }
+
+            if ($address == $send_data['source']) {
+                // this is a send by the auction
+                // save the transaction
+                EventLog::logEvent('tx.outgoing', ['auctionId' => $auction['id'], 'tx' => $send_data, 'mempool' => $is_mempool]);
+                if (!$send_data['assetInfo']['divisible']) {
+                    $send_data['quantity'] =  CurrencyUtil::numberToSatoshis($send_data['quantity']);
+                }
+
+                $new_transaction = $this->createNewTransaction($send_data, $auction, 'outgoing', false, $is_mempool);
+                if ($new_transaction) {
+                    $this->updateAuction($auction, ($is_mempool ? $current_block_height : $new_transaction['blockId']));
+                }
+            }
+
+            if ($address == $send_data['destination']) {
+                // this is an incoming transaction
+                //   we will process this
+                EventLog::logEvent('tx.incoming', ['auctionId' => $auction['id'], 'tx' => $send_data, 'mempool' => $is_mempool]);
+                if (!$send_data['assetInfo']['divisible']) {
+                    $send_data['quantity'] = CurrencyUtil::numberToSatoshis($send_data['quantity']);
+                }
+                $new_transaction = $this->createNewTransaction($send_data, $auction, 'incoming', false, $is_mempool);
+                if ($new_transaction) {
+                    $this->updateAuction($auction, ($is_mempool ? $current_block_height : $new_transaction['blockId']));
+                }
+            }
+        }
+    }
+
+    public function handleNewBTCTransaction($transaction, $current_block_height, $is_mempool) {
+        // a new transaction
+        // txid: cc91db2f18b908903cb7c7a4474695016e12afd816f66a209e80b7511b29bba9
+        // outputs:
+        //     - amount: 100000
+        //       address: "1aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+
+        $auction_addresses_map = $this->allAuctionsByAddress();
+
+#            Debug::trace("\$block_height=".Debug::desc($block_height)."",__FILE__,__LINE__,$this);
+#            Debug::trace("\$is_mempool=".Debug::desc($is_mempool)."",__FILE__,__LINE__,$this);
+#            Debug::trace("\$transaction=".json_encode($transaction, 192),__FILE__,__LINE__);
+        foreach ($transaction['outputs'] as $output) {
+            if (!$output['address']) { continue; }
+
+            $destination_address = $output['address'];
+            if (isset($auction_addresses_map[$destination_address])) {
+                $auction = $auction_addresses_map[$destination_address];
+
+                // this is an interesting blockChain transaction
+                $btc_send_data = [];
+                $btc_send_data['tx_index']    = $transaction['txid'];
+                $btc_send_data['block_index'] = ($is_mempool ? 0 : $current_block_height);
+                $btc_send_data['source']      = ''; // not tracked
+                $btc_send_data['destination'] = $destination_address;
+                $btc_send_data['asset']       = 'BTC';
+                $btc_send_data['quantity']    = $output['amount']; // already in satoshis
+                $btc_send_data['status']      = 'valid';
+                $btc_send_data['tx_hash']     = $transaction['txid'];
+
+                $new_transaction = $this->createNewTransaction($btc_send_data, $auction, 'incoming', true, $is_mempool);
+                if ($new_transaction) {
+                    $this->updateAuction($auction, $is_mempool ? $current_block_height : $new_transaction['blockId']);
+                }
+            }
+        }
+    }
+
+    // probably won't need this
+    public function handleOrphanedBlock($orphaned_block_height) {
+        // Debug::trace("handleOrphanedBlock \$orphaned_block_height=".Debug::desc($orphaned_block_height)."",__FILE__,__LINE__,$this);
+        EventLog::logEvent('block.orphan', ['blockId' => $orphaned_block_height]);
+
+        // get all auctions affected
+        $entries = $this->blockchain_tx_directory->find(['blockId' => $orphaned_block_height]);
+        $auction_ids = [];
+        foreach($entries as $entry) {
+            $auction_ids[$entry['auctionId']] = true;
+        }
+
+        // delete transactions
+        $this->blockchain_tx_directory->deleteWhere(['blockId' => $orphaned_block_height]);
+
+        // delete block
+        $this->block_directory->deleteWhere(['blockId' => $orphaned_block_height]);
+
+
+        // update and republish all affected auctions
+        foreach($auction_ids as $auction_id => $_nothin) {
+            if ($auction = $this->auction_manager->findById($auction_id)) {
+                $this->updateAuction($auction, $orphaned_block_height - 1);
+            }
+        }
+    }
+
 
 
     // this can return a null or a new transaction
@@ -149,9 +274,7 @@ class AuctioneerDaemon
     }
 
     public function updateAuction($auction, $block_height) {
-        if ($block_height === null OR $block_height == 0) {
-            $block_height = $this->getCurrentBlockHeight();
-        }
+        if ($block_height === null OR $block_height == 0) { throw new Exception("Unknown block_height: $block_height", 1); }
 
         $auction = $this->auction_updater->updateAuctionState($auction, $block_height);
         $this->data_publisher->publishAuctionState($auction, $block_height);
@@ -163,6 +286,7 @@ class AuctioneerDaemon
 
     protected function checkForAuctionTimePhaseChanges() {
         $current_block_height = null;
+
 #        Debug::trace("calling findAuctionsThatNeedTimePhaseUpdate",__FILE__,__LINE__,$this);
         foreach ($this->auction_manager->findAuctionsThatNeedTimePhaseUpdate() as $auction) {
 #           Debug::trace("findAuctionsThatNeedTimePhaseUpdate auction=".Debug::desc($auction)."",__FILE__,__LINE__,$this);
@@ -171,8 +295,7 @@ class AuctioneerDaemon
         } 
     }
 
-    protected function checkForPayouts() {
-        $current_block_height = $this->getCurrentBlockHeight();
+    protected function checkForPayouts($current_block_height) {
         foreach ($this->auction_manager->findAuctionsPendingPayout() as $auction) {
 
             // check for manual payouts
@@ -199,139 +322,6 @@ class AuctioneerDaemon
                 }
             }
         } 
-
-
-        // TODO: confirm auction payouts
-        // foreach ($this->auction_manager->findAuctionsPendingPayoutConfirmation() as $auction) {
-        // } 
-    }
-
-    protected function setupXCPDFollowerCallbacks() {
-        $this->xcpd_follower->handleNewBlock(function($block_id) {
-#            Debug::trace("\$block_id=".Debug::desc($block_id)."",__FILE__,__LINE__,$this);
-            EventLog::logEvent('xcpd.block.found', ['blockId' => $block_id]);
-
-            // clear all mempool transactions
-            $this->clearAllMempoolTransactions($native=false);
-
-            // publish all auction states to update the last block seen
-            // (we really should separate this to its own socket)
-            foreach ($this->auction_manager->allAuctions() as $auction) {
-                // update the auction because the pending status may have changed
-                $this->updateAuction($auction, $block_id);
-            }
-        });
-
-        $this->xcpd_follower->handleNewSend(function($send_data, $block_id, $is_mempool) {
-#           Debug::trace("handleNewSend received \$send_data=".Debug::desc($send_data)."",__FILE__,__LINE__,$this);
-            // we have a new send from XCPD
-            
-            // find all auctions
-            foreach ($this->auction_manager->allAuctions() as $auction) {
-                $address = $auction['auctionAddress'];
-                if (!$address) { continue; }
-
-                if ($address == $send_data['source']) {
-                    // this is a send by the auction
-                    // save the transaction
-                    EventLog::logEvent('tx.outgoing', ['auctionId' => $auction['id'], 'tx' => $send_data, 'mempool' => $is_mempool]);
-                    if (!$send_data['assetInfo']['divisible']) {
-                        $send_data['quantity'] =  CurrencyUtil::numberToSatoshis($send_data['quantity']);
-                    }
-
-                    $new_transaction = $this->createNewTransaction($send_data, $auction, 'outgoing', false, $is_mempool);
-                    if ($new_transaction) {
-                        $this->updateAuction($auction, $new_transaction['blockId']);
-                    }
-                }
-                if ($address == $send_data['destination']) {
-                    // this is an incoming transaction
-                    //   we will process this
-                    EventLog::logEvent('tx.incoming', ['auctionId' => $auction['id'], 'tx' => $send_data, 'mempool' => $is_mempool]);
-                    if (!$send_data['assetInfo']['divisible']) {
-                        $send_data['quantity'] = CurrencyUtil::numberToSatoshis($send_data['quantity']);
-                    }
-                    $new_transaction = $this->createNewTransaction($send_data, $auction, 'incoming', false, $is_mempool);
-                    if ($new_transaction) {
-                        $this->updateAuction($auction, $new_transaction['blockId']);
-                    }
-                }
-            }
-        });
-    }
-
-    protected function setupNativeFollowerCallbacks() {
-        $this->native_follower->handleNewBlock(function($block_id) {
-            // a new block was found...
-            //   just smile and be happy
-            EventLog::logEvent('native.block.found', ['blockId' => $block_id]);
-
-            // clear all mempool transactions
-            $this->clearAllMempoolTransactions($native=true);
-        });
-
-        $this->native_follower->handleNewTransaction(function($transaction, $block_id, $is_mempool) {
-            // a new transaction
-            // txid: cc91db2f18b908903cb7c7a4474695016e12afd816f66a209e80b7511b29bba9
-            // outputs:
-            //     - amount: 100000
-            //       address: "1aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-
-            $auction_addresses_map = $this->allAuctionsByAddress();
-
-#            Debug::trace("\$block_id=".Debug::desc($block_id)."",__FILE__,__LINE__,$this);
-#            Debug::trace("\$is_mempool=".Debug::desc($is_mempool)."",__FILE__,__LINE__,$this);
-#            Debug::trace("\$transaction=".json_encode($transaction, 192),__FILE__,__LINE__);
-            foreach ($transaction['outputs'] as $output) {
-                if (!$output['address']) { continue; }
-
-                $destination_address = $output['address'];
-                if (isset($auction_addresses_map[$destination_address])) {
-                    $auction = $auction_addresses_map[$destination_address];
-
-                    // this is an interesting blockChaing transaction
-                    $btc_send_data = [];
-                    $btc_send_data['tx_index']    = $transaction['txid'];
-                    $btc_send_data['block_index'] = $block_id;
-                    $btc_send_data['source']      = ''; // not tracked
-                    $btc_send_data['destination'] = $destination_address;
-                    $btc_send_data['asset']       = 'BTC';
-                    $btc_send_data['quantity']    = $output['amount']; // already in satoshis
-                    $btc_send_data['status']      = 'valid';
-                    $btc_send_data['tx_hash']     = $transaction['txid'];
-
-                    $new_transaction = $this->createNewTransaction($btc_send_data, $auction, 'incoming', true, $is_mempool);
-                    if ($new_transaction) {
-                        $this->updateAuction($auction, $new_transaction['blockId']);
-                    }
-                }
-            }
-        });
-
-        $this->native_follower->handleOrphanedBlock(function($orphaned_block_id) {
-#           Debug::trace("handleOrphanedBlock \$orphaned_block_id=".Debug::desc($orphaned_block_id)."",__FILE__,__LINE__,$this);
-            EventLog::logEvent('block.orphan', ['blockId' => $orphaned_block_id]);
-
-            // get all auctions affected
-            $entries = $this->blockchain_tx_directory->find(['blockId' => $orphaned_block_id]);
-            $auction_ids = [];
-            foreach($entries as $entry) {
-                $auction_ids[$entry['auctionId']] = true;
-            }
-
-            // delete transactions
-            $this->blockchain_tx_directory->deleteWhere(['blockId' => $orphaned_block_id]);
-
-            // inform the counterparty follower that a block has been orphaned
-            $this->xcpd_follower->orphanBlock($orphaned_block_id);
-
-            // update and republish all affected auctions
-            foreach($auction_ids as $auction_id => $_nothin) {
-                if ($auction = $this->auction_manager->findById($auction_id)) {
-                    $this->updateAuction($auction, $orphaned_block_id - 1);
-                }
-            }
-        });
     }
 
     protected function allAuctionsByAddress() {
@@ -345,17 +335,15 @@ class AuctioneerDaemon
     }
 
     protected function getCurrentBlockHeight() {
-        // $tx = $this->blockchain_tx_directory->findOne([], ['blockId' => -1]);
-        // if ($tx) {
-        //     return $tx['blockId'];
-        // }
-        // return 0;
+        $block = $this->block_directory->getBestHeightBlock();
+        if (!$block) { throw new Exception("No blocks found", 1); }
 
-        return $this->xcpd_follower->getLastProcessedBlock();
+        return $block['blockId'];
     }
 
-    protected function clearAllMempoolTransactions($is_native) {
-        $this->blockchain_tx_directory->deleteRaw("DELETE FROM {$this->blockchain_tx_directory->getTableName()} WHERE isMempool = ? AND isNative = ?", [1, intval($is_native)]);
+    protected function clearAllMempoolTransactions() {
+        // $this->blockchain_tx_directory->deleteRaw("DELETE FROM {$this->blockchain_tx_directory->getTableName()} WHERE isMempool = ? AND isNative = ?", [1, intval($is_native)]);
+        $this->blockchain_tx_directory->deleteRaw("DELETE FROM {$this->blockchain_tx_directory->getTableName()} WHERE isMempool = ?", [1]);
     }
 
     //     "block_index" => 313360,
