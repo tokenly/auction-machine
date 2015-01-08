@@ -1,13 +1,14 @@
 <?php
 
 use LTBAuctioneer\Auctioneer\AuctioneerDaemon;
-use Utipd\CurrencyLib\CurrencyUtil;
 use LTBAuctioneer\Debug\Debug;
 use LTBAuctioneer\Init\Environment;
 use LTBAuctioneer\Test\Auction\AuctionStateUtil;
 use LTBAuctioneer\Test\Auction\AuctionUtil;
 use LTBAuctioneer\Test\AuctioneerDaemon\AuctioneerDaemonNotificationHandler;
 use LTBAuctioneer\Test\TestCase\SiteTestCase;
+use LTBAuctioneer\Test\XChain\XChainUtil;
+use Utipd\CurrencyLib\CurrencyUtil;
 use \PHPUnit_Framework_Assert as PHPUnit;
 
 /*
@@ -18,6 +19,7 @@ class AuctioneerDaemonNativeMempoolTest extends SiteTestCase
 
     public function testAuctioneerDaemonNativeMempoolTXNormal() {
         $app = Environment::initEnvironment('test');
+        XChainUtil::installXChainMockClientIfNeeded($app, $this);
 
         // handle the daemon mocks
         $mock_auctioneer_handler = new AuctioneerDaemonNotificationHandler($this, $app);
@@ -52,6 +54,7 @@ class AuctioneerDaemonNativeMempoolTest extends SiteTestCase
     //   but test what happens just in case...
     public function testAuctioneerDaemonNativeMempoolTXWhenNotCleared() {
         $app = Environment::initEnvironment('test');
+        XChainUtil::installXChainMockClientIfNeeded($app, $this);
 
         // handle the daemon mocks
         $mock_auctioneer_handler = new AuctioneerDaemonNotificationHandler($this, $app);

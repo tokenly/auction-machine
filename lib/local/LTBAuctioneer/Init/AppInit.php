@@ -13,6 +13,7 @@ use LTBAuctioneer\Init\DependencyInjections\MysqlInit;
 use LTBAuctioneer\Init\DependencyInjections\RedisInit;
 use LTBAuctioneer\Init\DependencyInjections\UtilsInit;
 use LTBAuctioneer\Init\DependencyInjections\XCPDInit;
+use LTBAuctioneer\Init\DependencyInjections\XChainInit;
 
 /*
 * AppInit
@@ -39,6 +40,7 @@ class AppInit
         AuctioneerInit::init($app);
         UtilsInit::init($app);
         RedisInit::init($app);
+        XChainInit::init($app);
 
 
         // special case for application-wide event log

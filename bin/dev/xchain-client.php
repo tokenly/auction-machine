@@ -13,6 +13,10 @@ $app_env = 'dev';
 $app = Environment::initEnvironment($app_env);
 echo "Environment: ".$app['config']['env']."\n";
 
-$client = new Client('http://xchain.tokenly.dev:8036', 'key', 'secret');
-$client->newPaymentAddress();
+print $app['config']['xchain.connectionUrl']."\n";
+
+$client = $app['xchain.client'];
+$address_info = $client->newPaymentAddress();
+
+echo "\$address_info:\n".json_encode($address_info, 192)."\n";
 

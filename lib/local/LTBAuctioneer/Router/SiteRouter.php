@@ -58,6 +58,12 @@ class SiteRouter
         })->method('GET')->bind('faq');
 
 
+        $webhook_endpoint_path = $this->app['xchain.webhook_endpoint_path'];
+        $this->app->match($webhook_endpoint_path, function(Request $request) {
+            return $this->app['controller.webhook']->receive($request);
+        })->method('POST')->bind('_webhook');
+
+
 
         // default error handler
         $this->app->error(function (Exception $e, $code) {

@@ -23,6 +23,8 @@ native.port             : "8332"
 native.rpcUser          : "rpcuser"
 native.rpcPassword      : "mypassword"
 
+xchain.connectionUrl    : "http://localhost/"
+xchain.localWebhookHost      : "http://localhost/"
 xchain.apiToken         : "apiuser"
 xchain.apiKey           : "apikey"
 
@@ -66,6 +68,8 @@ allowedEnvironmentOverrides:
     NATIVE_RPC_USER           : native.rpcUser
     NATIVE_RPC_PASSWORD       : native.rpcPassword
 
+    XCHAIN_LOCAL_WEBHOOK_HOST : xchain.localWebhookHost
+    XCHAIN_CONNECTION_URL     : xchain.connectionUrl
     XCHAIN_API_TOKEN          : xchain.apiToken
     XCHAIN_API_KEY            : xchain.apiKey
 

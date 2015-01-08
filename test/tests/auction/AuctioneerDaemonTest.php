@@ -1,13 +1,14 @@
 <?php
 
 use LTBAuctioneer\Auctioneer\AuctioneerDaemon;
-use Utipd\CurrencyLib\CurrencyUtil;
 use LTBAuctioneer\Debug\Debug;
 use LTBAuctioneer\Init\Environment;
 use LTBAuctioneer\Test\Auction\AuctionStateUtil;
 use LTBAuctioneer\Test\Auction\AuctionUtil;
 use LTBAuctioneer\Test\AuctioneerDaemon\AuctioneerDaemonNotificationHandler;
 use LTBAuctioneer\Test\TestCase\SiteTestCase;
+use LTBAuctioneer\Test\XChain\XChainUtil;
+use Utipd\CurrencyLib\CurrencyUtil;
 use \PHPUnit_Framework_Assert as PHPUnit;
 
 /*
@@ -18,6 +19,7 @@ class AuctioneerDaemonTest extends SiteTestCase
 
     public function testBasicAuctioneerDaemon() {
         $app = Environment::initEnvironment('test');
+        XChainUtil::installXChainMockClientIfNeeded($app, $this);
 
         // handle the daemon mocks
         $auctioneer_handler = new AuctioneerDaemonNotificationHandler($this, $app);
@@ -39,6 +41,7 @@ class AuctioneerDaemonTest extends SiteTestCase
 
     public function testAuctioneerDaemonWithOrphan() {
         $app = Environment::initEnvironment('test');
+        XChainUtil::installXChainMockClientIfNeeded($app, $this);
 
         // handle the daemon mocks
         $auctioneer_handler = new AuctioneerDaemonNotificationHandler($this, $app);
@@ -105,6 +108,7 @@ class AuctioneerDaemonTest extends SiteTestCase
 
     public function testAuctioneerDaemonTimePhaseChanges() {
         $app = Environment::initEnvironment('test');
+        XChainUtil::installXChainMockClientIfNeeded($app, $this);
 
         // setup daemon handler with a default block
         $auctioneer_handler = new AuctioneerDaemonNotificationHandler($this, $app);
@@ -155,6 +159,7 @@ class AuctioneerDaemonTest extends SiteTestCase
 
     public function testAuctioneerDaemonPayout() {
         $app = Environment::initEnvironment('test');
+        XChainUtil::installXChainMockClientIfNeeded($app, $this);
 
         // setup daemon handler with a default block
         $auctioneer_handler = new AuctioneerDaemonNotificationHandler($this, $app);
@@ -179,7 +184,7 @@ class AuctioneerDaemonTest extends SiteTestCase
         PHPUnit::assertEquals(false, !!$auction['paidOut']);
 
         // process a couple more native blocks (auction ends at 6006)
-        $auctioneer_handler->processNativeBlock(6009);
+        $auctioneer_handler->processMultipleNativeBlocks(6000, 6009);
         
         // run an iteration
         $daemon->runOneIteration();
@@ -192,6 +197,7 @@ class AuctioneerDaemonTest extends SiteTestCase
 
     public function testAuctioneerBTCTransaction() {
         $app = Environment::initEnvironment('test');
+        XChainUtil::installXChainMockClientIfNeeded($app, $this);
 
         // setup daemon handler with a default block
         $auctioneer_handler = new AuctioneerDaemonNotificationHandler($this, $app);

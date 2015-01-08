@@ -22,15 +22,13 @@
         "predis/predis": "~1",
         "bitwasp/bitcoin-lib": "dev-master",
         "erusev/parsedown": "~1",
-        "tokenly/hmac-auth": "dev-master"
+        "tokenly/hmac-auth": "dev-master",
+        "tokenly/xchain-client": "dev-master"
     },
 
     "autoload": {
         "psr-0": {
             "": "local"
-        },
-        "psr-4": {
-            "Tokenly\\XChainClient\\": "vendor/tokenly/x-chain-client/src/Tokenly/XChainClient"
         }
     },
 

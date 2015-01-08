@@ -17,25 +17,36 @@ class AuctionManager
 
     ////////////////////////////////////////////////////////////////////////
 
-    public function __construct($auction_directory, $token_generator, $slugger, $address_generator, $native_client, $wallet_passphrase, $auction_defaults) {
+    public function __construct($auction_directory, $token_generator, $slugger, $xchain_client, $native_client, $wallet_passphrase, $auction_defaults, $webhook_endpoint) {
         $this->auction_directory = $auction_directory;
-        $this->token_generator = $token_generator;
-        $this->slugger = $slugger;
-        $this->address_generator = $address_generator;
-        $this->native_client = $native_client;
+        $this->token_generator   = $token_generator;
+        $this->slugger           = $slugger;
+        $this->xchain_client     = $xchain_client;
+        $this->native_client     = $native_client;
         $this->wallet_passphrase = $wallet_passphrase;
-        $this->auction_defaults = $auction_defaults;
+        $this->auction_defaults  = $auction_defaults;
+        $this->webhook_endpoint  = $webhook_endpoint;
     }
 
     public function newAuction($new_auction_vars) {
         // assign a ref id
         $new_auction_vars['refId'] = $this->token_generator->generateToken('AUCTION', 40);
 
-        // assign an address offset and an address
-        $new_auction_vars['keyToken'] = $this->token_generator->generateToken('ADDRESS', 42);
+        // // assign an address offset and an address
+        // $new_auction_vars['keyToken'] = $this->token_generator->generateToken('ADDRESS', 42);
 
-        // new auctionAddress
-        $new_auction_vars['auctionAddress'] = $this->address_generator->publicAddress($new_auction_vars['keyToken']);
+        // // new auctionAddress
+        // $new_auction_vars['auctionAddress'] = $this->address_generator->publicAddress($new_auction_vars['keyToken']);
+
+        // generate a new auction from xchain
+        $address_info = $this->xchain_client->newPaymentAddress();
+        $new_auction_vars['auctionAddress']     = $address_info['address'];
+        $new_auction_vars['auctionAddressUuid'] = $address_info['id'];
+
+
+        // and start a new monitor
+        $monitor_info = $this->xchain_client->newAddressMonitor($new_auction_vars['auctionAddress'], $this->webhook_endpoint, 'receive', true);
+        $new_auction_vars['xchainMonitorId'] = $monitor_info['id'];
 
         // build a slug
         $new_auction_vars['slug'] = $this->createSlug($new_auction_vars);
@@ -151,6 +162,7 @@ class AuctionManager
             return true;
         });
     }
+
 
 }
 

@@ -33,22 +33,22 @@ class KeyGenerationTest extends SiteTestCase
 
     } 
 
-    public function testNewAuctionKeys() {
-        $app = Environment::initEnvironment('test');
-        $auction_1 = AuctionUtil::createNewAuction($app);
-        PHPUnit::assertNotEmpty($auction_1['auctionAddress']);
-        $gen = $app['bitcoin.addressGenerator'];
-        $private_key = $gen->privateKey($auction_1['keyToken']);
-        $address = BIP32::key_to_address($private_key);
-        PHPUnit::assertEquals($address, $auction_1['auctionAddress']);
+    // public function testNewAuctionKeys() {
+    //     $app = Environment::initEnvironment('test');
+    //     $auction_1 = AuctionUtil::createNewAuction($app);
+    //     PHPUnit::assertNotEmpty($auction_1['auctionAddress']);
+    //     $gen = $app['bitcoin.addressGenerator'];
+    //     $private_key = $gen->privateKey($auction_1['keyToken']);
+    //     $address = BIP32::key_to_address($private_key);
+    //     PHPUnit::assertEquals($address, $auction_1['auctionAddress']);
 
-        $auction_2 = AuctionUtil::createNewAuction($app);
-        $gen = $app['bitcoin.addressGenerator'];
-        $private_key = $gen->privateKey($auction_2['keyToken']);
-        $address = BIP32::key_to_address($private_key);
-        PHPUnit::assertEquals($address, $auction_2['auctionAddress']);
+    //     $auction_2 = AuctionUtil::createNewAuction($app);
+    //     $gen = $app['bitcoin.addressGenerator'];
+    //     $private_key = $gen->privateKey($auction_2['keyToken']);
+    //     $address = BIP32::key_to_address($private_key);
+    //     PHPUnit::assertEquals($address, $auction_2['auctionAddress']);
 
-        PHPUnit::assertNotEquals($auction_1['auctionAddress'], $auction_2['auctionAddress']);
+    //     PHPUnit::assertNotEquals($auction_1['auctionAddress'], $auction_2['auctionAddress']);
 
-    }
+    // }
 }

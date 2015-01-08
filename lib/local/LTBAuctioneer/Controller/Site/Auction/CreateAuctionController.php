@@ -27,8 +27,8 @@ class CreateAuctionController extends BaseSiteController
     public function __construct($app, $auction_manager, $xcpd_follower) {
         parent::__construct($app);
 
-        $this->auction_manager = $auction_manager;
-        $this->xcpd_follower = $xcpd_follower;
+        $this->auction_manager  = $auction_manager;
+        $this->xcpd_follower    = $xcpd_follower;
     }
 
 

@@ -5,6 +5,7 @@ use LTBAuctioneer\Init\Environment;
 use LTBAuctioneer\Test\Auction\AuctionUtil;
 use LTBAuctioneer\Test\TestCase\SiteTestCase;
 use LTBAuctioneer\Test\Util\RequestUtil;
+use LTBAuctioneer\Test\XChain\XChainUtil;
 use \PHPUnit_Framework_Assert as PHPUnit;
 
 /*
@@ -15,6 +16,7 @@ class CreateAuctionTest extends SiteTestCase
 
     public function testNewAuctionErrors() {
         $app = Environment::initEnvironment('test');
+        XChainUtil::installXChainMockClient($app, $this);
 
         $submission_vars = array_merge(AuctionUtil::newAuctionVars(), ['name' => '']);
         RequestUtil::assertResponseWithStatusCode($app, 'POST', '/create/auction/new', $submission_vars, 200, 'Please enter an auction name.');
@@ -63,6 +65,7 @@ class CreateAuctionTest extends SiteTestCase
 
     public function testNewAuctionCreated() {
         $app = Environment::initEnvironment('test');
+        XChainUtil::installXChainMockClient($app, $this);
         $auction = AuctionUtil::createNewAuction($app);
 
         PHPUnit::assertNotNull($auction);
@@ -71,6 +74,7 @@ class CreateAuctionTest extends SiteTestCase
 
     public function testNewAuctionTimezone() {
         $app = Environment::initEnvironment('test');
+        XChainUtil::installXChainMockClient($app, $this);
         $start_date_string = date('m.d.Y g:i a', strtotime('+5 hours'));
         $end_date_string = date('m.d.Y g:i a', strtotime('+3 days'));
 #        Debug::trace("\$start_date_string=$start_date_string \$end_date_string=$end_date_string",__FILE__,__LINE__,$this);
@@ -83,6 +87,7 @@ class CreateAuctionTest extends SiteTestCase
 
     public function testNewAuctionLongTimezone() {
         $app = Environment::initEnvironment('test');
+        XChainUtil::installXChainMockClient($app, $this);
         $start_date_string = date('m.d.Y g:i a', strtotime('+5 hours'));
         $end_date_string = date('m.d.Y g:i a', strtotime('+3 days'));
 #        Debug::trace("\$start_date_string=$start_date_string \$end_date_string=$end_date_string",__FILE__,__LINE__,$this);
@@ -95,6 +100,7 @@ class CreateAuctionTest extends SiteTestCase
 
     public function testNewAuctionConfirmation() {
         $app = Environment::initEnvironment('test');
+        XChainUtil::installXChainMockClient($app, $this);
         $auction = AuctionUtil::createNewAuction($app);
 
         $response = RequestUtil::assertResponseWithStatusCode($app, 'GET', '/create/auction/'.$auction['refId'], [], 200);
@@ -110,6 +116,7 @@ class CreateAuctionTest extends SiteTestCase
 
     public function testUniqueAuctionSlugs() {
         $app = Environment::initEnvironment('test');
+        XChainUtil::installXChainMockClient($app, $this);
         $auction = AuctionUtil::createNewAuction($app);
         PHPUnit::assertEquals('auction-one', $auction['slug']);
         $auction = AuctionUtil::createNewAuction($app);

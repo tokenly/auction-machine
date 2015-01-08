@@ -36,6 +36,10 @@ class ControllersInit {
             return new \LTBAuctioneer\Controller\Site\Plain\PlainController($app);
         };
 
+        $app['controller.webhook'] = function($app) {
+            return new \LTBAuctioneer\Controller\Site\Webhook\ReceiveWebhookController($app, $app['xchain.webhook.receiver']);
+        };
+
     }
 
 

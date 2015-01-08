@@ -81,11 +81,18 @@ class AuctioneerDaemonNotificationHandler
         $this->daemon->handleNewBlock($block_id, $block_hash);
     }
 
+    public function processMultipleNativeBlocks($start_block_id, $end_block_id, $block_hash_prefix='block') {
+        for ($block_id=$start_block_id; $block_id <= $end_block_id; $block_id++) { 
+            $this->processNativeBlock($block_id, $block_hash_prefix.$block_id);
+        }
+    }
+
     public function processNativeBlock($block_id, $block_hash=null) {
         if ($block_hash === null) { $block_hash = 'sampleblockhash01'; }
         if (!isset($this->daemon)) { $this->setupDaemon(); }
 
         $this->last_processed_native_block = $block_id;
+        Debug::trace("handleNewBlock $block_id",__FILE__,__LINE__,$this);
         $this->daemon->handleNewBlock($block_id, $block_hash);
     }
 
@@ -150,7 +157,7 @@ class AuctioneerDaemonNotificationHandler
             $payer = $builder->getMock();
 
             // doPayout()
-            $payer->method('doPayout')->will($this->test_case->returnCallback(function($payout, $auction, $private_key) {
+            $payer->method('doPayout')->will($this->test_case->returnCallback(function($payout, $auction) {
                 return [
                     'transactionId' => 'fooid',
                     'timestamp'     => time(),
