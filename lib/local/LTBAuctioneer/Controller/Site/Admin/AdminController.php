@@ -58,11 +58,14 @@ class AdminController extends BaseSiteController
         foreach ($results as $auction) {
             $href = $this->app->url('admin-edit-auction', ['auctionId' => $auction['id']]);
             $edit_link = "<a href=\"$href\">[edit]</a>";
+
+            $href = $this->app->url('create-auction-confirm', ['auctionRefId' => $auction['refId']]);
+            $admin_link = "<a href=\"$href\">[admin]</a>";
             $entries[] = [
                 'title'       => $auction['name'],
                 // 'subtitle' => date("Y-m-d H:i:s T", $auction['startDate']),
                 'subtitle'    => $auction['startDate'],
-                'link'        => $edit_link,
+                'link'        => $admin_link." ".$edit_link,
                 'data'        => $auction,
             ];
         }

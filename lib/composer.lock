@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "028602fad6bf879462b55494ef267ad4",
+    "hash": "aabb2eda80f8af4f87e285a461199235",
     "packages": [
         {
             "name": "bitwasp/bitcoin-lib",
@@ -1375,6 +1375,48 @@
             "time": "2014-12-11 14:51:54"
         },
         {
+            "name": "tokenly/xchain-client",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tokenly/xchain-client.git",
+                "reference": "fb01cfdcf2e17258b1717797803f4c94f3c61147"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tokenly/xchain-client/zipball/fb01cfdcf2e17258b1717797803f4c94f3c61147",
+                "reference": "fb01cfdcf2e17258b1717797803f4c94f3c61147",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "4.*",
+                "php": ">=5.5.0",
+                "tokenly/hmac-auth": "dev-master"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Tokenly\\XChainClient": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Devon Weller",
+                    "email": "dweller@devonweller.com",
+                    "homepage": "http://devonweller.com"
+                }
+            ],
+            "description": "A library",
+            "time": "2015-01-08 14:05:48"
+        },
+        {
             "name": "twig/twig",
             "version": "v1.16.0",
             "source": {
@@ -1927,9 +1969,11 @@
         "utipd/currency-lib": 20,
         "nbobtc/bitcoind-php": 20,
         "bitwasp/bitcoin-lib": 20,
-        "tokenly/hmac-auth": 20
+        "tokenly/hmac-auth": 20,
+        "tokenly/xchain-client": 20
     },
     "prefer-stable": false,
+    "prefer-lowest": false,
     "platform": [],
     "platform-dev": []
 }

@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS `blockchaintransaction` (
     `id`            int(11) unsigned NOT NULL AUTO_INCREMENT,
     `auctionId`     int(20) unsigned NOT NULL DEFAULT 0,
     `blockId`       int(20) unsigned NOT NULL DEFAULT 0,
+    `blockSeq`      int(11) unsigned NOT NULL DEFAULT 0,
     `tx_hash`       varbinary(64) NOT NULL DEFAULT '',
     `isMempool`     int(1) NOT NULL DEFAULT '0',
     `isNative`      int(1) NOT NULL DEFAULT '0',
@@ -51,6 +52,7 @@ CREATE TABLE IF NOT EXISTS `blockchaintransaction` (
     KEY `isMempool_isNative` (`isMempool`,`isNative`),
     UNIQUE KEY `tx_hash_isNative` (`tx_hash`,`isNative`)
 ) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
+# ALTER TABLE `blockchaintransaction` ADD `blockSeq` int(11) unsigned NOT NULL DEFAULT 0;
 
 CREATE TABLE IF NOT EXISTS `block` (
     `id`            int(11) unsigned NOT NULL AUTO_INCREMENT,

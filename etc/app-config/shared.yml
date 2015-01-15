@@ -24,8 +24,8 @@ native.rpcUser          : "rpcuser"
 native.rpcPassword      : "mypassword"
 
 xchain.connectionUrl    : "http://localhost/"
-xchain.localWebhookHost      : "http://localhost/"
-xchain.apiToken         : "apiuser"
+xchain.localWebhookHost : "http://localhost/"
+xchain.apiToken         : "apitoken"
 xchain.apiKey           : "apikey"
 
 redis.host              : "localhost"

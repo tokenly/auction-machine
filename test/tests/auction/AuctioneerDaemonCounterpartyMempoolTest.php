@@ -24,6 +24,10 @@ class AuctioneerDaemonCounterpartyMempoolTest extends SiteTestCase
         // handle the daemon mocks
         $mock_auctioneer_handler = new AuctioneerDaemonNotificationHandler($this, $app);
 
+        // set up block 6000
+        $mock_auctioneer_handler->setupDaemon();
+        $mock_auctioneer_handler->processNewCounterpartyBlock(6000);
+
         // create an auction
         $auction = AuctionUtil::createNewAuction($app);
 
@@ -58,6 +62,10 @@ class AuctioneerDaemonCounterpartyMempoolTest extends SiteTestCase
 
         // handle the daemon mocks
         $mock_auctioneer_handler = new AuctioneerDaemonNotificationHandler($this, $app);
+
+        // set up block 6000
+        $mock_auctioneer_handler->setupDaemon();
+        $mock_auctioneer_handler->processNewCounterpartyBlock(6000);
 
         // create an auction
         $auction = AuctionUtil::createNewAuction($app);

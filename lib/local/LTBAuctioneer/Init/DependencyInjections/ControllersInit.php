@@ -18,11 +18,11 @@ class ControllersInit {
     public static function initControllers($app) {
 
         $app['controller.auction.admin'] = function($app) {
-            return new \LTBAuctioneer\Controller\Site\Auction\CreateAuctionController($app, $app['auction.manager'], $app['xcpd.follower']);
+            return new \LTBAuctioneer\Controller\Site\Auction\CreateAuctionController($app, $app['auction.manager'], $app['directory']('Block'));
         };
 
         $app['controller.auction.public'] = function($app) {
-            return new \LTBAuctioneer\Controller\Site\Auction\PublicAuctionController($app, $app['auction.manager'], $app['xcpd.follower']);
+            return new \LTBAuctioneer\Controller\Site\Auction\PublicAuctionController($app, $app['auction.manager'], $app['directory']('Block'));
         };
 
         $app['controller.admin'] = function($app) {
@@ -37,7 +37,7 @@ class ControllersInit {
         };
 
         $app['controller.webhook'] = function($app) {
-            return new \LTBAuctioneer\Controller\Site\Webhook\ReceiveWebhookController($app, $app['xchain.webhook.receiver']);
+            return new \LTBAuctioneer\Controller\Site\Webhook\ReceiveWebhookController($app, $app['xchain.webhook.receiver'], $app['auctioneer.daemon']);
         };
 
     }

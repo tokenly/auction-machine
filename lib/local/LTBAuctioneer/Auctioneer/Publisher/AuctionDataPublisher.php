@@ -13,9 +13,9 @@ class AuctionDataPublisher
 
     ////////////////////////////////////////////////////////////////////////
 
-    public function __construct($redis, $xcpd_follower) {
-        $this->redis = $redis;
-        $this->xcpd_follower = $xcpd_follower;
+    public function __construct($redis, $block_directory) {
+        $this->redis           = $redis;
+        $this->block_directory = $block_directory;
     }
 
     public function publishAuctionState($auction, $last_block_seen=null) {
@@ -64,7 +64,11 @@ class AuctionDataPublisher
 
         // meta
         if ($last_block_seen === null) {
-            $last_block_seen = $this->xcpd_follower->getLastProcessedBlock();
+            // $last_block_seen = $this->xcpd_follower->getLastProcessedBlock();
+            $last_block_seen = -1;
+
+            $block = $this->block_directory->getBlockModelAtBestHeight();
+            if ($block) { $last_block_seen = $block['blockId']; }
         }
         $meta = [
             'lastBlockSeen' => $last_block_seen,

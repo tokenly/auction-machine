@@ -47,11 +47,14 @@ class AuctioneerDaemonNotificationHandler
         $send_data['status']      = 'valid';
         $send_data['tx_hash']     = md5('myhash'.$this->mock_tx_index);
         $send_data['assetInfo']   = ['divisible' => true,];
+        $send_data['blockSeq']    = 1;
+        $send_data['timestamp']   = time();
 
         $send_data = array_merge($send_data, $send_data_overrides);
 
         $is_mempool = false;
-        $this->daemon->handleNewXCPSend($send_data, $send_data['block_index'], $is_mempool);
+        $confirmed_block_hash = str_pad($send_data['block_index'], 64, '0', STR_PAD_LEFT);
+        $this->daemon->handleNewXCPSend($send_data, $is_mempool, $confirmed_block_hash);
 
         return $send_data;
     }
@@ -66,36 +69,37 @@ class AuctioneerDaemonNotificationHandler
         $send_data['quantity']    = CurrencyUtil::numberToSatoshis(43);
         $send_data['tx_hash']     = 'mmyhash';
         $send_data['assetInfo']   = ['divisible' => true,];
+        $send_data['timestamp']   = time();
 
         $send_data = array_merge($send_data, $send_data_overrides);
 
         $is_mempool = true;
         $block_height = $this->last_processed_native_block;
-        $this->daemon->handleNewXCPSend($send_data, $block_height, $is_mempool);
+        $this->daemon->handleNewXCPSend($send_data, $is_mempool, null);
 
         return $send_data;
     }
 
     public function processNewCounterpartyBlock($block_id, $block_hash=null) {
-        if ($block_hash === null) { $block_hash = 'sampleblockhash01'; }
+        if ($block_hash === null) { $block_hash = str_pad($block_id, 64, '0', STR_PAD_LEFT); }
+        if (!isset($this->daemon)) { $this->setupDaemon(); }
         $this->daemon->handleNewBlock($block_id, $block_hash);
     }
 
     public function processMultipleNativeBlocks($start_block_id, $end_block_id, $block_hash_prefix='block') {
         for ($block_id=$start_block_id; $block_id <= $end_block_id; $block_id++) { 
-            $this->processNativeBlock($block_id, $block_hash_prefix.$block_id);
+            // $this->processNativeBlock($block_id, $block_hash_prefix.$block_id);
+            $this->processNativeBlock($block_id);
         }
     }
 
     public function processNativeBlock($block_id, $block_hash=null) {
-        if ($block_hash === null) { $block_hash = 'sampleblockhash01'; }
+        if ($block_hash === null) { $block_hash = str_pad($block_id, 64, '0', STR_PAD_LEFT); }
         if (!isset($this->daemon)) { $this->setupDaemon(); }
 
         $this->last_processed_native_block = $block_id;
-        Debug::trace("handleNewBlock $block_id",__FILE__,__LINE__,$this);
         $this->daemon->handleNewBlock($block_id, $block_hash);
     }
-
 
 
     public function sendMockNativeTransaction($auction, $info=[], $current_block_height=null) {
@@ -125,7 +129,10 @@ class AuctioneerDaemonNotificationHandler
             $block_height = isset($info['blockId']) ? $info['blockId'] : 6000;
         }
 
-        $this->daemon->handleNewBTCTransaction($transaction, $block_height, $is_mempool);
+        $confirmed_block_hash = str_pad($block_height, 64, '0', STR_PAD_LEFT);
+        $block_seq = 1;
+        $timestamp = time();
+        $this->daemon->handleNewBTCTransaction($transaction, $is_mempool, $confirmed_block_hash, $block_seq, $block_height, $timestamp);
 
         return $transaction;
     }
@@ -139,7 +146,7 @@ class AuctioneerDaemonNotificationHandler
 
     public function getLastProcessedBlockHeight() {
         $block_dir = $this->app['directory']('Block');
-        $block = $block_dir->getBestHeightBlock();
+        $block = $block_dir->getBlockModelAtBestHeight();
         return $block['blockId'];
     }
 

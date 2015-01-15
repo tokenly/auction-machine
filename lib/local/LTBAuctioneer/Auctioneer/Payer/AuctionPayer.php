@@ -121,7 +121,8 @@ class AuctionPayer
 
     protected function doPayout($payout, $auction) {
 
-#        Debug::trace("doPayout called",__FILE__,__LINE__,$this);
+
+        Debug::trace("begin doPayout \$auction=".Debug::desc($auction)."",__FILE__,__LINE__,$this);
         try {
             if ($payout['sweep']) {
                 // sweep the remaining BTC
@@ -142,9 +143,12 @@ class AuctionPayer
                 'amountSent'    => $amount_sent,
             ];
         } catch (Exception $e) {
-            EventLog::logError('payout.error', ['payout' => $payout, 'auctionId' => $auction['id'], 'error' => $e]);
+            Debug::errorTrace("ERROR: ".$e->getMessage(),__FILE__,__LINE__,$this);
+            EventLog::logError('payout.error', ['payout' => $payout, 'auctionId' => $auction ? $auction['id'] : 'null', 'error' => $e]);
             throw $e;
         }
+
+       Debug::trace("end doPayout",__FILE__,__LINE__,$this);
     }
 
     protected function savePayoutReceipt($payout, $payout_receipt, $auction) {
@@ -165,20 +169,35 @@ class AuctionPayer
     protected function sendXCPToken($payout, $auction, $payment_address_id) {
         // use xchain to send and sign the raw transaction
         $sweep = false;
-        $quantity = CurrencyUtil::satoshisToNumber($payout['amount']);
+        $quantity = CurrencyUtil::satoshisToUnFormattedNumber($payout['amount']);
+
+        // debug
+        if ($this->payout_debug) {
+            EventLog::logDebug('payout.debug.sendXCPToken', ['address' => $payment_address_id, 'payoutAddress' => $payout['address'], 'quantity' => $quantity, 'token' => $payout['token']]);
+            return md5($payment_address_id . $payout['address'] . $quantity . $payout['token'] . $sweep);
+        }
+
         $details = $this->xchain_client->send($payment_address_id, $payout['address'], $quantity, $payout['token'], $sweep);
+        Debug::trace("\$details=".Debug::desc($details)."",__FILE__,__LINE__,$this);
+
         return $details['txid'];
     }
 
     protected function sweepBTC($payout, $auction, $payment_address_id) {
+        // debug
+        if ($this->payout_debug) {
+            EventLog::logDebug('payout.debug.sweepBTC', ['address' => $payment_address_id, 'platformAddress' => $auction['platformAddress']]);
+            return [md5($payment_address_id . $auction['platformAddress']), CurrencyUtil::numberToSatoshis(0.00499)];
+        }
+
         $sweep = true;
         $details = $this->xchain_client->send($payment_address_id, $auction['platformAddress'], null, 'BTC', $sweep);
-        return [$details['txid'], $details['quantity']];
+        return [$details['txid'], $details['quantitySat']];
     }
 
 
 //     protected function buildPayoutQuantity($payout) {
-//         return intval($this->isDivisible($payout['token']) ? $payout['amount'] : CurrencyUtil::satoshisToNumber($payout['amount']));
+//         return intval($this->isDivisible($payout['token']) ? $payout['amount'] : CurrencyUtil::satoshisToUnFormattedNumber($payout['amount']));
 //     }
 
 //     protected function isDivisible($token) {

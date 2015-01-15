@@ -28,7 +28,7 @@ transactions:
   -
     auctionId      : 101
     transactionId  : 5001
-    blockId        : 6001
+    blockId        : 6000
 
     classification : incoming
 

@@ -86,7 +86,7 @@ class AuctioneerDaemon
 
     // handle new blocks
     public function handleNewBlock($block_height, $block_hash, $timestamp=null) {
-        EventLog::logEvent('xcpd.block.found', ['blockId' => $block_height]);
+        EventLog::logEvent('block.found', ['blockId' => $block_height, 'hash' => $block_hash, 'timestamp' => $timestamp, ]);
 
         // store the block
         $block = $this->block_directory->createAndSave([
@@ -107,18 +107,11 @@ class AuctioneerDaemon
         }
     }
 
-    // public function handleNewSend($send_data, $block_id, $is_mempool) {
-    //     $is_xcpd = true;
-    //     $this->handleNewXCPSend($send_data, $block_id, $is_mempool);
-    //     $this->handleNewBTCTransaction($transaction, $block_id, $is_mempool);
-    // }
+    public function handleNewXCPSend($send_data, $is_mempool, $confirmed_block_hash) {
+        if (!$is_mempool AND !$confirmed_block_hash) { throw new Exception("Missing required confirmed_block_hash", 1); }
 
-    public function handleNewXCPSend($send_data, $current_block_height, $is_mempool) {
         // we have a new send from XCPD
-        if ($current_block_height === null OR $current_block_height == 0) {
-            throw new Exception("Current block height must not be 0", 1);
-        }
-        
+
         // find all auctions
         foreach ($this->auction_manager->allAuctions() as $auction) {
             $address = $auction['auctionAddress'];
@@ -128,13 +121,15 @@ class AuctioneerDaemon
                 // this is a send by the auction
                 // save the transaction
                 EventLog::logEvent('tx.outgoing', ['auctionId' => $auction['id'], 'tx' => $send_data, 'mempool' => $is_mempool]);
-                if (!$send_data['assetInfo']['divisible']) {
-                    $send_data['quantity'] =  CurrencyUtil::numberToSatoshis($send_data['quantity']);
-                }
+
+                // all quantities are in satoshis coming from xChain
+                // if (!$send_data['assetInfo']['divisible']) {
+                //     $send_data['quantity'] =  CurrencyUtil::numberToSatoshis($send_data['quantity']);
+                // }
 
                 $new_transaction = $this->createNewTransaction($send_data, $auction, 'outgoing', false, $is_mempool);
                 if ($new_transaction) {
-                    $this->updateAuction($auction, ($is_mempool ? $current_block_height : $new_transaction['blockId']));
+                    $this->updateAuction($auction, $this->getCurrentBlockHeight());
                 }
             }
 
@@ -142,18 +137,23 @@ class AuctioneerDaemon
                 // this is an incoming transaction
                 //   we will process this
                 EventLog::logEvent('tx.incoming', ['auctionId' => $auction['id'], 'tx' => $send_data, 'mempool' => $is_mempool]);
-                if (!$send_data['assetInfo']['divisible']) {
-                    $send_data['quantity'] = CurrencyUtil::numberToSatoshis($send_data['quantity']);
-                }
+
+                // all quantities are in satoshis coming from xChain
+                // if (!$send_data['assetInfo']['divisible']) {
+                //     $send_data['quantity'] = CurrencyUtil::numberToSatoshis($send_data['quantity']);
+                // }
+
                 $new_transaction = $this->createNewTransaction($send_data, $auction, 'incoming', false, $is_mempool);
                 if ($new_transaction) {
-                    $this->updateAuction($auction, ($is_mempool ? $current_block_height : $new_transaction['blockId']));
+                    $this->updateAuction($auction, $this->getCurrentBlockHeight());
                 }
             }
         }
     }
 
-    public function handleNewBTCTransaction($transaction, $current_block_height, $is_mempool) {
+    public function handleNewBTCTransaction($transaction, $is_mempool, $confirmed_block_hash, $block_seq, $block_height, $timestamp) {
+        if (!$is_mempool AND !$confirmed_block_hash) { throw new Exception("Missing required confirmed_block_hash", 1); }
+
         // a new transaction
         // txid: cc91db2f18b908903cb7c7a4474695016e12afd816f66a209e80b7511b29bba9
         // outputs:
@@ -175,17 +175,20 @@ class AuctioneerDaemon
                 // this is an interesting blockChain transaction
                 $btc_send_data = [];
                 $btc_send_data['tx_index']    = $transaction['txid'];
-                $btc_send_data['block_index'] = ($is_mempool ? 0 : $current_block_height);
+                $btc_send_data['block_index'] = ($is_mempool ? 0 : $block_height);
                 $btc_send_data['source']      = ''; // not tracked
                 $btc_send_data['destination'] = $destination_address;
                 $btc_send_data['asset']       = 'BTC';
                 $btc_send_data['quantity']    = $output['amount']; // already in satoshis
                 $btc_send_data['status']      = 'valid';
                 $btc_send_data['tx_hash']     = $transaction['txid'];
+                $btc_send_data['block_hash']  = $confirmed_block_hash;
+                $btc_send_data['blockSeq']    = $block_seq;
+                $btc_send_data['timestamp']   = $timestamp;
 
                 $new_transaction = $this->createNewTransaction($btc_send_data, $auction, 'incoming', true, $is_mempool);
                 if ($new_transaction) {
-                    $this->updateAuction($auction, $is_mempool ? $current_block_height : $new_transaction['blockId']);
+                    $this->updateAuction($auction, $this->getCurrentBlockHeight());
                 }
             }
         }
@@ -242,8 +245,9 @@ class AuctioneerDaemon
         // create a new transaction
         $new_transaction = $this->blockchain_tx_directory->createAndSave([
             'auctionId'      => $auction['id'],
-            'transactionId'  => $is_mempool ? $send_data['tx_hash'] : $send_data['tx_index'],
+            // 'transactionId'  => $is_mempool ? $send_data['tx_hash'] : $send_data['tx_index'],
             'blockId'        => $is_mempool ? 0 : $send_data['block_index'],
+            'blockSeq'       => $is_mempool ? 0 : $send_data['blockSeq'],
 
             'classification' => $classification,
 
@@ -257,7 +261,7 @@ class AuctioneerDaemon
             'isNative'       => $is_native,
             'isMempool'      => $is_mempool,
 
-            'timestamp'      => time(),
+            'timestamp'      => $send_data['timestamp'],
         ]);
         return $new_transaction;
 
@@ -335,11 +339,16 @@ class AuctioneerDaemon
     }
 
     protected function getCurrentBlockHeight() {
-        $block = $this->block_directory->getBestHeightBlock();
+        $block = $this->block_directory->getBlockModelAtBestHeight();
         if (!$block) { throw new Exception("No blocks found", 1); }
 
         return $block['blockId'];
     }
+
+    // protected function blockHeightByBlockHash($block_hash) {
+    //     $block = $this->block_directory->getBlockModelByBlockHash($block_hash);
+    //     return $block ? $block['blockId'] : null;
+    // }
 
     protected function clearAllMempoolTransactions() {
         // $this->blockchain_tx_directory->deleteRaw("DELETE FROM {$this->blockchain_tx_directory->getTableName()} WHERE isMempool = ? AND isNative = ?", [1, intval($is_native)]);

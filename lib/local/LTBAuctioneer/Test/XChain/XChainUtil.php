@@ -4,6 +4,7 @@ namespace LTBAuctioneer\Test\XChain;
 
 use Exception;
 use LTBAuctioneer\Debug\Debug;
+use Utipd\CurrencyLib\CurrencyUtil;
 
 /*
 * XChainUtil
@@ -72,6 +73,7 @@ class XChainUtil
             "txid"        => "0000000000000000000000000000001111",
             "destination" => $data['destination'],
             "quantity"    => $data['quantity'],
+            "quantitySat" => CurrencyUtil::numberToSatoshis($data['quantity']),
             "asset"       => $data['asset'],
             "is_sweep"    => !!$data['sweep'],
         ];

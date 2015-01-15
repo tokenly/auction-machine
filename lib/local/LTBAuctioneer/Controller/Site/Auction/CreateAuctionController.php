@@ -24,11 +24,11 @@ class CreateAuctionController extends BaseSiteController
 
     ////////////////////////////////////////////////////////////////////////
 
-    public function __construct($app, $auction_manager, $xcpd_follower) {
+    public function __construct($app, $auction_manager, $block_directory) {
         parent::__construct($app);
 
         $this->auction_manager  = $auction_manager;
-        $this->xcpd_follower    = $xcpd_follower;
+        $this->block_directory    = $block_directory;
     }
 
 
@@ -86,7 +86,7 @@ class CreateAuctionController extends BaseSiteController
         if (!$auction) { throw new WebsiteException("This auction was not found", 1, "auction not found: ".Debug::desc($auctionRefId).""); }
 
         $meta = [
-            'lastBlockSeen' => $this->xcpd_follower->getLastProcessedBlock(),
+            'lastBlockSeen' => $this->block_directory->getBestBlockHeight(),
         ];
 
         return $this->renderTwig('auction/create/new-confirm.twig', [

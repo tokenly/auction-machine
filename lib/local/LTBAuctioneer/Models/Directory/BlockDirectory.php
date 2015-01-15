@@ -13,8 +13,17 @@ class BlockDirectory extends BaseDocumentMysqlDirectory
 
     protected $column_names = ['blockId','blockHash','blockDate',];
 
-    public function getBestHeightBlock() {
+    public function getBlockModelAtBestHeight() {
         $block_model = $this->findOne([], ['blockId' => -1, 'id' => -1]);
         return $block_model;
+    }
+    public function getBlockModelByBlockHash($block_hash) {
+        $block_model = $this->findOne(['blockHash' => $block_hash]);
+        return $block_model;
+    }
+    public function getBestBlockHeight() {
+        $block_model = $this->getBlockModelAtBestHeight();
+        if (!$block_model) { return null; }
+        return $block_model['blockId'];
     }
 }

@@ -30,7 +30,7 @@ class AuctioneerBlocksTest extends SiteTestCase
         // remaining tx is not a mempool transaction
         $block = $block_dir->findOne([]);
         PHPUnit::assertEquals(6001, $block['blockId']);
-        PHPUnit::assertEquals('sampleblockhash01', $block['blockHash']);
+        PHPUnit::assertEquals('0000000000000000000000000000000000000000000000000000000000006001', $block['blockHash']);
         PHPUnit::assertGreaterThan(1388556000, $block['blockDate']);
     } 
 

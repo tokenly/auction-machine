@@ -18,11 +18,11 @@ class PublicAuctionController extends BaseSiteController
 
     ////////////////////////////////////////////////////////////////////////
 
-    public function __construct($app, $auction_manager, $xcpd_follower) {
+    public function __construct($app, $auction_manager, $block_directory) {
         parent::__construct($app);
 
         $this->auction_manager = $auction_manager;
-        $this->xcpd_follower = $xcpd_follower;
+        $this->block_directory = $block_directory;
     }
 
 
@@ -66,7 +66,7 @@ class PublicAuctionController extends BaseSiteController
         }
 
         $meta = [
-            'lastBlockSeen' => $this->xcpd_follower->getLastProcessedBlock(),
+            'lastBlockSeen' => $this->block_directory->getBestBlockHeight(),
         ];
 
         return $this->renderTwig('auction/public/view-auction.twig', [
@@ -94,7 +94,7 @@ class PublicAuctionController extends BaseSiteController
         }
 
         // last block
-        $last_block_seen = $this->xcpd_follower->getLastProcessedBlock();
+        $last_block_seen = $this->block_directory->getBestBlockHeight();
 
         $data = ['returned' => date('r'), 'liveAuctions' => [], 'endedAuctions' => []];
         foreach($auctions_by_type as $type => $auctions) {
