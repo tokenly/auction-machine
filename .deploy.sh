@@ -4,6 +4,11 @@ echo; echo "updating dependencies";
 echo; echo "updating bower dependencies";
 $(cd public/public && bower -q install)
 
+TARGET="var/cache/app-config"
 echo; echo "clearing config";
-/bin/rm -v var/cache/app-config/*
+if find "$TARGET" -mindepth 1 -print -quit | grep -q .; then
+    /bin/rm -v var/cache/app-config/*
+else
+    echo; echo "The directory $TARGET is empty or non-existent";
+fi
 
