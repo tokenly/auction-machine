@@ -2,7 +2,7 @@
 .mute_trace_default
 .rsync_destinations.yaml
 config.codekit
-www/public/vendor
+public/public/vendor
 lib/vendor/*
 var/cache/app-config/*.php
 var/log/*
