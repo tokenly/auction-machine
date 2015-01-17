@@ -14,13 +14,13 @@
     "tests"
   ],
   "dependencies": {
-    "datetimepicker": "~2.3.2",
-    "foundation": "~5.3.0",
-    "modernizr": "~2.8.3",
-    "moment-timezone": "~0.2.0",
-    "moment": "~2.8.1",
-    "momentjs": "~2.8.1",
-    "numeral": "~1.5.3",
-    "tinysort": "*"
+    "datetimepicker": "2.3.9",
+    "foundation": "5.3.3",
+    "modernizr": "2.8.3",
+    "moment-timezone": "0.2.5",
+    "moment": "2.8.4",
+    "momentjs": "2.8.4",
+    "numeral": "1.5.3",
+    "tinysort": "2.1.1"
   }
 }
