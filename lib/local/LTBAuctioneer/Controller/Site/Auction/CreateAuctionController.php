@@ -29,7 +29,7 @@ class CreateAuctionController extends BaseSiteController
 
         $this->auction_manager = $auction_manager;
         $this->block_directory = $block_directory;
-        $this->pusher_url      = $app['config']['pusher.serverUrl'];
+        $this->pusher_url      = $app['config']['pusher.clientUrl'];
     }
 
 

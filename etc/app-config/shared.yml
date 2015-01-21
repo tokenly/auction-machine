@@ -38,6 +38,7 @@ xcp.platformAddress     : "1H42mKvwutzE4DAip57tkAc9KEKMGBD2bB"
 
 admin.password          : "changeme"
 
+pusher.clientUrl        : "http://localhost/"
 pusher.serverUrl        : "http://localhost/"
 pusher.password         : ""
 
@@ -96,6 +97,7 @@ allowedEnvironmentOverrides:
 
     GENESIS_BLOCK_ID          : genesisBlockID
 
+    PUSHER_CLIENT_URL         : pusher.clientUrl
     PUSHER_SERVER_URL         : pusher.serverUrl
     PUSHER_PASSWORD           : pusher.password
 
