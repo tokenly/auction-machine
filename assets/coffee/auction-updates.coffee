@@ -11,32 +11,14 @@ do ($=jQuery) ->
     # ####################################################################################################################
 
     AuctionSocket = window.AuctionSocket = {}
-    AuctionSocket.connect = (auctionSlug, isAdmin)->
-
-        socket = window.io.connect()
-
-        socket.on 'status', (data)->
-            # console.log('status: '+data.state)
+    AuctionSocket.connect = (auctionSlug, pusherUrl, isAdmin)->
+        client = new window.Faye.Client("#{pusherUrl}/public")
+        # console.log "pusherUrl=#{pusherUrl} subscribe to /auction_#{auctionSlug}"
+        client.subscribe "/auction_#{auctionSlug}", (data)->
+            # console.log "data:",data
+            updateAuction(data, isAdmin)
             return
-
-        socket.on 'auction-update', (data)->
-            # console.log "update",data
-            setTimeout ()->
-                updateAuction(data, isAdmin)
-            , 1
-            return
-
-        socket.on 'disconnect', ()->
-            # console.log('disconnected from server')
-            return
-
-        socket.on 'connect', ()->
-            # console.log('state: connected')
-            socket.emit 'listen', auctionSlug
-            return
-
-        socket.on 'error', (e)->
-            console.error "ERROR",e.stack
+        return
 
     init = ()->
         bidEntries = initBidsByAddress()

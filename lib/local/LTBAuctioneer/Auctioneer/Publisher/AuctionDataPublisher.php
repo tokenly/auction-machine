@@ -13,8 +13,8 @@ class AuctionDataPublisher
 
     ////////////////////////////////////////////////////////////////////////
 
-    public function __construct($redis, $block_directory) {
-        $this->redis           = $redis;
+    public function __construct($pusher, $block_directory) {
+        $this->pusher           = $pusher;
         $this->block_directory = $block_directory;
     }
 
@@ -76,11 +76,12 @@ class AuctionDataPublisher
 
         // public
         $public_data = ['auction' => $public_auction_data, 'state' => $public_state_data, 'meta' => $meta];
-        $this->redis->PUBLISH('auction-'.$auction['slug'], json_encode($public_data));
+        Debug::trace("sending data to ".'auction_'.$auction['slug'],__FILE__,__LINE__,$this);
+        $this->pusher->send('/auction_'.$auction['slug'], $public_data);
 
         // private
         $private_data = ['auction' => $private_auction_data, 'state' => $private_state_data, 'meta' => $meta];
-        $this->redis->PUBLISH('auction-'.$auction['refId'], json_encode($private_data));
+        $this->pusher->send('/auction_'.$auction['refId'], $private_data);
 
     }
 

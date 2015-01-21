@@ -27,8 +27,9 @@ class CreateAuctionController extends BaseSiteController
     public function __construct($app, $auction_manager, $block_directory) {
         parent::__construct($app);
 
-        $this->auction_manager  = $auction_manager;
-        $this->block_directory    = $block_directory;
+        $this->auction_manager = $auction_manager;
+        $this->block_directory = $block_directory;
+        $this->pusher_url      = $app['config']['pusher.serverUrl'];
     }
 
 
@@ -94,6 +95,7 @@ class CreateAuctionController extends BaseSiteController
             'auction'      => $auction,
             'meta'         => $meta,
             'error'        => isset($error) ? $error : null,
+            'pusherUrl'    => $this->pusher_url,
         ]);
 
     }

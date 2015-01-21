@@ -23,7 +23,8 @@
         "bitwasp/bitcoin-lib": "dev-master",
         "erusev/parsedown": "~1",
         "tokenly/hmac-auth": "dev-master",
-        "tokenly/xchain-client": "dev-master"
+        "tokenly/xchain-client": "dev-master",
+        "tokenly/pusher-client": "dev-master"
     },
 
     "autoload": {

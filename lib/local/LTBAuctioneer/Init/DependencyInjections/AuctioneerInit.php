@@ -48,7 +48,7 @@ class AuctioneerInit {
         };
 
         $app['auction.publisher'] = function($app) {
-            return new \LTBAuctioneer\Auctioneer\Publisher\AuctionDataPublisher($app['redis'], $app['directory']('Block'));
+            return new \LTBAuctioneer\Auctioneer\Publisher\AuctionDataPublisher($app['pusherClient'], $app['directory']('Block'));
         };
 
 

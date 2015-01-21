@@ -7,21 +7,11 @@
     BID_EL_HEIGHT = 66;
     numeral = window.numeral;
     AuctionSocket = window.AuctionSocket = {};
-    AuctionSocket.connect = function(auctionSlug, isAdmin) {
-      var socket;
-      socket = window.io.connect();
-      socket.on('status', function(data) {});
-      socket.on('auction-update', function(data) {
-        setTimeout(function() {
-          return updateAuction(data, isAdmin);
-        }, 1);
-      });
-      socket.on('disconnect', function() {});
-      socket.on('connect', function() {
-        socket.emit('listen', auctionSlug);
-      });
-      return socket.on('error', function(e) {
-        return console.error("ERROR", e.stack);
+    AuctionSocket.connect = function(auctionSlug, pusherUrl, isAdmin) {
+      var client;
+      client = new window.Faye.Client("" + pusherUrl + "/public");
+      client.subscribe("/auction_" + auctionSlug, function(data) {
+        updateAuction(data, isAdmin);
       });
     };
     init = function() {

@@ -38,6 +38,10 @@ xcp.platformAddress     : "1H42mKvwutzE4DAip57tkAc9KEKMGBD2bB"
 
 admin.password          : "changeme"
 
+pusher.serverUrl        : "http://localhost/"
+pusher.password         : ""
+
+
 xcp.payout:
     fee_per_kb               : 0.00001
     multisig_dust_size       : 0.000025
@@ -91,4 +95,7 @@ allowedEnvironmentOverrides:
     WWW_ADMIN_PASSWORD        : admin.password
 
     GENESIS_BLOCK_ID          : genesisBlockID
+
+    PUSHER_SERVER_URL         : pusher.serverUrl
+    PUSHER_PASSWORD           : pusher.password
 

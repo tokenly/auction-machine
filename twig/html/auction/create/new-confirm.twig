@@ -219,6 +219,7 @@
 <script src="/public/js/timezone.js"></script>
 <script src="/public/js/select-click.js"></script>
 <script src="/public/js/auction-updates.js"></script>
-<script>window.AuctionSocket.connect('{{auction.refId}}', true)</script>
+<script src="{{pusherUrl}}/public/client.js"></script>
+<script>window.AuctionSocket.connect('{{auction.refId}}', '{{pusherUrl}}', true)</script>
 
 {% endblock %}

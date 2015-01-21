@@ -23,6 +23,7 @@ class PublicAuctionController extends BaseSiteController
 
         $this->auction_manager = $auction_manager;
         $this->block_directory = $block_directory;
+        $this->pusher_url      = $app['config']['pusher.serverUrl'];
     }
 
 
@@ -70,9 +71,10 @@ class PublicAuctionController extends BaseSiteController
         ];
 
         return $this->renderTwig('auction/public/view-auction.twig', [
-            'error'   => null,
-            'auction' => $auction,
-            'meta'    => $meta,
+            'error'     => null,
+            'auction'   => $auction,
+            'meta'      => $meta,
+            'pusherUrl' => $this->pusher_url,
         ]);
 
     }

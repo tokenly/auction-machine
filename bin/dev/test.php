@@ -16,3 +16,8 @@ $app_env = isset($values['e']) ? $values['e'] : null;
 $app = Environment::initEnvironment($app_env);
 echo "Environment: ".$app['config']['env']."\n";
 
+$pusher = $app['pusherClient'];
+$private_data = ['foo' => 'bar'];
+$r = $pusher->send('/auction_swarm-pre-test-0003', $private_data);
+echo "\$r:\n".json_encode($r, 192)."\n";
+
