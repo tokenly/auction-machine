@@ -147,12 +147,16 @@
       return bidEntries;
     };
     reorderBidEntries = function() {
-      var liEls;
+      var bidElements, liEls;
+      bidElements = $('ul.ordered-bids > li');
+      if (bidElements.length < 1) {
+        return;
+      }
       window.tinysort('ul.ordered-bids > li', {
         data: 'rank',
         order: 'asc'
       });
-      return liEls = $('ul.ordered-bids > li').each(function(i, el) {
+      return liEls = bidElements.each(function(i, el) {
         var $El, fromTop, toTop, width;
         $El = $(el);
         width = $El.outerWidth();

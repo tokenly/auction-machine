@@ -171,8 +171,10 @@ do ($=jQuery) ->
         return bidEntries
 
     reorderBidEntries = ()->
+        bidElements = $('ul.ordered-bids > li')
+        return if bidElements.length < 1
         window.tinysort('ul.ordered-bids > li', {data:'rank', order:'asc'})
-        liEls = $('ul.ordered-bids > li').each (i,el)->
+        liEls = bidElements.each (i,el)->
             $El = $(el)
             width = $El.outerWidth()
             fromTop = $.data(el,'h')
