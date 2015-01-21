@@ -147,35 +147,32 @@
       return bidEntries;
     };
     reorderBidEntries = function() {
-      var bidElements, liEls;
+      var bidElements;
       bidElements = $('ul.ordered-bids > li');
       if (bidElements.length < 1) {
         return;
       }
-      window.tinysort('ul.ordered-bids > li', {
-        order: 'asc',
-        sortFunction: function(a, b) {
-          var rankA, rankB;
-          rankA = parseInt($(a.elm).data('rank'), 10);
-          rankB = parseInt($(b.elm).data('rank'), 10);
-          if (rankA === rankB) {
-            return 0;
+      bidElements.sort(function(a, b) {
+        var rankA, rankB;
+        rankA = parseInt($(a).data('rank'), 10);
+        rankB = parseInt($(b).data('rank'), 10);
+        if (rankA === rankB) {
+          return 0;
+        } else {
+          if (rankA > rankB) {
+            return 1;
           } else {
-            if (rankA > rankB) {
-              return 1;
-            } else {
-              return -1;
-            }
+            return -1;
           }
         }
       });
-      return liEls = bidElements.each(function(i, el) {
+      bidElements.each(function(i, el) {
         var $El, fromTop, toTop, width;
         $El = $(el);
         width = $El.outerWidth();
         fromTop = $.data(el, 'h');
         toTop = i * BID_EL_HEIGHT;
-        return $El.css({
+        $El.css({
           position: 'absolute',
           top: fromTop,
           width: width

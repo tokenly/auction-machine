@@ -173,20 +173,27 @@ do ($=jQuery) ->
     reorderBidEntries = ()->
         bidElements = $('ul.ordered-bids > li')
         return if bidElements.length < 1
-        window.tinysort('ul.ordered-bids > li', {
-            # data:'rank',
-            order: 'asc'
-            sortFunction: (a, b)->
-                rankA = parseInt($(a.elm).data('rank'), 10)
-                rankB = parseInt($(b.elm).data('rank'), 10)
-                return if rankA == rankB then 0 else (if rankA > rankB then 1 else -1)
-        })
-        liEls = bidElements.each (i,el)->
+        # window.tinysort('ul.ordered-bids > li', {
+        #     # data:'rank',
+        #     order: 'asc'
+        #     sortFunction: (a, b)->
+        #         rankA = parseInt($(a.elm).data('rank'), 10)
+        #         rankB = parseInt($(b.elm).data('rank'), 10)
+        #         return if rankA == rankB then 0 else (if rankA > rankB then 1 else -1)
+        # })
+        bidElements.sort (a, b)->
+            rankA = parseInt($(a).data('rank'), 10)
+            rankB = parseInt($(b).data('rank'), 10)
+            return if rankA == rankB then 0 else (if rankA > rankB then 1 else -1)
+
+        bidElements.each (i,el)->
             $El = $(el)
             width = $El.outerWidth()
             fromTop = $.data(el,'h')
             toTop = i * BID_EL_HEIGHT
             $El.css({position:'absolute',top:fromTop,width:width}).animate({top:toTop},500)
+            return
+        return
 
 
     formatCurrency = (amount)->
