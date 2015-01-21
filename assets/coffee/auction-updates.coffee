@@ -173,7 +173,14 @@ do ($=jQuery) ->
     reorderBidEntries = ()->
         bidElements = $('ul.ordered-bids > li')
         return if bidElements.length < 1
-        window.tinysort('ul.ordered-bids > li', {data:'rank', order:'asc'})
+        window.tinysort('ul.ordered-bids > li', {
+            # data:'rank',
+            order: 'asc'
+            sortFunction: (a, b)->
+                rankA = parseInt($(a.elm).data('rank'), 10)
+                rankB = parseInt($(b.elm).data('rank'), 10)
+                return if rankA == rankB then 0 else (if rankA > rankB then 1 else -1)
+        })
         liEls = bidElements.each (i,el)->
             $El = $(el)
             width = $El.outerWidth()

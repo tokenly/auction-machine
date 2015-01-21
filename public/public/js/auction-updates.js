@@ -153,8 +153,21 @@
         return;
       }
       window.tinysort('ul.ordered-bids > li', {
-        data: 'rank',
-        order: 'asc'
+        order: 'asc',
+        sortFunction: function(a, b) {
+          var rankA, rankB;
+          rankA = parseInt($(a.elm).data('rank'), 10);
+          rankB = parseInt($(b.elm).data('rank'), 10);
+          if (rankA === rankB) {
+            return 0;
+          } else {
+            if (rankA > rankB) {
+              return 1;
+            } else {
+              return -1;
+            }
+          }
+        }
       });
       return liEls = bidElements.each(function(i, el) {
         var $El, fromTop, toTop, width;
