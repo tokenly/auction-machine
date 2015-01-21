@@ -12,3 +12,6 @@ else
     echo; echo "The directory $TARGET is empty or non-existent";
 fi
 
+# make a log
+echo; echo "creating new log directory"
+mkdir -p var/log
