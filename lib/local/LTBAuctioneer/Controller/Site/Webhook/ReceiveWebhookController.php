@@ -41,7 +41,7 @@ class ReceiveWebhookController extends BaseSiteController
                     // new receive event
                     $is_mempool = !$payload['confirmed'];
                     $confirmed_block_hash = $is_mempool ? null : $payload['bitcoinTx']['blockhash'];
-                    if ($payload['isCounterpartyTx']) {
+                    if ($payload['network'] == 'counterparty') {
                         $this->auctioneer_daemon->handleNewXCPSend($this->adaptXCPTransactionForAuctioneerDaemon($payload), $is_mempool, $confirmed_block_hash);
                     } else {
                         $block_seq = $payload['blockSeq'];
